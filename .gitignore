@@ -75,3 +75,13 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+Content/AnimStarterPack/
+Content/Explosions/
+Content/KiteDemo/
+Content/Lighting/
+Content/ParagonProps/
+Content/RealLiquidX/
+Content/RollsAndDodges/
+Content/SampleMap/
+SourceFiles/
+Content/FantasyVillage/Maps/Demonstration.umap
