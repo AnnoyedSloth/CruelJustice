@@ -14,7 +14,8 @@ class CRUELJUSTICE_API ACJEnemy_Magician : public ACJEnemy
 {
 	GENERATED_BODY()
 	
-	
+public:
+	ACJEnemy_Magician();
 	
 	
 };

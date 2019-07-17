@@ -14,7 +14,9 @@ class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 {
 	GENERATED_BODY()
 	
-	
-	
+public:
+
+	// Set up as pure virtual function to prevent instanciation
+	//virtual void Attack() = 0;
 	
 };

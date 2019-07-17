@@ -13,8 +13,10 @@ UCLASS()
 class CRUELJUSTICE_API ACJEnemy_Gunman : public ACJEnemy
 {
 	GENERATED_BODY()
+
+public:
 	
-	
+	ACJEnemy_Gunman();
 	
 	
 };
