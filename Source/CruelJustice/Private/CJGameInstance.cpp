@@ -32,4 +32,13 @@ UCJGameInstance::UCJGameInstance()
 	}
 }
 
+void UCJGameInstance::Init()
+{
+	Super::Init();
 
+	for (auto elem : enemyTransform->RowMap)
+	{
+		//enemyTransform->FindRow<FCJEnemyTransform>(*FString::FromInt(elem.value), TEXT(""));
+	}
+
+}

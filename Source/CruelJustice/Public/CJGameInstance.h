@@ -77,6 +77,8 @@ private:
 public:
 	UCJGameInstance();
 
+	virtual void Init() override;
+
 	//FCJEnemyStat* GetEnemyStat() const { return enemyStat; }
 	//FCJEnemyTransform* GetEnemyTransform() const { return enemyTransform; }
 	

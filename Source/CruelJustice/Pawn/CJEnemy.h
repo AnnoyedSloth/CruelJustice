@@ -9,12 +9,18 @@
 /**
  * 
  */
+
+class UCJEnemyState;
+
 UCLASS()
 class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 {
 	GENERATED_BODY()
 	
 public:
+	ACJEnemy();
+
+	UCJEnemyState* enemyState;
 
 	// Set up as pure virtual function to prevent instanciation
 	//virtual void Attack() = 0;

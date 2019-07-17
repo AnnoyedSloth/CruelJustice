@@ -1,0 +1,9 @@
+- UGameInstance::Init() -> AActor::PostInitializeComponents() -> AGameMode::PostLogin() -> AGameMode::StartPlay() / AActor::BeginPlay()
+- 위 순서대로 초기화
+- 삽질 : UE4에서 csv 파싱할 때 맨 앞에 Name값은 기본으로 초기화하는 값이므로 csv파일 내에서 Name값은 있어야하지만 c++에서 자료형을 정의할 땐 Name을 제외하고 선언하여야 한다.
+- Enemy의
+
+
+Daily
+- csv 파싱하여 어떤식으로 몬스터를 spawn시킬지에 대해 고민해봄
+- 프로젝트 보고서 제출한 UML대로 프로젝트 설계 및 기본 Base 및 Derived class들 러프하게 구현. 어떻게 설계해야 재사용성이 높을지 계속 고민중

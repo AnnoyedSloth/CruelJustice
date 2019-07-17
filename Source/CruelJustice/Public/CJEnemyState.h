@@ -3,20 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Pawn/CJEnemy.h"
-#include "CJEnemy_Axeman.generated.h"
+#include "GameFramework/PlayerState.h"
+#include "CJEnemyState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CRUELJUSTICE_API ACJEnemy_Axeman : public ACJEnemy
+class CRUELJUSTICE_API ACJEnemyState : public APlayerState
 {
 	GENERATED_BODY()
 	
-
-public:
-	ACJEnemy_Axeman();
+	
 	
 	
 };
