@@ -35,9 +35,6 @@ ACJPlayer::ACJPlayer()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 
-	
-	
-
 }
 
 void ACJPlayer::PostInitializeComponents()
@@ -65,4 +62,38 @@ void ACJPlayer::Tick(float deltaTime)
 void ACJPlayer::PossessedBy(AController* newController)
 {
 	Super::PossessedBy(newController);
+}
+
+void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
+{
+	Super::SetupPlayerInputComponent(playerInputComponent);
+
+	playerInputComponent->BindAxis(TEXT("MoveForward"), this, &ACJPlayer::MoveForward);
+	playerInputComponent->BindAxis(TEXT("MoveRight"), this, &ACJPlayer::MoveRight);
+	playerInputComponent->BindAxis(TEXT("Turn"), this, &ACJPlayer::Turn);
+	playerInputComponent->BindAxis(TEXT("LookUp"), this, &ACJPlayer::LookUp);
+
+	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	
+
+}
+
+void ACJPlayer::MoveForward(float value)
+{
+	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), value);
+}
+
+void ACJPlayer::MoveRight(float value)
+{
+	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), value);
+}
+
+void ACJPlayer::Turn(float value)
+{
+	AddControllerYawInput(value);
+}
+
+void ACJPlayer::LookUp(float value)
+{
+	AddControllerPitchInput(value);
 }

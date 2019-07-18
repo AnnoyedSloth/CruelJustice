@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CruelJustice.h"
 #include "GameFramework/GameMode.h"
 #include "CJGameMode.generated.h"
 
@@ -17,5 +17,6 @@ class CRUELJUSTICE_API ACJGameMode : public AGameMode
 public:
 	ACJGameMode();
 	
+	virtual void PostLogin(APlayerController* playerController) override;
 	
 };

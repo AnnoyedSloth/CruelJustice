@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CruelJustice.h"
 #include "Pawn/CJBaseCharacter.h"
 #include "CJPlayer.generated.h"
 
@@ -41,6 +41,11 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	void MoveForward(float value);
+	void MoveRight(float value);
+	void Turn(float value);
+	void LookUp(float value);
+
 	// For Properties
 public:
 
@@ -52,6 +57,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float deltaTime) override;
 	virtual void PossessedBy(AController* newController) override;
+	virtual void SetupPlayerInputComponent(UInputComponent* playerInputComponent);
 
 	
 	

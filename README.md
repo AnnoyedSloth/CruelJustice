@@ -7,9 +7,9 @@ Mostly they're for free but several assets aren't.
 - Animation Starter Pack
 - Rolls and dodges Animation Set
 - Explosions Builder
-- Paragon : Agora and Monolith
 - Real Liquid X - Liquid Material & Blueprint
 - Inventory UI with UMG
 - Paragon : Narbash
 - Paragon : Twinblast
 - Paragon : The Fey
+- Paragon : Kwang

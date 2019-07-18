@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CruelJustice.h"
 #include "GameFramework/PlayerController.h"
 #include "CJPlayerController.generated.h"
 

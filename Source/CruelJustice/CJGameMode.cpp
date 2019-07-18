@@ -7,8 +7,11 @@
 ACJGameMode::ACJGameMode()
 {
 	DefaultPawnClass = ACJPlayer::StaticClass();
-	PlayerControllerClass = ACJPlayer::StaticClass();
+	PlayerControllerClass = ACJPlayerController::StaticClass();
 
 }
 
-
+void ACJGameMode::PostLogin(APlayerController* playerController)
+{
+	Super::PostLogin(playerController);
+}
