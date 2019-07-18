@@ -2,6 +2,9 @@
 
 #include "CJGameInstance.h"
 #include "ConstructorHelpers.h"
+#include "Pawn/CJEnemy_Axeman.h"
+#include "Pawn/CJEnemy_Gunman.h"
+#include "Pawn/CJEnemy_Magician.h"
 
 UCJGameInstance::UCJGameInstance()
 {
@@ -11,11 +14,11 @@ UCJGameInstance::UCJGameInstance()
 
 	if (DT_ENEMY_STAT.Succeeded())
 	{
-		enemyStat = DT_ENEMY_STAT.Object;
+		enemyStatTable = DT_ENEMY_STAT.Object;
 	}
 	else
 	{
-		CJLOG_S(Warning);
+		CJLOG(Warning, TEXT("Failed to find StatPath"));
 	}
 
 	FString enemyTransformPath = TEXT("/Game/DataSheet/MonsterTransformTable.MonsterTransformTable");
@@ -24,11 +27,11 @@ UCJGameInstance::UCJGameInstance()
 
 	if (DT_ENEMY_TRANSFORM.Succeeded())
 	{
-		enemyTransform = DT_ENEMY_TRANSFORM.Object;
+		enemyTransformTable = DT_ENEMY_TRANSFORM.Object;
 	}
 	else
 	{
-		CJLOG_S(Warning);
+		CJLOG(Warning, TEXT("Failed to find StatTransform"));
 	}
 }
 
@@ -36,9 +39,47 @@ void UCJGameInstance::Init()
 {
 	Super::Init();
 
-	for (auto elem : enemyTransform->RowMap)
-	{
-		//enemyTransform->FindRow<FCJEnemyTransform>(*FString::FromInt(elem.value), TEXT(""));
-	}
+	TArray<FCJEnemyTransform*> tableArr;	
+	enemyTransformTable->GetAllRows(TEXT(""), tableArr);
 
+	CJLOG(Warning, TEXT("Num of table : %d"), tableArr.Num());
+	
+	for (int a = 0; a < tableArr.Num(); ++a)
+	{
+		FVector actorLocation(tableArr[a]->x, tableArr[a]->y, tableArr[a]->z + 110.0f);
+		FRotator actorRotation(0, tableArr[a]->yaw, 0);
+
+		int32 actorID = tableArr[a]->monsterID;
+
+		UWorld* world = GetWorld();
+
+		// Factory function
+		switch (actorID)
+		{
+		case 1:
+			world->SpawnActor<ACJEnemy_Axeman>(actorLocation, actorRotation);
+			break;
+
+		case 2:
+			world->SpawnActor<ACJEnemy_Gunman>(actorLocation, actorRotation);
+			break;
+
+		case 3:
+			world->SpawnActor<ACJEnemy_Magician>(actorLocation, actorRotation);
+			break;
+		}
+
+	}
+}
+
+FCJEnemyStat* UCJGameInstance::GetEnemyStatData(int32 id)
+{
+	if (enemyStatTable) return enemyStatTable->FindRow<FCJEnemyStat>(*FString::FromInt(id), TEXT(""));
+	return nullptr;
+}
+
+FCJEnemyTransform* UCJGameInstance::GetEnemyTransformData(int32 id)
+{
+	if (enemyTransformTable) return enemyTransformTable->FindRow<FCJEnemyTransform>(*FString::FromInt(id), TEXT(""));
+	return nullptr;
 }

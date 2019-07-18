@@ -9,8 +9,12 @@ ACJBaseCharacter::ACJBaseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	capsule = GetCapsuleComponent();
+	RootComponent = capsule;
+
 	mesh = GetMesh();
-	mesh->SetRelativeLocation(FVector(0.0f, 0.0f, -88.0f));
+	mesh->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -88.0f), FRotator(0.0f, -90.0f, 0.0f));
+	
 
 }
 

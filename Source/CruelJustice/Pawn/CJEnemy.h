@@ -10,17 +10,24 @@
  * 
  */
 
-class UCJEnemyState;
-
 UCLASS()
 class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 {
 	GENERATED_BODY()
+
+	// For properties
+protected:
+
+
+protected:
+	virtual void BeginPlay() override;
 	
 public:
 	ACJEnemy();
 
-	UCJEnemyState* enemyState;
+	virtual void PostInitializeComponents() override;
+	virtual void Tick(float deltaTime) override;
+
 
 	// Set up as pure virtual function to prevent instanciation
 	//virtual void Attack() = 0;

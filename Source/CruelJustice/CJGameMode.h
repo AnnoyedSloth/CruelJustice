@@ -3,18 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameModeBase.h"
-#include "CruelJusticeGameModeBase.generated.h"
+#include "GameFramework/GameMode.h"
+#include "CJGameMode.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CRUELJUSTICE_API ACruelJusticeGameModeBase : public AGameModeBase
+class CRUELJUSTICE_API ACJGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
-	
+public:
+	ACJGameMode();
 	
 	
 };

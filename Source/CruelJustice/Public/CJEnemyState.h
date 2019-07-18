@@ -14,7 +14,7 @@ class CRUELJUSTICE_API ACJEnemyState : public APlayerState
 {
 	GENERATED_BODY()
 	
-	
+public:
 	
 	
 };

@@ -43,10 +43,13 @@ struct FCJEnemyTransform : public FTableRowBase
 
 public:
 	
-	FCJEnemyTransform() : id(0), x(0), y(0), z(0), yaw(0){}
+	FCJEnemyTransform() : id(0), monsterID(0), x(0), y(0), z(0), yaw(0){}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Transform)
 		int32 id;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Transform)
+		int32 monsterID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Transform)
 		float x;
@@ -69,15 +72,18 @@ class CRUELJUSTICE_API UCJGameInstance : public UGameInstance
 	
 private:
 	UPROPERTY()
-	class UDataTable* enemyStat;
+	class UDataTable* enemyStatTable;
 
 	UPROPERTY()
-	class UDataTable* enemyTransform;
+	class UDataTable* enemyTransformTable;
 
 public:
 	UCJGameInstance();
 
 	virtual void Init() override;
+
+	FCJEnemyStat* GetEnemyStatData(int32 id);
+	FCJEnemyTransform* GetEnemyTransformData(int32 id);
 
 	//FCJEnemyStat* GetEnemyStat() const { return enemyStat; }
 	//FCJEnemyTransform* GetEnemyTransform() const { return enemyTransform; }

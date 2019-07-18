@@ -36,6 +36,7 @@ protected:
 	ECharacterState currentState;
 
 	USkeletalMeshComponent* mesh;
+	UCapsuleComponent* capsule;
 
 protected:
 	// Called when the game starts or when spawned
