@@ -10,6 +10,12 @@ ACJEnemy_Magician::ACJEnemy_Magician()
 	CJCHECK(SK_MESH.Succeeded());
 	mesh->SetSkeletalMesh(SK_MESH.Object);
 
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		BP_ANIM(TEXT("/Game/Animation/4_Magician/BP_Magician_Anim.BP_Magician_Anim_C"));
+	if (BP_ANIM.Succeeded())
+	{
+		mesh->SetAnimInstanceClass(BP_ANIM.Class);
+	}
 
 }
 

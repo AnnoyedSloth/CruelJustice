@@ -8,9 +8,8 @@
 
 UCJGameInstance::UCJGameInstance()
 {
-	FString enemyStatPath = TEXT("/Game/DataSheet/MonsterStat.MonsterStat");
 	static ConstructorHelpers::FObjectFinder<UDataTable>
-		DT_ENEMY_STAT(*enemyStatPath);
+		DT_ENEMY_STAT(TEXT("/Game/DataSheet/MonsterStat.MonsterStat"));
 
 	if (DT_ENEMY_STAT.Succeeded())
 	{
@@ -18,20 +17,29 @@ UCJGameInstance::UCJGameInstance()
 	}
 	else
 	{
-		CJLOG(Warning, TEXT("Failed to find StatPath"));
+		CJLOG(Warning, TEXT("Failed to find EnemyStat"));
 	}
 
-	FString enemyTransformPath = TEXT("/Game/DataSheet/MonsterTransformTable.MonsterTransformTable");
 	static ConstructorHelpers::FObjectFinder<UDataTable>
-		DT_ENEMY_TRANSFORM(*enemyTransformPath);
-
+		DT_ENEMY_TRANSFORM(TEXT("/Game/DataSheet/MonsterTransformTable.MonsterTransformTable"));
 	if (DT_ENEMY_TRANSFORM.Succeeded())
 	{
 		enemyTransformTable = DT_ENEMY_TRANSFORM.Object;
 	}
 	else
 	{
-		CJLOG(Warning, TEXT("Failed to find StatTransform"));
+		CJLOG(Warning, TEXT("Failed to find EnemyTransform"));
+	}
+
+	static ConstructorHelpers::FObjectFinder<UDataTable>
+		DT_PLAYER_STAT(TEXT("/Game/DataSheet/PlayerStat.PlayerStat"));
+	if (DT_PLAYER_STAT.Succeeded())
+	{
+		playerStatTable = DT_PLAYER_STAT.Object;
+	}
+	else
+	{
+		CJLOG(Warning, TEXT("Failed to find PlayerStat"));
 	}
 }
 
@@ -81,5 +89,11 @@ FCJEnemyStat* UCJGameInstance::GetEnemyStatData(int32 id)
 FCJEnemyTransform* UCJGameInstance::GetEnemyTransformData(int32 id)
 {
 	if (enemyTransformTable) return enemyTransformTable->FindRow<FCJEnemyTransform>(*FString::FromInt(id), TEXT(""));
+	return nullptr;
+}
+
+FCJPlayerStat* UCJGameInstance::GetPlayerStatData(int32 level)
+{
+	if (playerStatTable) return playerStatTable->FindRow<FCJPlayerStat>(*FString::FromInt(level), TEXT(""));
 	return nullptr;
 }

@@ -1,0 +1,9 @@
+- Animation Blueprint를 이용해 Transition을 만드는중인데.. 자연스러운 착지를 위해선 recovery 착지모션을 사용해야하는데 이거 사용시 모션이 끝나기 전까진 walk/run state으로 이동이 불가한 현상이 발생하여 현재 character의 acceleration 값을 통해
+
+- Enemy 종류가 3가지인데 3가지 각각 Animation Blueprint 이용해서 Idle-Walk Transition 만들고 C++ 생성자로 Animation setup
+
+- 애니메이션 몽타주 내에 연계기 섹션을 나누어 현재 마우스가 클릭되어 있는지 아닌지 판별 후 다음 애니메이션을 결정하는 연계기를 구현중이나 어려움....
+
+
+Daily
+-

@@ -12,5 +12,12 @@ ACJEnemy_Axeman::ACJEnemy_Axeman()
 	CJCHECK(SK_MESH.Succeeded());
 	mesh->SetSkeletalMesh(SK_MESH.Object);
 
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		BP_ANIM(TEXT("/Game/Animation/2_Axeman/BP_Axeman_Anim.BP_Axeman_Anim_C"));
+	if (BP_ANIM.Succeeded())
+	{
+		mesh->SetAnimInstanceClass(BP_ANIM.Class);
+	}
+
 
 }

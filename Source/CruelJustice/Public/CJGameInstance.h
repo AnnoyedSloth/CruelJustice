@@ -64,6 +64,37 @@ public:
 		float yaw;
 };
 
+USTRUCT(BlueprintType)
+struct FCJPlayerStat : public FTableRowBase
+{
+	GENERATED_BODY()
+
+public:
+
+	FCJPlayerStat() : level(0), maxHP(0), maxMP(0), hp(0), mp(0), curExp(0), nextExp(){}
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 level;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		float maxHP;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		float maxMP;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		float hp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		float mp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 curExp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 nextExp;
+};
+
 
 UCLASS()
 class CRUELJUSTICE_API UCJGameInstance : public UGameInstance
@@ -77,6 +108,9 @@ private:
 	UPROPERTY()
 	class UDataTable* enemyTransformTable;
 
+	UPROPERTY()
+	class UDataTable* playerStatTable;
+
 public:
 	UCJGameInstance();
 
@@ -84,6 +118,7 @@ public:
 
 	FCJEnemyStat* GetEnemyStatData(int32 id);
 	FCJEnemyTransform* GetEnemyTransformData(int32 id);
+	FCJPlayerStat* GetPlayerStatData(int32 level);
 
 	//FCJEnemyStat* GetEnemyStat() const { return enemyStat; }
 	//FCJEnemyTransform* GetEnemyTransform() const { return enemyTransform; }

@@ -2,6 +2,7 @@
 
 #include "CJPlayer.h"
 #include "Controller/CJPlayerController.h"
+#include "Animation/CJPlayerAnimInstance.h"
 #include "ConstructorHelpers.h"
 
 ACJPlayer::ACJPlayer()
@@ -15,6 +16,13 @@ ACJPlayer::ACJPlayer()
 	if (SK_MESH.Succeeded())
 	{
 		mesh->SetSkeletalMesh(SK_MESH.Object);
+	}
+
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		BP_ANIM(TEXT("/Game/Animation/1_Player/BP_Player_Anim.BP_Player_Anim_C"));
+	if (BP_ANIM.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(BP_ANIM.Class);
 	}
 
 	// Setup hierarchy structure
@@ -34,7 +42,9 @@ ACJPlayer::ACJPlayer()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
+	GetCharacterMovement()->JumpZVelocity = 400.0f;
 
+	currentCombo = 0;
 }
 
 void ACJPlayer::PostInitializeComponents()
@@ -42,6 +52,27 @@ void ACJPlayer::PostInitializeComponents()
 	Super::PostInitializeComponents();
 	
 	playerController = Cast<ACJPlayerController>(GetController());
+	animInstance = Cast<UCJPlayerAnimInstance>(mesh->GetAnimInstance());
+
+	animInstance->OnMontageEnded.AddDynamic(this, &ACJPlayer::OnAttackMontageEnded);
+
+	animInstance->onNextAttackCheck.AddLambda([this]() -> void {
+
+		//ABLOG(Warning, TEXT("OnNextAttackCheck"))
+		//canNextCombo = false;
+
+		if (isAttacking)
+		{
+			//ABLOG(Warning, TEXT("currentCombo = %d"), currentCombo);
+			AttackStartComboState();
+			animInstance->JumpToAttackMontageSection(currentCombo);
+			CJLOG(Warning, TEXT("Current Combo num : %d"), currentCombo);
+		}
+		else
+		{
+			animInstance->JumpToRecoveryMontageSection(currentCombo);			
+		}
+	});
 
 }
 
@@ -74,6 +105,8 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAxis(TEXT("LookUp"), this, &ACJPlayer::LookUp);
 
 	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	playerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ACJPlayer::Attack);
+	playerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ACJPlayer::AttackEnd);
 	
 
 }
@@ -96,4 +129,30 @@ void ACJPlayer::Turn(float value)
 void ACJPlayer::LookUp(float value)
 {
 	AddControllerPitchInput(value);
+}
+
+void ACJPlayer::Attack()
+{
+	animInstance->PlayAttackMontage();
+	isAttacking = true;
+}
+
+void ACJPlayer::AttackEnd()
+{
+	isAttacking = false;
+	currentCombo = 0;
+	
+}
+
+void ACJPlayer::AttackStartComboState()
+{
+	currentCombo = FMath::Clamp<int32>(currentCombo + 1, 1, 4);
+}
+
+void ACJPlayer::OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted)
+{
+	CJLOG(Warning, TEXT("Attack ended"));
+	
+	isAttacking = false;
+
 }

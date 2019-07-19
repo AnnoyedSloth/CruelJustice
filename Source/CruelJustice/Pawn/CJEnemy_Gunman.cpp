@@ -10,6 +10,13 @@ ACJEnemy_Gunman::ACJEnemy_Gunman()
 	CJCHECK(SK_MESH.Succeeded());
 	mesh->SetSkeletalMesh(SK_MESH.Object);
 
+	static ConstructorHelpers::FClassFinder<UAnimInstance>
+		BP_ANIM(TEXT("/Game/Animation/3_Gunman/BP_Gunman_Anim.BP_Gunman_Anim_C"));
+	if (BP_ANIM.Succeeded())
+	{
+		mesh->SetAnimInstanceClass(BP_ANIM.Class);
+	}
+
 }
 
 

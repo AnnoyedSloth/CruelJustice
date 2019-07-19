@@ -11,6 +11,7 @@
  */
 
 class ACJPlayerController;
+class UCJPlayerAnimInstance;
 
 UCLASS()
 class CRUELJUSTICE_API ACJPlayer : public ACJBaseCharacter
@@ -27,6 +28,15 @@ private:
 
 	UPROPERTY()
 		ACJPlayerController* playerController;
+
+	UPROPERTY()
+		UCJPlayerAnimInstance* animInstance;
+
+	bool isKeyPressing;
+
+	bool isAttacking;
+
+	int32 currentCombo;
 
 	// For Methods
 private:
@@ -45,6 +55,9 @@ protected:
 	void MoveRight(float value);
 	void Turn(float value);
 	void LookUp(float value);
+	
+	void Attack();
+	void AttackEnd();
 
 	// For Properties
 public:
@@ -59,6 +72,10 @@ public:
 	virtual void PossessedBy(AController* newController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* playerInputComponent);
 
+	void OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted);
+	void AttackStartComboState();
+
+	bool GetIsAttacking() const { return isAttacking; }
 	
 	
 	

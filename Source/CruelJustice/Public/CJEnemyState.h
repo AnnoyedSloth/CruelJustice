@@ -13,6 +13,10 @@ UCLASS()
 class CRUELJUSTICE_API ACJEnemyState : public APlayerState
 {
 	GENERATED_BODY()
+
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 dropExp;
 	
 public:
 	
