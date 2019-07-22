@@ -2,7 +2,7 @@
 
 #include "CJEnemy.h"
 #include "Controller/CJEnemyAIController.h"
-#include "CJEnemyState.h"
+#include "CJGameInstance.h"
 
 ACJEnemy::ACJEnemy()
 {
@@ -13,25 +13,30 @@ void ACJEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ACJEnemyState* newEnemyState = Cast<ACJEnemyState>(PlayerState);
-	if (!newEnemyState)
-	{
-		CJLOG(Warning, TEXT("enemyState does not exist"));
-	}
-	else
-	{
-		CJLOG(Warning, TEXT("enemyState does exist"));
-	}
 }
 
 void ACJEnemy::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+
 }
 
 void ACJEnemy::Tick(float deltaTime)
 {
 	Super::Tick(deltaTime);
+
+}
+
+void ACJEnemy::InitStatData(int32 monsterID)
+{
+	UCJGameInstance* gameInstance = Cast<UCJGameInstance>(GetGameInstance());
+	FCJEnemyStat* enemyStat = gameInstance->GetEnemyStatData(monsterID);
+
+	hp = enemyStat->hp;
+	mp = enemyStat->mp;
+	attack = enemyStat->attack;
+	defense = enemyStat->defense;
+	dropExp = enemyStat->exp;
 
 }

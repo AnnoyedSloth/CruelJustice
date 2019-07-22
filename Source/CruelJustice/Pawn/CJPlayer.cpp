@@ -3,6 +3,8 @@
 #include "CJPlayer.h"
 #include "Controller/CJPlayerController.h"
 #include "Animation/CJPlayerAnimInstance.h"
+#include "CJPlayerState.h"
+#include "CJGameInstance.h"
 #include "ConstructorHelpers.h"
 
 ACJPlayer::ACJPlayer()
@@ -44,7 +46,8 @@ ACJPlayer::ACJPlayer()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 400.0f;
 
-	currentCombo = 0;
+	currentCombo = 1;
+	recoveryCombo = 1;
 }
 
 void ACJPlayer::PostInitializeComponents()
@@ -56,6 +59,10 @@ void ACJPlayer::PostInitializeComponents()
 
 	animInstance->OnMontageEnded.AddDynamic(this, &ACJPlayer::OnAttackMontageEnded);
 
+	// 기본 콤보 공격시 공격 타이밍 관련 델리게이트 바인딩
+	animInstance->onAttackHitCheck.AddUObject(this, &ACJPlayer::AttackCheck);
+
+	// 다음 콤보 공격으로 연계 관련 델리게이트 바인딩
 	animInstance->onNextAttackCheck.AddLambda([this]() -> void {
 
 		//ABLOG(Warning, TEXT("OnNextAttackCheck"))
@@ -63,16 +70,28 @@ void ACJPlayer::PostInitializeComponents()
 
 		if (isAttacking)
 		{
+			FVector viewLocation;
+			FRotator viewRotation;
+			GetActorEyesViewPoint(viewLocation, viewRotation);
+			viewRotation.Roll = 0;
+			viewRotation.Pitch = 0;
+			SetActorRotation(viewRotation);
+
 			//ABLOG(Warning, TEXT("currentCombo = %d"), currentCombo);
+			//SetActorRotation(FMath::RInterpTo(GetActorRotation(), viewRotation, GetWorld()->GetDeltaSeconds(), 2.0f));
+
 			AttackStartComboState();
 			animInstance->JumpToAttackMontageSection(currentCombo);
-			CJLOG(Warning, TEXT("Current Combo num : %d"), currentCombo);
+			//CJLOG(Warning, TEXT("Current Combo num : %d"), currentCombo);
+
 		}
 		else
 		{
-			animInstance->JumpToRecoveryMontageSection(currentCombo);			
+			animInstance->JumpToRecoveryMontageSection(recoveryCombo);
+			//CJLOG(Warning, TEXT("Current Combo num : %d"), recoveryCombo);
 		}
 	});
+
 
 }
 
@@ -80,6 +99,23 @@ void ACJPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	playerState = Cast<ACJPlayerState>(PlayerState);
+	if (!playerState)
+	{
+		CJLOG(Warning, TEXT("PlayerState not exist"));
+	}
+	else
+	{
+		CJLOG(Warning, TEXT("PlayerState exist"));
+	}
+	//if (!PlayerState)
+	//{
+	//	CJLOG(Warning, TEXT("PlayerState not exist"));
+	//}
+	//else
+	//{
+	//	CJLOG(Warning, TEXT("PlayerState exist"));
+	//}
 
 }
 
@@ -113,12 +149,12 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 
 void ACJPlayer::MoveForward(float value)
 {
-	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), value);
+	if(!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), value);
 }
 
 void ACJPlayer::MoveRight(float value)
 {
-	AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), value);
+	if (!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), value);
 }
 
 void ACJPlayer::Turn(float value)
@@ -133,15 +169,25 @@ void ACJPlayer::LookUp(float value)
 
 void ACJPlayer::Attack()
 {
-	animInstance->PlayAttackMontage();
-	isAttacking = true;
+	if (!isAttacking)
+	{
+		FVector viewLocation;
+		FRotator viewRotation;
+		GetActorEyesViewPoint(viewLocation, viewRotation);
+		viewRotation.Roll = 0;
+		viewRotation.Pitch = 0;
+		SetActorRotation(viewRotation);
+
+		animInstance->PlayAttackMontage();
+		isAttacking = true;
+	}
 }
 
 void ACJPlayer::AttackEnd()
 {
 	isAttacking = false;
-	currentCombo = 0;
-	
+	recoveryCombo = currentCombo;
+	currentCombo = 1;	
 }
 
 void ACJPlayer::AttackStartComboState()
@@ -155,4 +201,56 @@ void ACJPlayer::OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted)
 	
 	isAttacking = false;
 
+	onAttackEnd.Broadcast();
+
+}
+
+void ACJPlayer::AttackCheck()
+{
+	TArray<FHitResult> hitResults;
+	FCollisionQueryParams params(NAME_None, false, this);
+	bool result = GetWorld()->SweepMultiByChannel(
+		hitResults,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() + 200.0f,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2,
+		FCollisionShape::MakeSphere(50.0f),
+		params
+	);
+}
+
+void ACJPlayer::AddExp(int32 incomeExp)
+{
+	curExp += incomeExp;
+
+	if (curExp > nextExp)
+	{
+		LevelUp();
+	}
+}
+
+void ACJPlayer::LevelUp()
+{
+	auto gameInstance = Cast<UCJGameInstance>(GetGameInstance());
+	CJCHECK(gameInstance);
+
+	level += 1;
+	curExp = 0;
+
+	playerState->maxHP = gameInstance->GetPlayerStatData(level)->maxHP;
+	playerState->maxMP = gameInstance->GetPlayerStatData(level)->maxMP;
+
+	curExp = gameInstance->GetPlayerStatData(level)->curExp;
+	nextExp = gameInstance->GetPlayerStatData(level)->nextExp;
+}
+
+float ACJPlayer::TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
+	class AController* eventInstigator, AActor* damageCauser)
+{
+	float finalDamage = TakeDamage(damageAmount, damageEvent, eventInstigator, damageCauser);
+
+	playerState->ApplyDamage(damageAmount);
+
+	return finalDamage;
 }

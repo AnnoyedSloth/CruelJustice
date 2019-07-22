@@ -68,5 +68,4 @@ void ACJBaseCharacter::SetCharacterState(ECharacterState newState)
 		SetActorEnableCollision(false);
 
 	}
-
 }

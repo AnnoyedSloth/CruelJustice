@@ -10,8 +10,11 @@
  * 
  */
 
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
+
 class ACJPlayerController;
 class UCJPlayerAnimInstance;
+class ACJPlayerState;
 
 UCLASS()
 class CRUELJUSTICE_API ACJPlayer : public ACJBaseCharacter
@@ -20,6 +23,7 @@ class CRUELJUSTICE_API ACJPlayer : public ACJBaseCharacter
 	
 	// For Properties
 private:
+	// Components
 	UPROPERTY(VisibleAnywhere, Category = Camera, meta = (AllowPrivateAccess = true))
 		USpringArmComponent* springArm;
 
@@ -32,11 +36,26 @@ private:
 	UPROPERTY()
 		UCJPlayerAnimInstance* animInstance;
 
-	bool isKeyPressing;
-
+	// Attack Combo related
 	bool isAttacking;
 
 	int32 currentCombo;
+
+	int32 recoveryCombo;
+
+	FOnAttackEndDelegate onAttackEnd;
+
+	// Status Values
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 level;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 curExp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 nextExp;
+
+	ACJPlayerState* playerState;
 
 	// For Methods
 private:
@@ -76,6 +95,18 @@ public:
 	void AttackStartComboState();
 
 	bool GetIsAttacking() const { return isAttacking; }
+
+	void AttackCheck();
+
+	UFUNCTION()
+		void AddExp(int32 incomeExp);
+
+	UFUNCTION()
+		void LevelUp();
+
+	UFUNCTION()
+		virtual float TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
+			class AController* eventInstigator, AActor* damageCauser) override;
 	
 	
 	

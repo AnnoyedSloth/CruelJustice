@@ -3,11 +3,13 @@
 #include "CJGameMode.h"
 #include "Pawn/CJPlayer.h"
 #include "Controller/CJPlayerController.h"
+#include "CJPlayerState.h"
 
 ACJGameMode::ACJGameMode()
 {
 	DefaultPawnClass = ACJPlayer::StaticClass();
 	PlayerControllerClass = ACJPlayerController::StaticClass();
+	PlayerStateClass = ACJPlayerState::StaticClass();
 
 }
 

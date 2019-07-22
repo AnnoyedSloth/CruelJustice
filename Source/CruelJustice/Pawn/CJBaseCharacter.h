@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "CJBaseCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnHPIsZeroDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnHPChangedDelegate);
+
 UCLASS()
 class CRUELJUSTICE_API ACJBaseCharacter : public ACharacter
 {
@@ -49,6 +52,8 @@ protected:
 	// For properties
 public:
 
+	FOnHPIsZeroDelegate onHPIsZero;
+	FOnHPChangedDelegate onHPChanged;
 
 	// For methods
 public:	
@@ -58,6 +63,4 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	
-	
 };

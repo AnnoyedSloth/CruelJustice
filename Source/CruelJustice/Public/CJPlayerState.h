@@ -9,16 +9,17 @@
 /**
  * 
  */
+
+class ACJPlayer;
+
 UCLASS()
 class CRUELJUSTICE_API ACJPlayerState : public APlayerState
 {
 	GENERATED_BODY()
-	
+
+	friend ACJPlayer;
+
 private:
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
-		int32 level;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		float maxHP;
 
@@ -31,27 +32,14 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		float mp;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
-		int32 curExp;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
-		int32 nextExp;
-
 public:
-
 	ACJPlayerState();
-
-	UFUNCTION()
-		void SetHP(float deltaHP);
-
-	UFUNCTION()
-		void SetMP(float deltaMP);
-
-	UFUNCTION()
-		void AddExp(int32 incomeExp);
-
-	UFUNCTION()
-		void LevelUp();
-
 	
+	virtual void PostInitializeComponents() override;
+
+	UFUNCTION()
+		void UpdatePlayerStat(int32 level);
+
+	UFUNCTION()
+		void ApplyDamage(float deltaHP);
 };

@@ -1,0 +1,4 @@
+삽질 현황
+- PlayerState는 각각 로컬 character actor에 존재하는것이 아닌 서버에 Login하여 Controller에 possess되는 Player에만 존재..
+- MonsterState도 만들어서 서버간 공유할수 있지 않을까? 생각을 하여 굉장한 삽질을 하였지만 결국 아니었음..
+- MonsterState가 없으니 그냥 Pawn에 정보를 입력하자!(혹시 더 좋은 방법 있으면 공유 부탁드립니다..)

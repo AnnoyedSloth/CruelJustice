@@ -5,41 +5,30 @@
 
 ACJPlayerState::ACJPlayerState()
 {
-	level = 1;
 	
 }
 
-void ACJPlayerState::SetHP(float deltaHP)
+void ACJPlayerState::PostInitializeComponents()
 {
-	hp += deltaHP;
+	Super::PostInitializeComponents();
+
+	UCJGameInstance* gameInstance = Cast<UCJGameInstance>(GetGameInstance());
+	FCJPlayerStat* statTable = gameInstance->GetPlayerStatData(1);
+
+	maxHP = hp = statTable->maxHP;
+	maxMP = mp = statTable->maxMP;
 }
 
-void ACJPlayerState::SetMP(float deltaMP)
+void ACJPlayerState::UpdatePlayerStat(int32 level)
 {
-	mp += deltaMP;
+	UCJGameInstance* gameInstance = Cast<UCJGameInstance>(GetGameInstance());
+	FCJPlayerStat* statTable = gameInstance->GetPlayerStatData(level);
+
+	maxHP = statTable->maxHP;
+	maxMP = statTable->maxMP;
 }
 
-void ACJPlayerState::AddExp(int32 incomeExp)
+void ACJPlayerState::ApplyDamage(float deltaHP)
 {
-	curExp += incomeExp;
-
-	if (curExp > nextExp)
-	{
-		LevelUp();
-	}
-}
-
-void ACJPlayerState::LevelUp()
-{
-	auto gameInstance = Cast<UCJGameInstance>(GetGameInstance());
-	CJCHECK(gameInstance);
-
-	level += 1;
-	curExp = 0;
-
-	maxHP = gameInstance->GetPlayerStatData(level)->maxHP;
-	maxMP = gameInstance->GetPlayerStatData(level)->maxMP;
-	nextExp = gameInstance->GetPlayerStatData(level)->nextExp;
-
-
+	hp -= deltaHP;
 }

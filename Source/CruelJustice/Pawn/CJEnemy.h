@@ -17,7 +17,22 @@ class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 
 	// For properties
 protected:
+	class UWidgetComponent* hpBar;
 
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	float hp;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	float mp;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	float attack;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	float defense;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	int dropExp;
 
 protected:
 	virtual void BeginPlay() override;
@@ -27,7 +42,7 @@ public:
 
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float deltaTime) override;
-
+	void InitStatData(int32 monsterID);
 
 	// Set up as pure virtual function to prevent instanciation
 	//virtual void Attack() = 0;

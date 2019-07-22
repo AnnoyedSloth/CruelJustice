@@ -65,15 +65,26 @@ void UCJGameInstance::Init()
 		switch (actorID)
 		{
 		case 1:
-			world->SpawnActor<ACJEnemy_Axeman>(actorLocation, actorRotation);
+		{
+			ACJEnemy_Axeman* axeman = world->SpawnActor<ACJEnemy_Axeman>(actorLocation, actorRotation);
+			axeman->InitStatData(actorID);
+		}
 			break;
 
 		case 2:
-			world->SpawnActor<ACJEnemy_Gunman>(actorLocation, actorRotation);
-			break;
+		{
+			ACJEnemy_Gunman* gunman = world->SpawnActor<ACJEnemy_Gunman>(actorLocation, actorRotation);
+			gunman->InitStatData(actorID);
+		}
+		break;
 
 		case 3:
-			world->SpawnActor<ACJEnemy_Magician>(actorLocation, actorRotation);
+		{
+			ACJEnemy_Magician* magician = world->SpawnActor<ACJEnemy_Magician>(actorLocation, actorRotation);
+			magician->InitStatData(actorID);
+		}
+		break;
+		default:
 			break;
 		}
 
