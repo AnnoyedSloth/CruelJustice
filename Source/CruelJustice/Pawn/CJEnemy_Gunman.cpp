@@ -19,4 +19,20 @@ ACJEnemy_Gunman::ACJEnemy_Gunman()
 
 }
 
+void ACJEnemy_Gunman::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 
+	animInstance = Cast<UCJMonsterAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (!animInstance)
+	{
+		CJLOG(Warning, TEXT("AnimInstance is missing"));
+	}
+
+	onHPIsZero.AddLambda([this]()->void {
+		animInstance->SetDeadAnim();
+		CJLOG(Warning, TEXT("Dead"));
+	});
+
+}

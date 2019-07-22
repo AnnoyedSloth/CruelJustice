@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJEnemy_Magician.h"
+#include "Animation/CJMonsterAnimInstance.h"
 
 ACJEnemy_Magician::ACJEnemy_Magician()
 {
@@ -19,4 +20,20 @@ ACJEnemy_Magician::ACJEnemy_Magician()
 
 }
 
+void ACJEnemy_Magician::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
 
+	animInstance = Cast<UCJMonsterAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (!animInstance)
+	{
+		CJLOG(Warning, TEXT("AnimInstance is missing"));
+	}
+
+	onHPIsZero.AddLambda([this]()->void {
+		animInstance->SetDeadAnim();
+		CJLOG(Warning, TEXT("Dead"));
+	});
+
+}

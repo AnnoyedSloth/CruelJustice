@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJEnemy_Axeman.h"
+#include "Animation/CJMonsterAnimInstance.h"
 #include "ConstructorHelpers.h"
 
 ACJEnemy_Axeman::ACJEnemy_Axeman()
@@ -17,6 +18,23 @@ ACJEnemy_Axeman::ACJEnemy_Axeman()
 	{
 		mesh->SetAnimInstanceClass(BP_ANIM.Class);
 	}
+}
 
+
+void ACJEnemy_Axeman::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	animInstance = Cast<UCJMonsterAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (!animInstance)
+	{
+		CJLOG(Warning, TEXT("AnimInstance is missing"));
+	}
+
+	onHPIsZero.AddLambda([this]()->void {
+		animInstance->SetDeadAnim();
+		CJLOG(Warning, TEXT("Dead"));
+	});
 
 }

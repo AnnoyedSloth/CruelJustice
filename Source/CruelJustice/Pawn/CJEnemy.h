@@ -19,6 +19,7 @@ class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 protected:
 	class UWidgetComponent* hpBar;
 
+
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 	float hp;
 
@@ -43,6 +44,9 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void Tick(float deltaTime) override;
 	void InitStatData(int32 monsterID);
+
+	virtual float TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
+		class AController* eventInstigator, AActor* damageCauser) override;
 
 	// Set up as pure virtual function to prevent instanciation
 	//virtual void Attack() = 0;

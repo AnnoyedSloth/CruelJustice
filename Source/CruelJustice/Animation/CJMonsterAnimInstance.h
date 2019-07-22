@@ -27,5 +27,7 @@ protected:
 
 public:
 	UCJMonsterAnimInstance();
+
+	void SetDeadAnim() { isDead = true; }
 	
 };

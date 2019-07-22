@@ -13,9 +13,13 @@ UCLASS()
 class CRUELJUSTICE_API ACJEnemy_Magician : public ACJEnemy
 {
 	GENERATED_BODY()
+
+private:
+	class UCJMonsterAnimInstance* animInstance;
 	
 public:
 	ACJEnemy_Magician();
 	
+	virtual void PostInitializeComponents() override;
 	
 };

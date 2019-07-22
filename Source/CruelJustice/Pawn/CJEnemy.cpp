@@ -18,8 +18,6 @@ void ACJEnemy::BeginPlay()
 void ACJEnemy::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
-
 }
 
 void ACJEnemy::Tick(float deltaTime)
@@ -31,6 +29,12 @@ void ACJEnemy::Tick(float deltaTime)
 void ACJEnemy::InitStatData(int32 monsterID)
 {
 	UCJGameInstance* gameInstance = Cast<UCJGameInstance>(GetGameInstance());
+
+	if (!gameInstance)
+	{
+		CJLOG(Warning, TEXT("Game instance missing"));
+	}
+
 	FCJEnemyStat* enemyStat = gameInstance->GetEnemyStatData(monsterID);
 
 	hp = enemyStat->hp;
@@ -39,4 +43,22 @@ void ACJEnemy::InitStatData(int32 monsterID)
 	defense = enemyStat->defense;
 	dropExp = enemyStat->exp;
 
+}
+
+float ACJEnemy::TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
+	class AController* eventInstigator, AActor* damageCauser)
+{
+	float finalDamage = TakeDamage(damageAmount, damageEvent, eventInstigator, damageCauser);
+
+	if (damageCauser->Tags[0] == FName("Player"))
+	{
+		hp -= damageAmount;
+		if (hp < KINDA_SMALL_NUMBER)
+		{
+			onHPIsZero.Broadcast();
+		}
+	}
+
+
+	return finalDamage;
 }

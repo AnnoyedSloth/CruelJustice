@@ -14,9 +14,11 @@ class CRUELJUSTICE_API ACJEnemy_Axeman : public ACJEnemy
 {
 	GENERATED_BODY()
 	
+private:
+	class UCJMonsterAnimInstance* animInstance;
 
 public:
 	ACJEnemy_Axeman();
-	
+	virtual void PostInitializeComponents() override;
 	
 };

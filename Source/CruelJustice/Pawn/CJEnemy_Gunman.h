@@ -14,9 +14,13 @@ class CRUELJUSTICE_API ACJEnemy_Gunman : public ACJEnemy
 {
 	GENERATED_BODY()
 
+private:
+	class UCJMonsterAnimInstance* animInstance;
+
 public:
 	
 	ACJEnemy_Gunman();
-	
+
+	virtual void PostInitializeComponents() override;
 	
 };
