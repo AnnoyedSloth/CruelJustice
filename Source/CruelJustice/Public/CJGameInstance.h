@@ -71,7 +71,7 @@ struct FCJPlayerStat : public FTableRowBase
 
 public:
 
-	FCJPlayerStat() : level(0), maxHP(0), maxMP(0), hp(0), mp(0), curExp(0), nextExp(){}
+	FCJPlayerStat() : level(0), maxHP(0), maxMP(0), hp(0), mp(0), curExp(0), nextExp(0), attack(0){}
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		int32 level;
@@ -93,6 +93,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		int32 nextExp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		float attack;
 };
 
 

@@ -1,0 +1,7 @@
+- Root motion을 이용해서 Rolling animation 실행을 통해 회피기 구현
+- 현재 Damage causer 기준으로 타격 성공시 피격자가 데미지를 입도록 구현
+- 동적으로 컴포넌트 부착 시 RegisterComponent 함수를 호출해 줘야 BeginPlay()와 Tick()이 호출됨
+
+
+Daily
+- Damage 

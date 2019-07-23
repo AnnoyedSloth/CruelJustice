@@ -19,7 +19,6 @@ class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 protected:
 	class UWidgetComponent* hpBar;
 
-
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 	float hp;
 
@@ -35,6 +34,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 	int dropExp;
 
+	class UCJMonsterAnimInstance* animInstance;
+
+	UAnimMontage* deadAnim;
 protected:
 	virtual void BeginPlay() override;
 	
@@ -47,6 +49,7 @@ public:
 
 	virtual float TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
 		class AController* eventInstigator, AActor* damageCauser) override;
+
 
 	// Set up as pure virtual function to prevent instanciation
 	//virtual void Attack() = 0;

@@ -17,6 +17,7 @@ void ACJPlayerState::PostInitializeComponents()
 
 	maxHP = hp = statTable->maxHP;
 	maxMP = mp = statTable->maxMP;
+	attack = statTable->attack;
 }
 
 void ACJPlayerState::UpdatePlayerStat(int32 level)
@@ -26,6 +27,7 @@ void ACJPlayerState::UpdatePlayerStat(int32 level)
 
 	maxHP = statTable->maxHP;
 	maxMP = statTable->maxMP;
+	attack = statTable->attack;
 }
 
 void ACJPlayerState::ApplyDamage(float deltaHP)

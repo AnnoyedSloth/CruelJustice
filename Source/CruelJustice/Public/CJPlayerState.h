@@ -32,6 +32,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		float mp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		float attack;
+
 public:
 	ACJPlayerState();
 	

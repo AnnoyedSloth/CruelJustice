@@ -18,22 +18,18 @@ ACJEnemy_Magician::ACJEnemy_Magician()
 		mesh->SetAnimInstanceClass(BP_ANIM.Class);
 	}
 
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>
+		AM_DEAD(TEXT("/Game/Animation/4_Magician/Death_Fwd_Montage.Death_Fwd_Montage"));
+	if (AM_DEAD.Succeeded())
+	{
+		deadAnim = AM_DEAD.Object;
+	}
+
 }
 
 void ACJEnemy_Magician::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	animInstance = Cast<UCJMonsterAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (!animInstance)
-	{
-		CJLOG(Warning, TEXT("AnimInstance is missing"));
-	}
-
-	onHPIsZero.AddLambda([this]()->void {
-		animInstance->SetDeadAnim();
-		CJLOG(Warning, TEXT("Dead"));
-	});
 
 }

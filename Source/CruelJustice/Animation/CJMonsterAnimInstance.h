@@ -19,14 +19,14 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		bool isDead;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = true))
-		UAnimMontage* deadAnim;
-
 protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
 
 public:
 	UCJMonsterAnimInstance();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = true))
+		UAnimMontage* deadAnim;
 
 	void SetDeadAnim() { isDead = true; }
 	

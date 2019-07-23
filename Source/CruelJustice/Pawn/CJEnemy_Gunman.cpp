@@ -18,22 +18,17 @@ ACJEnemy_Gunman::ACJEnemy_Gunman()
 		mesh->SetAnimInstanceClass(BP_ANIM.Class);
 	}
 
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>
+		AM_DEAD(TEXT("/Game/Animation/3_Gunman/Death_Bwd_Montage.Death_Bwd_Montage"));
+	if (AM_DEAD.Succeeded())
+	{
+		deadAnim = AM_DEAD.Object;
+	}
 }
 
 void ACJEnemy_Gunman::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	animInstance = Cast<UCJMonsterAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (!animInstance)
-	{
-		CJLOG(Warning, TEXT("AnimInstance is missing"));
-	}
-
-	onHPIsZero.AddLambda([this]()->void {
-		animInstance->SetDeadAnim();
-		CJLOG(Warning, TEXT("Dead"));
-	});
 
 }

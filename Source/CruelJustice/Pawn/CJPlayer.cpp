@@ -46,9 +46,10 @@ ACJPlayer::ACJPlayer()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 400.0f;
+	capsule->SetCollisionProfileName(TEXT("Player"));
 
-	attackRange = 200;
-	attackRadius = 100;
+	attackRange = 150;
+	attackRadius = 80;
 
 	currentCombo = 1;
 	recoveryCombo = 1;
@@ -226,14 +227,15 @@ void ACJPlayer::AttackCheck()
 	bool result = GetWorld()->SweepMultiByChannel(
 		hitResults,
 		GetActorLocation(),
-		GetActorLocation() + GetActorForwardVector() + attackRange,
+		GetActorLocation() + GetActorForwardVector() * attackRange,
 		FQuat::Identity,
-		ECollisionChannel::ECC_GameTraceChannel2,
+		ECollisionChannel::ECC_GameTraceChannel1,
 		FCollisionShape::MakeSphere(attackRadius),
+		//FCollisionShape::MakeCapsule(FVector(attackRange, attackRadius/2, attackRadius/2)),
 		params
 	);
 
-
+	FCollisionShape::MakeCapsule(FVector());
 	FVector traceVec = GetActorForwardVector() * attackRange;
 	FVector center = GetActorLocation() + traceVec * 0.5f;
 	float halfHeight = attackRange * 0.5f + attackRadius;
@@ -251,6 +253,11 @@ void ACJPlayer::AttackCheck()
 		debugLifeTime
 	);
 
+	for (FHitResult result : hitResults)
+	{
+		FDamageEvent damageEvent;
+		result.Actor->TakeDamage(playerState->attack, damageEvent, playerController, this);
+	}
 
 }
 
@@ -274,6 +281,7 @@ void ACJPlayer::LevelUp()
 
 	playerState->maxHP = gameInstance->GetPlayerStatData(level)->maxHP;
 	playerState->maxMP = gameInstance->GetPlayerStatData(level)->maxMP;
+	playerState->attack = gameInstance->GetPlayerStatData(level)->attack;
 
 	curExp = gameInstance->GetPlayerStatData(level)->curExp;
 	nextExp = gameInstance->GetPlayerStatData(level)->nextExp;
