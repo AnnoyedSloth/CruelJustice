@@ -33,6 +33,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
 		UAnimMontage* attackMontage;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
+		UAnimMontage* rollMontage;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
 		bool isAttacking;
 
@@ -53,6 +56,9 @@ public:
 
 	UFUNCTION()
 		void PlayAttackMontage();
+
+	UFUNCTION()
+		void PlayRollMontage();
 
 	UFUNCTION()
 		void JumpToAttackMontageSection(int32 newSection);

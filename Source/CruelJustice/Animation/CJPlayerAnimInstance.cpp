@@ -12,6 +12,11 @@ UCJPlayerAnimInstance::UCJPlayerAnimInstance()
 	CJCHECK(AM_ATTACK.Succeeded());
 	attackMontage = AM_ATTACK.Object;
 
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>
+		AM_ROLL(TEXT("/Game/Animation/1_Player/AM_Player_RollForward.AM_Player_RollForward"));
+	CJCHECK(AM_ROLL.Succeeded());
+	rollMontage = AM_ROLL.Object;
+
 	isInAir = false;
 	isDead = false;
 }
@@ -44,7 +49,14 @@ void UCJPlayerAnimInstance::PlayAttackMontage()
 	{
 		Montage_Play(attackMontage, 1.0f);
 	}
+}
 
+void UCJPlayerAnimInstance::PlayRollMontage()
+{
+	if (!Montage_IsPlaying(rollMontage))
+	{
+		Montage_Play(rollMontage, 1.0f);
+	}
 }
 
 void UCJPlayerAnimInstance::JumpToAttackMontageSection(int32 newSection)

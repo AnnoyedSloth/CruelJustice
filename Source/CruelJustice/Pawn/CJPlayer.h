@@ -36,7 +36,7 @@ private:
 	UPROPERTY()
 		UCJPlayerAnimInstance* animInstance;
 
-	// Attack Combo related
+	// Attack related
 	bool isAttacking;
 
 	int32 currentCombo;
@@ -44,6 +44,12 @@ private:
 	int32 recoveryCombo;
 
 	FOnAttackEndDelegate onAttackEnd;
+
+	UPROPERTY(VisibleAnywhere, Category = Attack, meta = (AllowPrivateAccess = true))
+		float attackRange;
+
+	UPROPERTY(VisibleAnywhere, Category = Attack, meta = (AllowPrivateAccess = true))
+		float attackRadius;
 
 	// Status Values
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
@@ -75,8 +81,7 @@ protected:
 	void Turn(float value);
 	void LookUp(float value);
 	
-	void Attack();
-	void AttackEnd();
+
 
 	// For Properties
 public:
@@ -91,12 +96,19 @@ public:
 	virtual void PossessedBy(AController* newController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* playerInputComponent);
 
+	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted);
 	void AttackStartComboState();
+
+	void Attack();
+	void AttackEnd();
 
 	bool GetIsAttacking() const { return isAttacking; }
 
 	void AttackCheck();
+
+	UFUNCTION()
+		void Dodge();
 
 	UFUNCTION()
 		void AddExp(int32 incomeExp);

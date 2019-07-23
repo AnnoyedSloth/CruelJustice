@@ -6,6 +6,7 @@
 #include "CJPlayerState.h"
 #include "CJGameInstance.h"
 #include "ConstructorHelpers.h"
+#include "DrawDebugHelpers.h"
 
 ACJPlayer::ACJPlayer()
 {
@@ -45,6 +46,9 @@ ACJPlayer::ACJPlayer()
 	GetCharacterMovement()->bUseControllerDesiredRotation = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 400.0f;
+
+	attackRange = 200;
+	attackRadius = 100;
 
 	currentCombo = 1;
 	recoveryCombo = 1;
@@ -143,7 +147,7 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ACJPlayer::Attack);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ACJPlayer::AttackEnd);
-	
+	playerInputComponent->BindAction(TEXT("Roll"), IE_Pressed, this, &ACJPlayer::Dodge);
 
 }
 
@@ -183,10 +187,22 @@ void ACJPlayer::Attack()
 	}
 }
 
+void ACJPlayer::Dodge()
+{
+	FVector viewLocation;
+	FRotator viewRotation;
+	GetActorEyesViewPoint(viewLocation, viewRotation);
+	viewRotation.Roll = 0;
+	viewRotation.Pitch = 0;
+	SetActorRotation(viewRotation);
+
+	animInstance->PlayRollMontage();
+}
+
 void ACJPlayer::AttackEnd()
 {
-	isAttacking = false;
 	recoveryCombo = currentCombo;
+	isAttacking = false;
 	currentCombo = 1;	
 }
 
@@ -198,8 +214,6 @@ void ACJPlayer::AttackStartComboState()
 void ACJPlayer::OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted)
 {
 	CJLOG(Warning, TEXT("Attack ended"));
-	
-	isAttacking = false;
 
 	onAttackEnd.Broadcast();
 
@@ -212,12 +226,32 @@ void ACJPlayer::AttackCheck()
 	bool result = GetWorld()->SweepMultiByChannel(
 		hitResults,
 		GetActorLocation(),
-		GetActorLocation() + GetActorForwardVector() + 200.0f,
+		GetActorLocation() + GetActorForwardVector() + attackRange,
 		FQuat::Identity,
 		ECollisionChannel::ECC_GameTraceChannel2,
-		FCollisionShape::MakeSphere(50.0f),
+		FCollisionShape::MakeSphere(attackRadius),
 		params
 	);
+
+
+	FVector traceVec = GetActorForwardVector() * attackRange;
+	FVector center = GetActorLocation() + traceVec * 0.5f;
+	float halfHeight = attackRange * 0.5f + attackRadius;
+	FQuat capsuleRot = FRotationMatrix::MakeFromZ(traceVec).ToQuat();
+	FColor drawColor = result ? FColor::Green : FColor::Red;
+	float debugLifeTime = 5.0f;
+
+	DrawDebugCapsule(GetWorld(),
+		center,
+		halfHeight,
+		attackRadius,
+		capsuleRot,
+		drawColor,
+		false,
+		debugLifeTime
+	);
+
+
 }
 
 void ACJPlayer::AddExp(int32 incomeExp)

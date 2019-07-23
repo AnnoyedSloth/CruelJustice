@@ -9,15 +9,15 @@ ACJEnemy::ACJEnemy()
 
 }
 
+void ACJEnemy::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+}
+
 void ACJEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-}
-
-void ACJEnemy::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
 }
 
 void ACJEnemy::Tick(float deltaTime)
@@ -58,7 +58,6 @@ float ACJEnemy::TakeDamage(float damageAmount, struct FDamageEvent const& damage
 			onHPIsZero.Broadcast();
 		}
 	}
-
 
 	return finalDamage;
 }

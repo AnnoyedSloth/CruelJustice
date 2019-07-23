@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJEnemy_Gunman.h"
+#include "Animation/CJMonsterAnimInstance.h"
 
 ACJEnemy_Gunman::ACJEnemy_Gunman()
 {
