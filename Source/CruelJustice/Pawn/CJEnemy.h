@@ -17,13 +17,18 @@ class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 
 	// For properties
 protected:
-	class UWidgetComponent* hpBar;
 
 	UPROPERTY(VisibleAnywhere, Category = Stat)
-	float hp;
+		float maxHP;
 
 	UPROPERTY(VisibleAnywhere, Category = Stat)
-	float mp;
+		float maxMP;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		float hp;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		float mp;
 
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 	float attack;
@@ -33,6 +38,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 	int dropExp;
+
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	class UWidgetComponent* hpWidget;
 
 	class UCJMonsterAnimInstance* animInstance;
 
@@ -49,6 +57,9 @@ public:
 
 	virtual float TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
 		class AController* eventInstigator, AActor* damageCauser) override;
+
+	UFUNCTION()
+		float GetHPRatio();
 
 
 	// Set up as pure virtual function to prevent instanciation

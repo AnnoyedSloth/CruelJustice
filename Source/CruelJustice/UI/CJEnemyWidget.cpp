@@ -2,22 +2,33 @@
 
 #include "CJEnemyWidget.h"
 #include "Pawn/CJEnemy.h"
+#include "Components/ProgressBar.h"
 
-void UCJEnemyWidget::BindCharacterStat(ACJEnemy* enemy)
+void UCJEnemyWidget::BindCharacterStat(ACJEnemy* newCharacter)
 {
-	currentEnemy = enemy;
+	currentCharacter = newCharacter;
 
-	
+	currentCharacter->onHPChanged.AddUObject(this, &UCJEnemyWidget::UpdateHPWidget);
 
 }
 
 void UCJEnemyWidget::NativeConstruct()
 {
+	Super::NativeConstruct();
 
+	hpProgressBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("PB_HPBar")));
+	CJCHECK(hpProgressBar != nullptr);
+	UpdateHPWidget();
 }
 
 void UCJEnemyWidget::UpdateHPWidget()
 {
-
+	if (currentCharacter.IsValid())
+	{
+		if (hpProgressBar)
+		{
+			hpProgressBar->SetPercent(currentCharacter->GetHPRatio());
+		}
+	}
 }
 

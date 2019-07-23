@@ -4,11 +4,28 @@
 #include "Pawn/CJPlayer.h"
 #include "Controller/CJEnemyAIController.h"
 #include "Animation/CJMonsterAnimInstance.h"
+#include "Components/WidgetComponent.h"
+#include "UI/CJEnemyWidget.h"
 #include "CJGameInstance.h"
 
 ACJEnemy::ACJEnemy()
 {
 	capsule->SetCollisionProfileName(TEXT("Enemy"));
+
+	hpWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
+
+	static ConstructorHelpers::FClassFinder<UUserWidget>
+		UI_HPBAR(TEXT("/Game/UI/UI_HPBar.UI_HPBar_C"));
+	{
+		hpWidget->SetWidgetClass(UI_HPBAR.Class);
+		hpWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
+	}
+
+	hpWidget->SetupAttachment(mesh);
+	hpWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	hpWidget->SetWidgetSpace(EWidgetSpace::Screen);
+
+	
 }
 
 void ACJEnemy::PostInitializeComponents()
@@ -36,6 +53,11 @@ void ACJEnemy::PostInitializeComponents()
 			CJLOG(Warning, TEXT("Dead Anim is not valid"));
 		}
 	});
+
+	UCJEnemyWidget* widget = Cast<UCJEnemyWidget>(hpWidget->GetUserWidgetObject());
+	CJCHECK(widget);
+	widget->BindCharacterStat(this);
+
 }
 
 void ACJEnemy::BeginPlay()
@@ -61,8 +83,8 @@ void ACJEnemy::InitStatData(int32 monsterID)
 
 	FCJEnemyStat* enemyStat = gameInstance->GetEnemyStatData(monsterID);
 
-	hp = enemyStat->hp;
-	mp = enemyStat->mp;
+	maxHP = hp = enemyStat->hp;
+	maxMP = hp = enemyStat->mp;
 	attack = enemyStat->attack;
 	defense = enemyStat->defense;
 	dropExp = enemyStat->exp;
@@ -86,4 +108,9 @@ float ACJEnemy::TakeDamage(float damageAmount, struct FDamageEvent const& damage
 	}
 
 	return finalDamage;
+}
+
+float ACJEnemy::GetHPRatio()
+{
+	return hp < KINDA_SMALL_NUMBER ? 0.0f : (hp / maxHP);
 }

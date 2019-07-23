@@ -22,8 +22,9 @@ protected:
 	void UpdateHPWidget();
 	
 private:
-	TWeakObjectPtr<class ACJEnemy> currentEnemy;
+	TWeakObjectPtr<class ACJEnemy> currentCharacter;
 
+	UPROPERTY()
 	class UProgressBar* hpProgressBar;
 	
 };

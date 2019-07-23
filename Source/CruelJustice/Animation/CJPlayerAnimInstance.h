@@ -18,6 +18,8 @@ class CRUELJUSTICE_API UCJPlayerAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	
 private:
+
+	// 현재 Animation을 판단할 근거가 될 상태들
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		bool isInAir;
 
@@ -30,17 +32,21 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		float accel;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
-		UAnimMontage* attackMontage;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
-		UAnimMontage* rollMontage;
-
+	// 현재 공격연계기 진행중인지 확인
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
 		bool isAttacking;
 
-private:
+	// 공격 연계기 몽타주(Attack 4개, Recovery 3개 총 7개 Section)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
+		UAnimMontage* attackMontage;
 
+	// 회피기 애니메이션 몽타주
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
+		UAnimMontage* rollMontage;
+
+private:
+	
+	// 애니메이션 몽타주에 등록된 노티파이
 	UFUNCTION()
 		void AnimNotify_AttackHitCheck();
 
