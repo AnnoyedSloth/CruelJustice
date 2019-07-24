@@ -48,6 +48,11 @@ void UCJPlayerAnimInstance::NativeUpdateAnimation(float deltaTime)
 	}
 }
 
+void UCJPlayerAnimInstance::AddSkillMontage(UAnimMontage* newMontage)
+{
+	skillMontages.Add(newMontage);
+}
+
 void UCJPlayerAnimInstance::PlayAttackMontage()
 {
 	if (!Montage_IsPlaying(attackMontage))
@@ -69,6 +74,14 @@ void UCJPlayerAnimInstance::PlayLvUpMontage()
 	if (lvUpMontage)
 	{
 		Montage_Play(lvUpMontage, 1.0f);
+	}
+}
+
+void UCJPlayerAnimInstance::PlayMontage(UAnimMontage* montage, float playRate)
+{
+	if (montage)
+	{
+		Montage_Play(montage, playRate);
 	}
 }
 
@@ -102,4 +115,14 @@ void UCJPlayerAnimInstance::AnimNotify_AttackHitCheck()
 void UCJPlayerAnimInstance::AnimNotify_NextAttackCheck()
 {
 	onNextAttackCheck.Broadcast();
+}
+
+void UCJPlayerAnimInstance::AnimNotify_Skill1()
+{
+	skillDelegate1.Broadcast();
+}
+
+void UCJPlayerAnimInstance::AnimNotify_Skill2()
+{
+	skillDelegate2.Broadcast();
 }

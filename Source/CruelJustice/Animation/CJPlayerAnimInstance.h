@@ -8,6 +8,9 @@
 
 DECLARE_MULTICAST_DELEGATE(FOnNextAttackCheckDelegate);
 DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheckDelegate);
+DECLARE_MULTICAST_DELEGATE(FOnSkillDelegate1);
+DECLARE_MULTICAST_DELEGATE(FOnSkillDelegate2);
+DECLARE_MULTICAST_DELEGATE(FOnSkillDelegate3);
 
 /**
  * 
@@ -47,6 +50,8 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		UAnimMontage* lvUpMontage;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
+		TArray<UAnimMontage*> skillMontages;
 private:
 	
 	// 애니메이션 몽타주에 등록된 노티파이
@@ -56,6 +61,11 @@ private:
 	UFUNCTION()
 		void AnimNotify_NextAttackCheck();
 
+	UFUNCTION()
+		void AnimNotify_Skill1();
+
+	UFUNCTION()
+		void AnimNotify_Skill2();
 
 protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
@@ -73,6 +83,9 @@ public:
 		void PlayLvUpMontage();
 
 	UFUNCTION()
+		void PlayMontage(UAnimMontage* montage, float playRate);
+
+	UFUNCTION()
 		void JumpToAttackMontageSection(int32 newSection);
 
 	UFUNCTION()
@@ -84,7 +97,12 @@ public:
 	UFUNCTION()
 		FName GetRecoveryMontageSectionName(int32 section);
 
+	void AddSkillMontage(UAnimMontage* newMontage);
+
 	FOnNextAttackCheckDelegate onNextAttackCheck;
 	FOnAttackHitCheckDelegate onAttackHitCheck;
+	FOnSkillDelegate1 skillDelegate1;
+	FOnSkillDelegate2 skillDelegate2;
+	FOnSkillDelegate3 skillDelegate3;
 	
 };

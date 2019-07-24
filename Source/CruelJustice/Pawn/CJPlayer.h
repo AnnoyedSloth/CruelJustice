@@ -15,6 +15,7 @@ DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
 class ACJPlayerController;
 class UCJPlayerAnimInstance;
 class ACJPlayerState;
+class ACJSkill;
 
 UCLASS()
 class CRUELJUSTICE_API ACJPlayer : public ACJBaseCharacter
@@ -36,6 +37,9 @@ private:
 	UPROPERTY()
 		UCJPlayerAnimInstance* animInstance;
 
+	UPROPERTY()
+		UParticleSystemComponent* lvUpParticle;
+
 	// Attack related
 	bool isAttacking;
 
@@ -56,12 +60,21 @@ private:
 		int32 level;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
+		int32 attack;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		int32 curExp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, meta = (AllowPrivateAccess = true))
 		int32 nextExp;
 
 	ACJPlayerState* playerState;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
+	TArray<ACJSkill*> skills;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
+	ACJSkill* curSkill;
 
 	// For Methods
 private:
@@ -81,8 +94,6 @@ protected:
 	void Turn(float value);
 	void LookUp(float value);
 	
-
-
 	// For Properties
 public:
 
@@ -96,6 +107,12 @@ public:
 	virtual void PossessedBy(AController* newController) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* playerInputComponent);
 
+	UCJPlayerAnimInstance* GetAnimInstance() { return animInstance; }
+
+	//ACJPlayerState* GetPlayerState() { return playerState; }
+
+	float GetAttack() const { return attack; }
+
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted);
 	void AttackStartComboState();
@@ -107,9 +124,15 @@ public:
 
 	void AttackCheck();
 
+	//Skills
 	UFUNCTION()
 		void Dodge();
 
+	void Skill1();
+
+	void Skill2();
+
+	// Levelup
 	UFUNCTION()
 		void AddExp(int32 incomeExp);
 

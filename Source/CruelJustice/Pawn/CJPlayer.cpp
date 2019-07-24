@@ -3,6 +3,9 @@
 #include "CJPlayer.h"
 #include "Controller/CJPlayerController.h"
 #include "Animation/CJPlayerAnimInstance.h"
+#include "Skill/CJSkill.h"
+#include "Skill/CJPlayerSkill1_Slash.h"
+#include "Skill/CJPlayerSkill2_Fireball.h"
 #include "CJPlayerState.h"
 #include "CJGameInstance.h"
 #include "ConstructorHelpers.h"
@@ -13,6 +16,7 @@ ACJPlayer::ACJPlayer()
 	// Create Components
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	lvUpParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("LvUpParticle"));
 
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>
 		SK_MESH(TEXT("/Game/ParagonKwang/Characters/Heroes/Kwang/Meshes/Kwang_GDC.Kwang_GDC"));
@@ -28,10 +32,59 @@ ACJPlayer::ACJPlayer()
 		GetMesh()->SetAnimInstanceClass(BP_ANIM.Class);
 	}
 
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>
+		PS_LVUP(TEXT("/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Resurrection/P_Resurrection.P_Resurrection"));
+	if (PS_LVUP.Succeeded())
+	{
+		lvUpParticle->SetTemplate(PS_LVUP.Object);
+		lvUpParticle->bAutoActivate = false;
+	}
+	
+	//static ConstructorHelpers::FClassFinder<ACJSkill>
+	//	SKILL1(TEXT("/Script/CruelJustice.CJPlayerSkill1_Slash"));
+	//if (SKILL1.Succeeded())
+	//{
+	//	CJLOG(Warning, TEXT("Skill1 found"));
+	//	skills.Add(Cast<ACJPlayerSkill1_Slash>(SKILL1.Class));
+	//}
+	//else
+	//{
+	//	CJLOG(Warning, TEXT("Skill1 not found"));
+	//}
+
+	//static ConstructorHelpers::FClassFinder<ACJSkill>
+	//	SKILL2(TEXT("/Script/CruelJustice.CJPlayerSkill2_Fireball"));
+	//if (SKILL2.Succeeded())
+	//{
+	//	CJLOG(Warning, TEXT("Skill2 found"));
+	//	ACJPlayerSkill2_Fireball* fireball = Cast<ACJPlayerSkill2_Fireball>(*SKILL2.Class);
+	//	if (fireball)
+	//	{
+	//		CJLOG(Warning, TEXT("Skill2 found and Casting succeeded"));
+	//	}
+	//	else
+	//	{
+	//		CJLOG(Warning, TEXT("Skill2 found and Casting failed"));
+	//	}
+	//	//skills.Add(Cast<ACJPlayerSkill2_Fireball>(SKILL2.Class));
+	//}
+	//else
+	//{
+	//	CJLOG(Warning, TEXT("Skill2 not found"));
+	//}
+
+
+
+
+	//skills.Add(Cast<ACJPlayerSkill1_Slash>(ACJPlayerSkill1_Slash::StaticClass()));
+	//skills.Add(Cast<ACJPlayerSkill2_Fireball>(ACJPlayerSkill2_Fireball::StaticClass()));
+
+
 	// Setup hierarchy structure
 	springArm->SetupAttachment(RootComponent);
 	camera->SetupAttachment(springArm);
 	mesh->SetupAttachment(RootComponent);
+	lvUpParticle->SetupAttachment(RootComponent);
 
 	// Initialize created component's specific options
 	springArm->TargetArmLength = 400.0f;
@@ -47,12 +100,14 @@ ACJPlayer::ACJPlayer()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 720.0f, 0.0f);
 	GetCharacterMovement()->JumpZVelocity = 400.0f;
 	capsule->SetCollisionProfileName(TEXT("Player"));
+	lvUpParticle->SetRelativeLocation(FVector(0.0f, 0.0f, -88.0f));
 
 	attackRange = 150;
 	attackRadius = 80;
 
 	currentCombo = 1;
 	recoveryCombo = 1;
+	level = 1;
 }
 
 void ACJPlayer::PostInitializeComponents()
@@ -105,23 +160,18 @@ void ACJPlayer::BeginPlay()
 	Super::BeginPlay();
 
 	playerState = Cast<ACJPlayerState>(PlayerState);
-	if (!playerState)
-	{
-		CJLOG(Warning, TEXT("PlayerState not exist"));
-	}
-	else
-	{
-		CJLOG(Warning, TEXT("PlayerState exist"));
-	}
-	//if (!PlayerState)
-	//{
-	//	CJLOG(Warning, TEXT("PlayerState not exist"));
-	//}
-	//else
-	//{
-	//	CJLOG(Warning, TEXT("PlayerState exist"));
-	//}
+	CJCHECK(playerState);
 
+	// Setup Initial level when start game
+	auto gameInstance = Cast<UCJGameInstance>(GetGameInstance());
+	CJCHECK(gameInstance);
+
+	playerState->maxHP = gameInstance->GetPlayerStatData(level)->maxHP;
+	playerState->maxMP = gameInstance->GetPlayerStatData(level)->maxMP;
+	attack = playerState->attack = gameInstance->GetPlayerStatData(level)->attack;
+
+	curExp = gameInstance->GetPlayerStatData(level)->curExp;
+	nextExp = gameInstance->GetPlayerStatData(level)->nextExp;
 }
 
 void ACJPlayer::Tick(float deltaTime)
@@ -149,6 +199,10 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ACJPlayer::Attack);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ACJPlayer::AttackEnd);
 	playerInputComponent->BindAction(TEXT("Roll"), IE_Pressed, this, &ACJPlayer::Dodge);
+
+	playerInputComponent->BindAction(TEXT("Skill1_Slash"), IE_Pressed, this, &ACJPlayer::Skill1);
+	playerInputComponent->BindAction(TEXT("Skill2_Fireball"), IE_Pressed, this, &ACJPlayer::Skill2);
+
 
 }
 
@@ -216,8 +270,12 @@ void ACJPlayer::OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted)
 {
 	CJLOG(Warning, TEXT("Attack ended"));
 
+	if (curSkill)
+	{
+		curSkill->Destroy();
+		curSkill = nullptr;
+	}
 	onAttackEnd.Broadcast();
-
 }
 
 void ACJPlayer::AttackCheck()
@@ -261,11 +319,26 @@ void ACJPlayer::AttackCheck()
 
 }
 
+void ACJPlayer::Skill1()
+{
+	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill1_Slash>(this->GetActorLocation(), this->GetActorRotation());
+	curSkill->InitSkill(this);
+	curSkill->PlaySkill();
+	
+}
+
+void ACJPlayer::Skill2()
+{
+	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill2_Fireball>(this->GetActorLocation(), this->GetActorRotation());
+	curSkill->InitSkill(this);
+	curSkill->PlaySkill();
+}
+
 void ACJPlayer::AddExp(int32 incomeExp)
 {
 	curExp += incomeExp;
 
-	if (curExp > nextExp)
+	if (curExp >= nextExp)
 	{
 		LevelUp();
 	}
@@ -281,18 +354,19 @@ void ACJPlayer::LevelUp()
 
 	playerState->maxHP = gameInstance->GetPlayerStatData(level)->maxHP;
 	playerState->maxMP = gameInstance->GetPlayerStatData(level)->maxMP;
-	playerState->attack = gameInstance->GetPlayerStatData(level)->attack;
+	attack = playerState->attack = gameInstance->GetPlayerStatData(level)->attack;
 
 	curExp = gameInstance->GetPlayerStatData(level)->curExp;
 	nextExp = gameInstance->GetPlayerStatData(level)->nextExp;
 
 	animInstance->PlayLvUpMontage();
+	lvUpParticle->Activate(true);
 }
 
 float ACJPlayer::TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
 	class AController* eventInstigator, AActor* damageCauser)
 {
-	float finalDamage = TakeDamage(damageAmount, damageEvent, eventInstigator, damageCauser);
+	float finalDamage = Super::TakeDamage(damageAmount, damageEvent, eventInstigator, damageCauser);
 
 	playerState->ApplyDamage(damageAmount);
 
