@@ -44,6 +44,9 @@ private:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
 		UAnimMontage* rollMontage;
 
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
+		UAnimMontage* lvUpMontage;
+
 private:
 	
 	// 애니메이션 몽타주에 등록된 노티파이
@@ -65,6 +68,9 @@ public:
 
 	UFUNCTION()
 		void PlayRollMontage();
+
+	UFUNCTION()
+		void PlayLvUpMontage();
 
 	UFUNCTION()
 		void JumpToAttackMontageSection(int32 newSection);

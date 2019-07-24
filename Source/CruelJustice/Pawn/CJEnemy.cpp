@@ -83,8 +83,10 @@ void ACJEnemy::InitStatData(int32 monsterID)
 
 	FCJEnemyStat* enemyStat = gameInstance->GetEnemyStatData(monsterID);
 
-	maxHP = hp = enemyStat->hp;
-	maxMP = hp = enemyStat->mp;
+	maxHP = enemyStat->hp;
+	hp = maxHP;
+	maxMP = enemyStat->mp;
+	mp = maxMP;
 	attack = enemyStat->attack;
 	defense = enemyStat->defense;
 	dropExp = enemyStat->exp;
@@ -100,6 +102,7 @@ float ACJEnemy::TakeDamage(float damageAmount, struct FDamageEvent const& damage
 	if (player)
 	{
 		hp -= damageAmount;
+		onHPChanged.Broadcast();
 		if (hp < KINDA_SMALL_NUMBER)
 		{
 			onHPIsZero.Broadcast();

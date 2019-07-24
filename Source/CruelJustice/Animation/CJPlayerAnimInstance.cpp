@@ -17,6 +17,11 @@ UCJPlayerAnimInstance::UCJPlayerAnimInstance()
 	CJCHECK(AM_ROLL.Succeeded());
 	rollMontage = AM_ROLL.Object;
 
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>
+		AM_LVUP(TEXT("/Game/Animation/1_Player/AM_Player_LvUp.AM_Player_LvUp"));
+	CJCHECK(AM_LVUP.Succeeded());
+	lvUpMontage = AM_LVUP.Object;
+
 	isInAir = false;
 	isDead = false;
 }
@@ -56,6 +61,14 @@ void UCJPlayerAnimInstance::PlayRollMontage()
 	if (!Montage_IsPlaying(rollMontage))
 	{
 		Montage_Play(rollMontage, 1.0f);
+	}
+}
+
+void UCJPlayerAnimInstance::PlayLvUpMontage()
+{
+	if (lvUpMontage)
+	{
+		Montage_Play(lvUpMontage, 1.0f);
 	}
 }
 

@@ -4,4 +4,4 @@
 
 
 Daily
-- Damage 
+- 공격 타이밍에 따른 Damage Applying, Dead Animation, Destroy, Exp 획득, 레벨업, 회피스킬까지 완료

@@ -285,6 +285,8 @@ void ACJPlayer::LevelUp()
 
 	curExp = gameInstance->GetPlayerStatData(level)->curExp;
 	nextExp = gameInstance->GetPlayerStatData(level)->nextExp;
+
+	animInstance->PlayLvUpMontage();
 }
 
 float ACJPlayer::TakeDamage(float damageAmount, struct FDamageEvent const& damageEvent,
