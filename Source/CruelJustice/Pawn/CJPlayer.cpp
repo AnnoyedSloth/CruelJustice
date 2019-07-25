@@ -203,7 +203,6 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAction(TEXT("Skill1_Slash"), IE_Pressed, this, &ACJPlayer::Skill1);
 	playerInputComponent->BindAction(TEXT("Skill2_Fireball"), IE_Pressed, this, &ACJPlayer::Skill2);
 
-
 }
 
 void ACJPlayer::MoveForward(float value)
