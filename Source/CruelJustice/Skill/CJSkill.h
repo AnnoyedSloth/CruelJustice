@@ -25,6 +25,7 @@ protected:
 
 	UAnimMontage* skillMontage;
 
+	UPROPERTY()
 	UParticleSystemComponent* skillParticle;
 
 	//IsSkillPlayEnded skillEndDelegate;

@@ -13,7 +13,7 @@ ACJSkill::ACJSkill()
 	//owner = skillOwner;
 	//animInstance = Cast<UCJPlayerAnimInstance>(owner->GetAnimInstance());
 
-	//skillParticle = CreateDefaultSubobject<UParticleSystem>(FName("Particle"));
+	skillParticle = CreateDefaultSubobject<UParticleSystemComponent>(FName("Particle"));
 
 }
 

@@ -8,6 +8,8 @@
 
 ACJPlayerSkill1_Slash::ACJPlayerSkill1_Slash()
 {
+	//PrimaryActorTick.bCanEverTick = true;
+
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>
 		AM_SKILL1(TEXT("/Game/Animation/1_Player/Skills/AM_Player_Skill1_Slash.AM_Player_Skill1_Slash"));
 	CJCHECK(AM_SKILL1.Succeeded());
@@ -24,8 +26,11 @@ ACJPlayerSkill1_Slash::ACJPlayerSkill1_Slash()
 	{
 		CJLOG(Warning, TEXT("Particle import failed"));
 	}
-	//skillParticle->SetTemplate(PS_SKILL.Object);
-	//skillParticle->bAutoActivate = false;
+	skillParticle->SetTemplate(PS_SKILL.Object);
+	skillParticle->bAutoActivate = false;
+	skillParticle->SetRelativeLocation(GetActorLocation() + FVector::ForwardVector * 200);
+
+	InitialLifeSpan = 3.0f;
 
 	attackRange = 200.0f;
 	attackRadius = 200.0f;
@@ -51,7 +56,7 @@ void ACJPlayerSkill1_Slash::PlaySkill()
 void ACJPlayerSkill1_Slash::ApplyImpact()
 {
 
-	//skillParticle->Activate(true);
+	skillParticle->Activate(true);
 
 	TArray<FHitResult> hitResults;
 	FCollisionQueryParams params(NAME_None, false, this);

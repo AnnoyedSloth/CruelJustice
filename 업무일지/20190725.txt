@@ -1,0 +1,3 @@
+- SetLifeSpan은 가상함수이기 때문에 생성자에서 사용시 크래쉬가 뜰수 있다..
+- SetLifeSpan 대신 객체의 수명주기를 정하고싶다면 InitialLifeSpan이라는 함수를 사용하면 된다
+- SetLifeSpan은 일반 함수에서만 사용할것

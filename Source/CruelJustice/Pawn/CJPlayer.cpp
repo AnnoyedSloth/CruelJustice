@@ -228,18 +228,18 @@ void ACJPlayer::LookUp(float value)
 
 void ACJPlayer::Attack()
 {
-	if (!isAttacking)
-	{
-		FVector viewLocation;
-		FRotator viewRotation;
-		GetActorEyesViewPoint(viewLocation, viewRotation);
-		viewRotation.Roll = 0;
-		viewRotation.Pitch = 0;
-		SetActorRotation(viewRotation);
+	if (isAttacking) return;
+	
+	FVector viewLocation;
+	FRotator viewRotation;
+	GetActorEyesViewPoint(viewLocation, viewRotation);
+	viewRotation.Roll = 0;
+	viewRotation.Pitch = 0;
+	SetActorRotation(viewRotation);
 
-		animInstance->PlayAttackMontage();
-		isAttacking = true;
-	}
+	animInstance->PlayAttackMontage();
+	isAttacking = true;
+	
 }
 
 void ACJPlayer::Dodge()
@@ -270,11 +270,13 @@ void ACJPlayer::OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted)
 {
 	CJLOG(Warning, TEXT("Attack ended"));
 
-	if (curSkill)
-	{
-		curSkill->Destroy();
-		curSkill = nullptr;
-	}
+	isAttacking = false;
+
+	//if (curSkill)
+	//{
+	//	curSkill->Destroy();
+	//	curSkill = nullptr;
+	//}
 	onAttackEnd.Broadcast();
 }
 
@@ -321,6 +323,8 @@ void ACJPlayer::AttackCheck()
 
 void ACJPlayer::Skill1()
 {
+	if (isAttacking) return;
+	isAttacking = true;
 	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill1_Slash>(this->GetActorLocation(), this->GetActorRotation());
 	curSkill->InitSkill(this);
 	curSkill->PlaySkill();
@@ -329,6 +333,8 @@ void ACJPlayer::Skill1()
 
 void ACJPlayer::Skill2()
 {
+	if (isAttacking) return;
+	isAttacking = true;
 	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill2_Fireball>(this->GetActorLocation(), this->GetActorRotation());
 	curSkill->InitSkill(this);
 	curSkill->PlaySkill();
