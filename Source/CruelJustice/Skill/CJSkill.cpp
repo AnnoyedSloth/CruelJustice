@@ -26,24 +26,20 @@ void ACJSkill::BeginPlay()
 
 void ACJSkill::InitSkill(ACJPlayer* newOwner)
 {
-	owner = newOwner;
-	animInstance = owner->GetAnimInstance();
+	skillInstigator = newOwner;
+	animInstance = skillInstigator->GetAnimInstance();
 }
 
 // Called every frame
 void ACJSkill::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
 }
 
 void ACJSkill::PlaySkill()
 {
-
 }
 
 void ACJSkill::ApplyImpact()
 {
-
 }

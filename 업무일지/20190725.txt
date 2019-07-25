@@ -1,3 +1,9 @@
 - SetLifeSpan은 가상함수이기 때문에 생성자에서 사용시 크래쉬가 뜰수 있다..
 - SetLifeSpan 대신 객체의 수명주기를 정하고싶다면 InitialLifeSpan이라는 함수를 사용하면 된다
 - SetLifeSpan은 일반 함수에서만 사용할것
+- SetActorEnableCollision 함수를 통해 액터의 콜리전을 설정/해제할 수 있다
+- bCanBeDamaged를 false로 설정하면 데미지를 입거나 입지 않도록 설정할 수 있다
+
+Daily
+- 근접 광역공격, Projectile 광역공격 구현 완료(공격 타이밍에 맞춰 데미지 적용, 탄도발사, 파티클 등)
+- 

@@ -79,7 +79,7 @@ void UCJPlayerAnimInstance::PlayLvUpMontage()
 
 void UCJPlayerAnimInstance::PlayMontage(UAnimMontage* montage, float playRate)
 {
-	if (montage)
+	if (montage && !Montage_IsPlaying(montage))
 	{
 		Montage_Play(montage, playRate);
 	}

@@ -55,15 +55,14 @@ void ACJPlayerSkill1_Slash::PlaySkill()
 
 void ACJPlayerSkill1_Slash::ApplyImpact()
 {
-
 	skillParticle->Activate(true);
 
 	TArray<FHitResult> hitResults;
 	FCollisionQueryParams params(NAME_None, false, this);
 	bool result = GetWorld()->SweepMultiByChannel(
 		hitResults,
-		owner->GetActorLocation(),
-		owner->GetActorLocation() + owner->GetActorForwardVector() * attackRange,
+		skillInstigator->GetActorLocation(),
+		skillInstigator->GetActorLocation() + skillInstigator->GetActorForwardVector() * attackRange,
 		FQuat::Identity,
 		ECollisionChannel::ECC_GameTraceChannel1,
 		FCollisionShape::MakeSphere(attackRadius),
@@ -72,8 +71,8 @@ void ACJPlayerSkill1_Slash::ApplyImpact()
 	);
 
 	FCollisionShape::MakeCapsule(FVector());
-	FVector traceVec = owner->GetActorForwardVector() * attackRange;
-	FVector center = owner->GetActorLocation() + traceVec * 0.5f;
+	FVector traceVec = skillInstigator->GetActorForwardVector() * attackRange;
+	FVector center = skillInstigator->GetActorLocation() + traceVec * 0.5f;
 	float halfHeight = attackRange * 0.5f + attackRadius;
 	FQuat capsuleRot = FRotationMatrix::MakeFromZ(traceVec).ToQuat();
 	FColor drawColor = result ? FColor::Green : FColor::Red;
@@ -92,9 +91,9 @@ void ACJPlayerSkill1_Slash::ApplyImpact()
 	for (FHitResult result : hitResults)
 	{
 		FDamageEvent damageEvent;
-		result.Actor->TakeDamage(owner->GetAttack(), damageEvent, owner->GetController(), owner);
+		result.Actor->TakeDamage(skillInstigator->GetAttack(), damageEvent, skillInstigator->GetController(), skillInstigator);
 	}
 
-	CJLOG(Warning, TEXT("AttackRate : %f"), owner->GetAttack());
+	CJLOG(Warning, TEXT("AttackRate : %f"), skillInstigator->GetAttack());
 	animInstance->skillDelegate1.Clear();
 }

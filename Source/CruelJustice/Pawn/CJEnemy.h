@@ -30,8 +30,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 		float mp;
 
-	UPROPERTY(VisibleAnywhere, Category = Stat)
-	float attack;
 
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 	float defense;

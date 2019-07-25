@@ -19,16 +19,22 @@ public:
 	ACJProjectile();
 
 protected:
+	UPROPERTY()
 	USphereComponent* projectileCollision;
+
+	UPROPERTY()
 	UProjectileMovementComponent* movementComponent;
+
+	UPROPERTY()
 	UParticleSystemComponent* particle;
 
-	ACJBaseCharacter* owner;
+	UPROPERTY(VisibleAnywhere, Category = Status)
+	ACJBaseCharacter* skillInstigator;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void SetOwner(ACJBaseCharacter* baseCharacter);
+	virtual void SetProjectileOwner(ACJBaseCharacter* baseCharacter);
 
 	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, 
 		AActor* OtherActor, UPrimitiveComponent* OtherComp, 
@@ -37,6 +43,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UProjectileMovementComponent* GetMovementComponent() { return movementComponent; }
 
 	
 	

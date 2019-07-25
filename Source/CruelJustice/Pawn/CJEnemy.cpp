@@ -106,6 +106,8 @@ float ACJEnemy::TakeDamage(float damageAmount, struct FDamageEvent const& damage
 		if (hp < KINDA_SMALL_NUMBER)
 		{
 			onHPIsZero.Broadcast();
+			SetActorEnableCollision(false);
+			bCanBeDamaged = false;
 			player->AddExp(dropExp);
 		}
 	}

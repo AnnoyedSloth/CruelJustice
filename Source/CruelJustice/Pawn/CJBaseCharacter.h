@@ -41,6 +41,9 @@ protected:
 	USkeletalMeshComponent* mesh;
 	UCapsuleComponent* capsule;
 
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	float attack;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -63,6 +66,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-
+	virtual float GetAttack() const { return attack < KINDA_SMALL_NUMBER ? 0 : attack; }
 
 };

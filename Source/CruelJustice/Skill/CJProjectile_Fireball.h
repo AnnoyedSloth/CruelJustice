@@ -13,15 +13,24 @@ UCLASS()
 class CRUELJUSTICE_API ACJProjectile_Fireball : public ACJProjectile
 {
 	GENERATED_BODY()
+
+private:
+	UParticleSystemComponent* explosionParticle;
+
+	float attackRange;
+
+	float attackRadius;
 	
 protected:
 	
+	virtual void BeginPlay() override;
 
 public:
 	ACJProjectile_Fireball();
 
-	virtual void SetOwner(ACJBaseCharacter* baseCharacter);
+	virtual void SetProjectileOwner(ACJBaseCharacter* baseCharacter);
 
+	UFUNCTION()
 	virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 		bool bFromSweep, const FHitResult &SweepResult) override;

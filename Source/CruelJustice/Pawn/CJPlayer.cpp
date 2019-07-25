@@ -268,7 +268,7 @@ void ACJPlayer::AttackStartComboState()
 
 void ACJPlayer::OnAttackMontageEnded(UAnimMontage* montage, bool isInterrupted)
 {
-	CJLOG(Warning, TEXT("Attack ended"));
+	//CJLOG(Warning, TEXT("Attack ended"));
 
 	isAttacking = false;
 

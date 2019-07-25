@@ -20,7 +20,10 @@ public:
 	ACJSkill();
 
 protected:
-	class ACJPlayer* owner;
+
+	UPROPERTY(VisibleAnywhere, Category = Status)
+	class ACJPlayer* skillInstigator;
+	
 	class UCJPlayerAnimInstance* animInstance;
 
 	UAnimMontage* skillMontage;
