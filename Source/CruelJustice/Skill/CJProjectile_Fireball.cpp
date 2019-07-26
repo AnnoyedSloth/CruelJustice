@@ -3,6 +3,7 @@
 #include "CJProjectile_Fireball.h"
 #include "Pawn/CJBaseCharacter.h"
 #include "Pawn/CJPlayer.h"
+#include "CJCameraShake.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
 
@@ -53,6 +54,12 @@ void ACJProjectile_Fireball::OnOverlapBegin(UPrimitiveComponent* OverlappedCompo
 	//CJLOG(Warning, TEXT("OtherActorName = %s"),*OtherActor->GetName());
 
 	if (!skillInstigator) return;
+
+	TSubclassOf<UCJCameraShake> cameraShake = UCJCameraShake::StaticClass();
+	if (cameraShake)
+	{
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(cameraShake, 1.0f);
+	}
 
 	ACJBaseCharacter* otherCharacter = Cast<ACJBaseCharacter>(OtherActor);
 

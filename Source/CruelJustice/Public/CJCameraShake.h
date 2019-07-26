@@ -14,7 +14,8 @@ class CRUELJUSTICE_API UCJCameraShake : public UCameraShake
 {
 	GENERATED_BODY()
 	
-	
+public:
+	UCJCameraShake();
 	
 	
 };

@@ -3,6 +3,7 @@
 #include "CJPlayerSkill1_Slash.h"
 #include "Animation/CJPlayerAnimInstance.h"
 #include "Pawn/CJPlayer.h"
+#include "CJCameraShake.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
 
@@ -18,14 +19,7 @@ ACJPlayerSkill1_Slash::ACJPlayerSkill1_Slash()
 	static ConstructorHelpers::FObjectFinder<UParticleSystem>
 		PS_SKILL(TEXT("/Game/ParagonKwang/FX/Particles/Abilities/LightStrike/FX/P_Kwang_LightStrike_Burst.P_Kwang_LightStrike_Burst"));
 	CJCHECK(PS_SKILL.Succeeded());
-	if (PS_SKILL.Succeeded())
-	{
-		CJLOG(Warning, TEXT("Particle import succeeded"));
-	}
-	else
-	{
-		CJLOG(Warning, TEXT("Particle import failed"));
-	}
+
 	skillParticle->SetTemplate(PS_SKILL.Object);
 	skillParticle->bAutoActivate = false;
 	skillParticle->SetRelativeLocation(GetActorLocation() + FVector::ForwardVector * 200);
@@ -56,6 +50,12 @@ void ACJPlayerSkill1_Slash::PlaySkill()
 void ACJPlayerSkill1_Slash::ApplyImpact()
 {
 	skillParticle->Activate(true);
+
+	TSubclassOf<UCJCameraShake> cameraShake = UCJCameraShake::StaticClass();
+	if (cameraShake)
+	{
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->PlayCameraShake(cameraShake, 1.0f);
+	}
 
 	TArray<FHitResult> hitResults;
 	FCollisionQueryParams params(NAME_None, false, this);
