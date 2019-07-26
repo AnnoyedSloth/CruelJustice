@@ -1,0 +1,5 @@
+- Camera shake는 이미 구현된 Base class가 있어서 상속 후 숫자값만 조절하면 쉽게 사용 가능
+- 굳이 헤비한 클래스는 아니기 때문에 미리 로드할 필요는 없음
+- 고로 스킬 쓸때마다 StaticClass로 불러와서 
+GetWorld()->GetfirstPlayerController()->PlayerCameraManager->PlayCameraShake(CameraShake()::StaticClass(), 1.0f);
+이 한줄로 구현이 가능..

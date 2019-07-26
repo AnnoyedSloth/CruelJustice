@@ -20,7 +20,6 @@ protected:
 		class UBehaviorTree* btAsset;
 	UPROPERTY()
 		class UBlackboardData* bbAsset;
-	
 
 public:
 
