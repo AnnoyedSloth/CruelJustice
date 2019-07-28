@@ -6,6 +6,8 @@
 #include "Controller/CJEnemyAIController.h"
 #include "CJEnemy_Axeman_Controller.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnAttackHitCheck);
+
 /**
  * 
  */
@@ -17,6 +19,6 @@ class CRUELJUSTICE_API ACJEnemy_Axeman_Controller : public ACJEnemyAIController
 public:
 	ACJEnemy_Axeman_Controller();
 	
-	
+	FOnAttackHitCheck attackHit;
 	
 };

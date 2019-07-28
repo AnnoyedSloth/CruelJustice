@@ -15,12 +15,13 @@ class CRUELJUSTICE_API ACJEnemy_Magician : public ACJEnemy
 	GENERATED_BODY()
 
 private:
-	//class UCJMonsterAnimInstance* animInstance;
+	//class UCJEnemyAnimInstance* animInstance;
 
 	//UAnimMontage* deadAnim;
 public:
 	ACJEnemy_Magician();
 	
 	virtual void PostInitializeComponents() override;
+	virtual void Attack() override;
 	
 };

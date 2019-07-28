@@ -10,6 +10,8 @@
  * 
  */
 
+DECLARE_MULTICAST_DELEGATE(OnAttackHitCheck);
+
 UCLASS()
 class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 {
@@ -40,9 +42,13 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = UI)
 	class UWidgetComponent* hpWidget;
 
-	class UCJMonsterAnimInstance* animInstance;
+	class UCJEnemyAnimInstance* animInstance;
 
 	UAnimMontage* deadAnim;
+
+	UPROPERTY(VisibleAnywhere, Category = AI)
+		class ACJEnemyAIController* enemyAIController;
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -58,6 +64,9 @@ public:
 
 	UFUNCTION()
 		float GetHPRatio();
+
+	UFUNCTION()
+		virtual void Attack();
 
 
 	// Set up as pure virtual function to prevent instanciation

@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJEnemy_Gunman.h"
-#include "Animation/CJMonsterAnimInstance.h"
+#include "Animation/CJEnemy_Gunman_AnimInstance.h"
+#include "Controller/CJEnemy_Gunman_Controller.h"
 
 ACJEnemy_Gunman::ACJEnemy_Gunman()
 {
@@ -19,16 +20,29 @@ ACJEnemy_Gunman::ACJEnemy_Gunman()
 	}
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>
-		AM_DEAD(TEXT("/Game/Animation/3_Gunman/Death_Bwd_Montage.Death_Bwd_Montage"));
+		AM_DEAD(TEXT("/Game/Animation/3_Gunman/AM_Gunman_Dead.AM_Gunman_Dead"));
 	if (AM_DEAD.Succeeded())
 	{
 		deadAnim = AM_DEAD.Object;
 	}
+
+	AIControllerClass = ACJEnemy_Gunman_Controller::StaticClass();
 }
 
 void ACJEnemy_Gunman::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	animInstance = Cast<UCJEnemyAnimInstance>(GetMesh()->GetAnimInstance());
 
+	if (!animInstance)
+	{
+		CJLOG(Warning, TEXT("AnimInstance is missing"));
+	}
+
+}
+
+void ACJEnemy_Gunman::Attack()
+{
+	Super::Attack();
 }

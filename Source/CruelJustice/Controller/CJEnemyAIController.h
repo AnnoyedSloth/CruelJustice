@@ -22,11 +22,18 @@ protected:
 		class UBlackboardData* bbAsset;
 
 public:
+	FName homePosKey;
+	FName patrolPosKey;
+	FName targetKey;
+
+public:
 
 	ACJEnemyAIController();
 	virtual void Possess(APawn* pawn) override;
 	virtual void UnPossess() override;
 	
+	virtual void StartAI();
+	virtual void StopAI();
 	
 	
 };
