@@ -3,7 +3,6 @@
 #include "CJEnemy.h"
 #include "Pawn/CJPlayer.h"
 #include "Controller/CJEnemyAIController.h"
-#include "Animation/CJMonsterAnimInstance.h"
 #include "Components/WidgetComponent.h"
 #include "UI/CJEnemyWidget.h"
 #include "CJGameInstance.h"
@@ -32,12 +31,6 @@ void ACJEnemy::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	animInstance = Cast<UCJMonsterAnimInstance>(GetMesh()->GetAnimInstance());
-
-	if (!animInstance)
-	{
-		CJLOG(Warning, TEXT("AnimInstance is missing"));
-	}
 
 	onHPIsZero.AddLambda([this]()->void {
 
@@ -54,6 +47,8 @@ void ACJEnemy::PostInitializeComponents()
 		}
 	});
 
+	enemyAIController = Cast<ACJEnemyAIController>(GetController());
+
 	UCJEnemyWidget* widget = Cast<UCJEnemyWidget>(hpWidget->GetUserWidgetObject());
 	CJCHECK(widget);
 	widget->BindCharacterStat(this);
@@ -63,6 +58,11 @@ void ACJEnemy::PostInitializeComponents()
 void ACJEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (enemyAIController)
+	{
+		enemyAIController->StartAI();
+	}
 
 }
 
@@ -118,4 +118,9 @@ float ACJEnemy::TakeDamage(float damageAmount, struct FDamageEvent const& damage
 float ACJEnemy::GetHPRatio()
 {
 	return hp < KINDA_SMALL_NUMBER ? 0.0f : (hp / maxHP);
+}
+
+void ACJEnemy::Attack()
+{
+
 }

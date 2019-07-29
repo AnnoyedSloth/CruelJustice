@@ -1,14 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "CJMonsterAnimInstance.h"
+#include "CJEnemyAnimInstance.h"
 
-UCJMonsterAnimInstance::UCJMonsterAnimInstance()
+UCJEnemyAnimInstance::UCJEnemyAnimInstance()
 {
 	isDead = false;
 
 }
 
-void UCJMonsterAnimInstance::NativeUpdateAnimation(float deltaTime)
+void UCJEnemyAnimInstance::NativeUpdateAnimation(float deltaTime)
 {
 	Super::NativeUpdateAnimation(deltaTime);
 

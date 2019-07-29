@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJEnemy_Magician.h"
-#include "Animation/CJMonsterAnimInstance.h"
+#include "Animation/CJEnemy_Magician_AnimInstance.h"
+#include "Controller/CJEnemy_Magician_Controller.h"
 
 ACJEnemy_Magician::ACJEnemy_Magician()
 {
@@ -19,17 +20,29 @@ ACJEnemy_Magician::ACJEnemy_Magician()
 	}
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>
-		AM_DEAD(TEXT("/Game/Animation/4_Magician/Death_Fwd_Montage.Death_Fwd_Montage"));
+		AM_DEAD(TEXT("/Game/Animation/4_Magician/AM_Magician_Dead.AM_Magician_Dead"));
 	if (AM_DEAD.Succeeded())
 	{
 		deadAnim = AM_DEAD.Object;
 	}
 
+	AIControllerClass = ACJEnemy_Magician_Controller::StaticClass();
 }
 
 void ACJEnemy_Magician::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
+	animInstance = Cast<UCJEnemyAnimInstance>(GetMesh()->GetAnimInstance());
 
+	if (!animInstance)
+	{
+		CJLOG(Warning, TEXT("AnimInstance is missing"));
+	}
+
+}
+
+void ACJEnemy_Magician::Attack()
+{
+	Super::Attack();
 }

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "CJMonsterAnimInstance.generated.h"
+#include "CJEnemyAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CRUELJUSTICE_API UCJMonsterAnimInstance : public UAnimInstance
+class CRUELJUSTICE_API UCJEnemyAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 	
@@ -23,7 +23,7 @@ protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
 
 public:
-	UCJMonsterAnimInstance();
+	UCJEnemyAnimInstance();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Animation, meta = (AllowPrivateAccess = true))
 		UAnimMontage* deadAnim;
