@@ -15,13 +15,17 @@ class CRUELJUSTICE_API ACJEnemy_Axeman : public ACJEnemy
 	GENERATED_BODY()
 	
 private:
-	//class UCJEnemyAnimInstance* animInstance;
+	
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		float attackRange;
 
-	//UAnimMontage* deadAnim;
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		float attackRadius;
 
 public:
 	ACJEnemy_Axeman();
 	virtual void PostInitializeComponents() override;
+	virtual void AttackMontagePlay() override;
 	virtual void Attack() override;
 
 };

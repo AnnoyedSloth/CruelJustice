@@ -15,7 +15,7 @@ class CRUELJUSTICE_API UCJEnemy_Axeman_AnimInstance : public UCJEnemyAnimInstanc
 	GENERATED_BODY()
 	
 private:
-	UAnimMontage* attackMontage;
+
 
 public:
 	UCJEnemy_Axeman_AnimInstance();

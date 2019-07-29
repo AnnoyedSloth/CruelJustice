@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJEnemyAIController.h"
+#include "Pawn/CJPlayer.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -43,5 +44,14 @@ void ACJEnemyAIController::StopAI()
 	{
 		// 트리 정지
 		behaviorTreeComponent->StopTree(EBTStopMode::Safe);
+	}
+}
+
+void ACJEnemyAIController::SetPlayerCaught(APawn* pawn)
+{
+	ACJPlayer* player = Cast<ACJPlayer>(pawn);
+	if (player)
+	{
+		Blackboard->SetValueAsObject(targetKey, player);
 	}
 }

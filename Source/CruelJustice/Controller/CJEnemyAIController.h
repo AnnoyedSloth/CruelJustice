@@ -20,6 +20,7 @@ protected:
 		class UBehaviorTree* btAsset;
 	UPROPERTY()
 		class UBlackboardData* bbAsset;
+	
 
 public:
 	FName homePosKey;
@@ -34,6 +35,8 @@ public:
 	
 	virtual void StartAI();
 	virtual void StopAI();
+
+	virtual void SetPlayerCaught(APawn* pawn);
 	
 	
 };

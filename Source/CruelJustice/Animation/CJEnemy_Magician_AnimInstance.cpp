@@ -9,7 +9,6 @@ UCJEnemy_Magician_AnimInstance::UCJEnemy_Magician_AnimInstance()
 		AM_ATTACK(TEXT("/Game/Animation/4_Magician/AM_Magician_Attack.AM_Magician_Attack"));
 	CJCHECK(AM_ATTACK.Succeeded());
 	attackMontage = AM_ATTACK.Object;
-
 }
 
 

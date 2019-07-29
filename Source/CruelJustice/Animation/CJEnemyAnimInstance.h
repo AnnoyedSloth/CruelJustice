@@ -2,13 +2,16 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CruelJustice.h"
 #include "Animation/AnimInstance.h"
 #include "CJEnemyAnimInstance.generated.h"
 
 /**
  * 
  */
+
+DECLARE_MULTICAST_DELEGATE(FOnAttackHit);
+
 UCLASS()
 class CRUELJUSTICE_API UCJEnemyAnimInstance : public UAnimInstance
 {
@@ -20,7 +23,15 @@ private:
 		bool isDead;
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Montage, meta = (AllowPrivateAccess=true))
+	UAnimMontage* attackMontage;
+
+
+protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
+
+public:
+	FOnAttackHit isAttackHit;
 
 public:
 	UCJEnemyAnimInstance();
@@ -29,5 +40,11 @@ public:
 		UAnimMontage* deadAnim;
 
 	void SetDeadAnim() { isDead = true; }
+
+	UFUNCTION()
+	virtual void AnimNotify_AttackNotify();
+
+	UFUNCTION()
+		virtual void PlayAttackMontage();
 	
 };

@@ -33,16 +33,27 @@ void ACJEnemy_Gunman::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	animInstance = Cast<UCJEnemyAnimInstance>(GetMesh()->GetAnimInstance());
+	animInstance = Cast<UCJEnemy_Gunman_AnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (!animInstance)
 	{
 		CJLOG(Warning, TEXT("AnimInstance is missing"));
 	}
 
+	//// Repeating attack code for testing
+	//FTimerHandle timerHandle;
+	//GetWorld()->GetTimerManager().SetTimer(timerHandle, this, &ACJEnemy_Gunman::Attack, 3.0f, true);
+
+	animInstance->isAttackHit.AddUObject(this, &ACJEnemy_Gunman::Attack);
+}
+
+void ACJEnemy_Gunman::AttackMontagePlay()
+{
+	Super::AttackMontagePlay();
 }
 
 void ACJEnemy_Gunman::Attack()
 {
 	Super::Attack();
+
 }

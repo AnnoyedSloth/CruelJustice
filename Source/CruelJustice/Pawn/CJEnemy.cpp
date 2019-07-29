@@ -4,7 +4,9 @@
 #include "Pawn/CJPlayer.h"
 #include "Controller/CJEnemyAIController.h"
 #include "Components/WidgetComponent.h"
+#include "Animation/CJEnemyAnimInstance.h"
 #include "UI/CJEnemyWidget.h"
+#include "Perception/PawnSensingComponent.h"
 #include "CJGameInstance.h"
 
 ACJEnemy::ACJEnemy()
@@ -12,6 +14,12 @@ ACJEnemy::ACJEnemy()
 	capsule->SetCollisionProfileName(TEXT("Enemy"));
 
 	hpWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
+
+	pawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensor"));
+	pawnSensingComp->SetPeripheralVisionAngle(50.0f);
+	pawnSensingComp->HearingThreshold = 500.0f;
+	pawnSensingComp->SightRadius = 2500.0f;
+	pawnSensingComp->SensingInterval = 1.0f;
 
 	static ConstructorHelpers::FClassFinder<UUserWidget>
 		UI_HPBAR(TEXT("/Game/UI/UI_HPBar.UI_HPBar_C"));
@@ -48,10 +56,17 @@ void ACJEnemy::PostInitializeComponents()
 	});
 
 	enemyAIController = Cast<ACJEnemyAIController>(GetController());
+	CJCHECK(enemyAIController);
+
+	CJCHECK(pawnSensingComp);
+	pawnSensingComp->OnSeePawn.AddDynamic(this, &ACJEnemy::PlayerCaught);
+	//pawnSensingComp->OnHearNoise.AddDynamic(this, &ACJEnemy::PlayerCaught);
 
 	UCJEnemyWidget* widget = Cast<UCJEnemyWidget>(hpWidget->GetUserWidgetObject());
 	CJCHECK(widget);
 	widget->BindCharacterStat(this);
+
+	
 
 }
 
@@ -120,7 +135,18 @@ float ACJEnemy::GetHPRatio()
 	return hp < KINDA_SMALL_NUMBER ? 0.0f : (hp / maxHP);
 }
 
+void ACJEnemy::AttackMontagePlay()
+{
+	if (!animInstance) return;
+	animInstance->PlayAttackMontage();
+}
+
 void ACJEnemy::Attack()
 {
 
+}
+
+void ACJEnemy::PlayerCaught(APawn* pawn)
+{
+	enemyAIController->SetPlayerCaught(pawn);
 }

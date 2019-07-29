@@ -22,6 +22,7 @@ public:
 	ACJEnemy_Magician();
 	
 	virtual void PostInitializeComponents() override;
+	virtual void AttackMontagePlay() override;
 	virtual void Attack() override;
 	
 };

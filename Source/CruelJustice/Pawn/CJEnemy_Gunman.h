@@ -23,6 +23,7 @@ public:
 	ACJEnemy_Gunman();
 
 	virtual void PostInitializeComponents() override;
+	virtual void AttackMontagePlay() override;
 	virtual void Attack() override;
 	
 };

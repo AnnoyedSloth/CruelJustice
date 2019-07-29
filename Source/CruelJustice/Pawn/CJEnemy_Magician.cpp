@@ -3,6 +3,7 @@
 #include "CJEnemy_Magician.h"
 #include "Animation/CJEnemy_Magician_AnimInstance.h"
 #include "Controller/CJEnemy_Magician_Controller.h"
+#include "Skill/CJProjectile_Fireball.h"
 
 ACJEnemy_Magician::ACJEnemy_Magician()
 {
@@ -33,16 +34,28 @@ void ACJEnemy_Magician::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	animInstance = Cast<UCJEnemyAnimInstance>(GetMesh()->GetAnimInstance());
+	animInstance = Cast<UCJEnemy_Magician_AnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (!animInstance)
 	{
 		CJLOG(Warning, TEXT("AnimInstance is missing"));
 	}
 
+	//// Repeating attack code for testing
+	//FTimerHandle timerHandle;
+	//GetWorld()->GetTimerManager().SetTimer(timerHandle, this, &ACJEnemy_Magician::Attack, 3.0f, true);
+
+}
+
+void ACJEnemy_Magician::AttackMontagePlay()
+{
+	Super::AttackMontagePlay();
 }
 
 void ACJEnemy_Magician::Attack()
 {
 	Super::Attack();
+
+	ACJProjectile_Fireball* fireball = GetWorld()->SpawnActor<ACJProjectile_Fireball>(GetActorLocation(), GetActorRotation());
+	fireball->SetProjectileOwner(this);
 }

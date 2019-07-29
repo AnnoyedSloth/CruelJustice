@@ -15,7 +15,6 @@ class CRUELJUSTICE_API UCJEnemy_Magician_AnimInstance : public UCJEnemyAnimInsta
 	GENERATED_BODY()
 
 private:
-	UAnimMontage* attackMontage;
 	
 public:
 	UCJEnemy_Magician_AnimInstance();

@@ -103,6 +103,7 @@ void ACJProjectile_Fireball::OnOverlapBegin(UPrimitiveComponent* OverlappedCompo
 
 	for (FHitResult result : hitResults)
 	{
+		if (otherCharacter == skillInstigator) continue;
 		FDamageEvent damageEvent;
 		result.Actor->TakeDamage(skillInstigator->GetAttack(), damageEvent, skillInstigator->GetController(), skillInstigator);
 	}

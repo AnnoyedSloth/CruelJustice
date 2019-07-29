@@ -14,5 +14,17 @@ void UCJEnemyAnimInstance::NativeUpdateAnimation(float deltaTime)
 
 }
 
+void UCJEnemyAnimInstance::AnimNotify_AttackNotify()
+{
+	if (!attackMontage) return;
+	isAttackHit.Broadcast();
+}
 
-
+void UCJEnemyAnimInstance::PlayAttackMontage()
+{
+	if (!attackMontage)
+	{
+		CJLOG(Warning, TEXT("Attack montage missing"));
+	}
+	Montage_Play(attackMontage);
+}

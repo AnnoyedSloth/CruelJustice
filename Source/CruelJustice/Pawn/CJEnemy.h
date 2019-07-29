@@ -10,8 +10,6 @@
  * 
  */
 
-DECLARE_MULTICAST_DELEGATE(OnAttackHitCheck);
-
 UCLASS()
 class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 {
@@ -20,6 +18,7 @@ class CRUELJUSTICE_API ACJEnemy : public ACJBaseCharacter
 	// For properties
 protected:
 
+	// Status informations
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 		float maxHP;
 
@@ -32,19 +31,27 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = Stat)
 		float mp;
 
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+		float defense;
 
 	UPROPERTY(VisibleAnywhere, Category = Stat)
-	float defense;
+		int dropExp;
 
-	UPROPERTY(VisibleAnywhere, Category = Stat)
-	int dropExp;
+	// Components
 
 	UPROPERTY(VisibleAnywhere, Category = UI)
-	class UWidgetComponent* hpWidget;
+		class UWidgetComponent* hpWidget;
 
-	class UCJEnemyAnimInstance* animInstance;
+	UPROPERTY(VisibleAnywhere, Category = AI, meta = (AllowPrivateAccess = true))
+		class UPawnSensingComponent* pawnSensingComp;
 
-	UAnimMontage* deadAnim;
+	// Etc
+
+	UPROPERTY(VisibleAnywhere, Category = Animation)
+		class UCJEnemyAnimInstance* animInstance;
+
+	UPROPERTY(VisibleAnywhere, Category = Animation)
+		UAnimMontage* deadAnim;
 
 	UPROPERTY(VisibleAnywhere, Category = AI)
 		class ACJEnemyAIController* enemyAIController;
@@ -66,7 +73,13 @@ public:
 		float GetHPRatio();
 
 	UFUNCTION()
+		virtual void AttackMontagePlay();
+
+	UFUNCTION()
 		virtual void Attack();
+
+	UFUNCTION()
+		virtual void PlayerCaught(APawn* pawn);
 
 
 	// Set up as pure virtual function to prevent instanciation
