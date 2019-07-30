@@ -23,9 +23,8 @@ protected:
 	
 
 public:
-	FName homePosKey;
-	FName patrolPosKey;
-	FName targetKey;
+	static const FName homePosKey;
+	static const FName targetKey;
 
 public:
 

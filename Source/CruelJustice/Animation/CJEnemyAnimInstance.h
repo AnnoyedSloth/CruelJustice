@@ -22,6 +22,9 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		bool isDead;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
+		float speed;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = Montage, meta = (AllowPrivateAccess=true))
 	UAnimMontage* attackMontage;

@@ -12,6 +12,11 @@ void UCJEnemyAnimInstance::NativeUpdateAnimation(float deltaTime)
 {
 	Super::NativeUpdateAnimation(deltaTime);
 
+	APawn* pawn = TryGetPawnOwner();
+	if (!IsValid(pawn)) return;
+
+	speed = pawn->GetVelocity().Size();
+
 }
 
 void UCJEnemyAnimInstance::AnimNotify_AttackNotify()

@@ -6,11 +6,12 @@
 #include "BehaviorTree/BlackboardData.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+const FName ACJEnemyAIController::homePosKey = TEXT("HomePosition");
+const FName ACJEnemyAIController::targetKey = TEXT("Target");
+
 ACJEnemyAIController::ACJEnemyAIController()
 {
-	homePosKey = TEXT("HomePosition");
-	patrolPosKey = TEXT("PatrolPosition");
-	targetKey = TEXT("Target");
+
 }
 
 void ACJEnemyAIController::Possess(APawn* pawn)

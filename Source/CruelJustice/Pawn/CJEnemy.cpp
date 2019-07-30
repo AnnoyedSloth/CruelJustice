@@ -12,6 +12,7 @@
 ACJEnemy::ACJEnemy()
 {
 	capsule->SetCollisionProfileName(TEXT("Enemy"));
+	mesh->SetCollisionProfileName(TEXT("NoCollision"));
 
 	hpWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBarWidget"));
 
@@ -149,4 +150,5 @@ void ACJEnemy::Attack()
 void ACJEnemy::PlayerCaught(APawn* pawn)
 {
 	enemyAIController->SetPlayerCaught(pawn);
+	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 }
