@@ -1,0 +1,5 @@
+- GameInstance가 GameEngine.cpp에서 생성되는 것을 확인
+- 게임 시작시 GameInstance->StartGameInstance() 실행
+- GameInstance에서 자원 관리하기 용이
+- 왜냐하면 딱 1개만 존재하고 전역에서 접근하기 좋기때문
+- Level이 바뀌어도 이 안에 정보는 바뀌지 않음

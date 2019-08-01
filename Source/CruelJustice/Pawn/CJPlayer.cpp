@@ -324,17 +324,18 @@ void ACJPlayer::Skill1()
 {
 	if (isAttacking) return;
 	isAttacking = true;
-	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill1_Slash>(this->GetActorLocation(), this->GetActorRotation());
+	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill1_Slash>(
+		this->GetActorLocation(), this->GetActorRotation());
 	curSkill->InitSkill(this);
 	curSkill->PlaySkill();
-	
 }
 
 void ACJPlayer::Skill2()
 {
 	if (isAttacking) return;
 	isAttacking = true;
-	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill2_Fireball>(this->GetActorLocation(), this->GetActorRotation());
+	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill2_Fireball>(
+		this->GetActorLocation(), this->GetActorRotation());
 	curSkill->InitSkill(this);
 	curSkill->PlaySkill();
 }
@@ -373,7 +374,7 @@ float ACJPlayer::TakeDamage(float damageAmount, struct FDamageEvent const& damag
 {
 	float finalDamage = Super::TakeDamage(damageAmount, damageEvent, eventInstigator, damageCauser);
 
-	playerState->ApplyDamage(damageAmount);
+	playerState->ApplyDamage(finalDamage);
 
 	return finalDamage;
 }
