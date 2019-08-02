@@ -6,9 +6,9 @@ Mostly they're for free but several assets aren't.
 
 - Animation Starter Pack
 - Explosions Builder
-- Real Liquid X - Liquid Material & Blueprint
 - InfinityBlade Effects
 - Paragon : Narbash
 - Paragon : Twinblast
 - Paragon : The Fey
 - Paragon : Kwang
+- Environment Set

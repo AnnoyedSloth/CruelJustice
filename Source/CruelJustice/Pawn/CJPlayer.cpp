@@ -114,7 +114,6 @@ void ACJPlayer::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	
-	playerController = Cast<ACJPlayerController>(GetController());
 	animInstance = Cast<UCJPlayerAnimInstance>(mesh->GetAnimInstance());
 
 	animInstance->OnMontageEnded.AddDynamic(this, &ACJPlayer::OnAttackMontageEnded);
@@ -159,6 +158,7 @@ void ACJPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
+	playerController = Cast<ACJPlayerController>(GetController());
 	playerState = Cast<ACJPlayerState>(PlayerState);
 	CJCHECK(playerState);
 
@@ -203,6 +203,8 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAction(TEXT("Skill1_Slash"), IE_Pressed, this, &ACJPlayer::Skill1);
 	playerInputComponent->BindAction(TEXT("Skill2_Fireball"), IE_Pressed, this, &ACJPlayer::Skill2);
 
+	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
+	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
 }
 
 void ACJPlayer::MoveForward(float value)
@@ -377,4 +379,14 @@ float ACJPlayer::TakeDamage(float damageAmount, struct FDamageEvent const& damag
 	playerState->ApplyDamage(finalDamage);
 
 	return finalDamage;
+}
+
+void ACJPlayer::ToggleCursor()
+{
+	if (playerController) playerController->MouseCursorToggle();
+}
+
+void ACJPlayer::TurnOnKeyUI()
+{
+	if (playerController) playerController->TurnOnCustomWidget();
 }

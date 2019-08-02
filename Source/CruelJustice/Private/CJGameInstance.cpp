@@ -52,49 +52,49 @@ void UCJGameInstance::Init()
 	float start = GetTimerManager().GetTimerElapsed(timerHandler);
 	CJLOG(Warning, TEXT("Start Time : %f"), start);
 
-	TArray<FCJEnemyTransform*> tableArr;	
-	enemyTransformTable->GetAllRows(TEXT(""), tableArr);
+	//TArray<FCJEnemyTransform*> tableArr;	
+	//enemyTransformTable->GetAllRows(TEXT(""), tableArr);
 
-	CJLOG(Warning, TEXT("Num of table : %d"), tableArr.Num());
-	for (int a = 0; a < tableArr.Num(); ++a)
-	{
-		FVector actorLocation(tableArr[a]->x, tableArr[a]->y, tableArr[a]->z + 110.0f);
-		FRotator actorRotation(0, tableArr[a]->yaw, 0);
+	//CJLOG(Warning, TEXT("Num of table : %d"), tableArr.Num());
+	//for (int a = 0; a < tableArr.Num(); ++a)
+	//{
+	//	FVector actorLocation(tableArr[a]->x, tableArr[a]->y, tableArr[a]->z + 110.0f);
+	//	FRotator actorRotation(0, tableArr[a]->yaw, 0);
 
-		int32 actorID = tableArr[a]->monsterID;
+	//	int32 actorID = tableArr[a]->monsterID;
 
-		UWorld* world = GetWorld();
+	//	UWorld* world = GetWorld();
 
-		// Factory pattern
-		switch (actorID)
-		{
-		case 1:
-		{
-			ACJEnemy_Axeman* axeman = 
-				world->SpawnActor<ACJEnemy_Axeman>(actorLocation, actorRotation);
-			axeman->InitStatData(actorID);
-		}
-			break;
+	//	// Factory pattern
+	//	switch (actorID)
+	//	{
+	//	case 1:
+	//	{
+	//		ACJEnemy_Axeman* axeman = 
+	//			world->SpawnActor<ACJEnemy_Axeman>(actorLocation, actorRotation);
+	//		axeman->InitStatData(actorID);
+	//	}
+	//		break;
 
-		case 2:
-		{
-			ACJEnemy_Gunman* gunman = 
-				world->SpawnActor<ACJEnemy_Gunman>(actorLocation, actorRotation);
-			gunman->InitStatData(actorID);
-		}
-		break;
+	//	case 2:
+	//	{
+	//		ACJEnemy_Gunman* gunman = 
+	//			world->SpawnActor<ACJEnemy_Gunman>(actorLocation, actorRotation);
+	//		gunman->InitStatData(actorID);
+	//	}
+	//	break;
 
-		case 3:
-		{
-			ACJEnemy_Magician* magician = 
-				world->SpawnActor<ACJEnemy_Magician>(actorLocation, actorRotation);
-			magician->InitStatData(actorID);
-		}
-		break;
-		default:
-			break;
-		}
-	}
+	//	case 3:
+	//	{
+	//		ACJEnemy_Magician* magician = 
+	//			world->SpawnActor<ACJEnemy_Magician>(actorLocation, actorRotation);
+	//		magician->InitStatData(actorID);
+	//	}
+	//	break;
+	//	default:
+	//		break;
+	//	}
+	//}
 
 	float elapsed = GetWorld()->GetUnpausedTimeSeconds() - start;
 	CJLOG(Warning, TEXT("End time : %f, Elapsed Time : %f"), 

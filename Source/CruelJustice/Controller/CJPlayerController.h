@@ -16,6 +16,10 @@ UCLASS()
 class CRUELJUSTICE_API ACJPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+private:
+	TSubclassOf<class UCJCustomKeyWidget> customKeyWidgetClass;
+	class UCJCustomKeyWidget* customKeyWidget;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -27,7 +31,7 @@ public:
 	ACJPlayerController();
 	virtual void PostInitializeComponents() override;
 	virtual void Possess(APawn* pawn) override;
-
-	
+	void MouseCursorToggle();
+	void TurnOnCustomWidget();
 	
 };

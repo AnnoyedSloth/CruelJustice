@@ -90,6 +90,9 @@ protected:
 	void MoveRight(float value);
 	void Turn(float value);
 	void LookUp(float value);
+
+	void ToggleCursor();
+	void TurnOnKeyUI();
 	
 	// For Properties
 public:
