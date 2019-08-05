@@ -4,7 +4,6 @@
 #include "Pawn/CJPlayer.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
-#include "Controller/CJPlayerController.h"
 #include "Runtime/Engine/Classes/GameFramework/InputSettings.h"
 
 
@@ -38,13 +37,7 @@ void UCJCustomKeyWidget::NativeConstruct()
 	ok->OnReleased.AddDynamic(this, &UCJCustomKeyWidget::Close);
 }
 
-void UCJCustomKeyWidget::SetController(ACJPlayerController* ownerController)
-{
-	if (ownerController)
-	{
-		playerController = ownerController;
-	}
-}
+
 
 void UCJCustomKeyWidget::NativeTick(const FGeometry &myGeometry, float inDeltaTime)
 {
@@ -61,15 +54,13 @@ void UCJCustomKeyWidget::NativeTick(const FGeometry &myGeometry, float inDeltaTi
 	//		CJLOG(Warning, *key.GetFName().ToString());
 	//	}
 	//}
-	
 }
 
 void UCJCustomKeyWidget::Close()
 {
 	const UInputSettings* inputSettings = GetDefault<UInputSettings>();
-
-	UInputComponent* inputComponent = playerController->GetPawn()->InputComponent;
-
+	UInputComponent* inputComponent = GetOwningPlayer()->GetPawn()->InputComponent;
+	
 	//inputComponent->ClearActionBindings();
 	TArray<FInputAxisKeyMapping> keyMappings;
 	inputSettings->GetAxisMappingByName("MoveForward", keyMappings);
@@ -81,7 +72,6 @@ void UCJCustomKeyWidget::Close()
 
 	TArray<FInputActionKeyMapping> actionMappings;
 	inputSettings->GetActionMappingByName("Roll", actionMappings);
-	
 	
 	for (FInputActionKeyMapping action : actionMappings)
 	{
@@ -131,8 +121,8 @@ void UCJCustomKeyWidget::Close()
 
 
 
-	playerController->bShowMouseCursor = false;
-	playerController->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
+	GetOwningPlayer()->bShowMouseCursor = false;
+	GetOwningPlayer()->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
 	RemoveFromParent();
 	//RemoveFromViewport();
 }

@@ -16,8 +16,6 @@ class CRUELJUSTICE_API UCJCustomKeyWidget : public UUserWidget
 
 private:
 
-	class ACJPlayerController* playerController;
-
 	TArray<class UButton*> buttons;
 	class UButton* ok;
 
@@ -46,7 +44,6 @@ public:
 	UFUNCTION()
 		void ButtonClicked();
 
-	void SetController(ACJPlayerController* ownerController);
 	void ReceiveKey();
 
 };

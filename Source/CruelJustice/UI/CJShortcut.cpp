@@ -9,11 +9,4 @@ void UCJShortcut::NativeConstruct()
 
 }
 
-void UCJShortcut::SetController(ACJPlayerController* ownerController)
-{
-	if (ownerController)
-	{
-		playerController = ownerController;
-	}
-}
 

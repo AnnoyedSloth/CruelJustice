@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "CruelJustice.h"
 #include "Blueprint/UserWidget.h"
 #include "CJSkillList.generated.h"
 
@@ -18,7 +18,6 @@ class CRUELJUSTICE_API UCJSkillList : public UUserWidget
 private:
 	TArray<class UButton*> skills;
 
-	class ACJPlayerController* playerController;
 
 public:
 	virtual void NativeConstruct() override;

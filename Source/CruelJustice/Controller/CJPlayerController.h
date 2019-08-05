@@ -17,6 +17,10 @@ class CRUELJUSTICE_API ACJPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+	friend class  UCJCustomKeyWidget;
+	friend class UCJShortcut;
+	friend class UCJSkillList;
+
 private:
 	TSubclassOf<class UCJCustomKeyWidget> customKeyWidgetClass;
 	class UCJCustomKeyWidget* customKeyWidget;

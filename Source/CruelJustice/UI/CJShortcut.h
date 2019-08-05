@@ -20,7 +20,6 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
-	void SetController(ACJPlayerController* ownerController);
 	
 	
 };

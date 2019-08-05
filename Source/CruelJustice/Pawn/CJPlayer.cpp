@@ -207,7 +207,7 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 
 	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
 	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
-	playerInputComponent->BindKey(EKeys::K, IE_Pressed, this->playerController, &ACJPlayerController::TurnOnSkillWidget);
+	playerInputComponent->BindKey(EKeys::K, IE_Pressed, this, &ACJPlayer::TurnOnSkillWidget);
 }
 
 void ACJPlayer::MoveForward(float value)
@@ -392,4 +392,9 @@ void ACJPlayer::ToggleCursor()
 void ACJPlayer::TurnOnKeyUI()
 {
 	if (playerController) playerController->TurnOnCustomWidget();
+}
+
+void ACJPlayer::TurnOnSkillWidget()
+{
+	if (playerController) playerController->TurnOnSkillWidget();
 }

@@ -57,7 +57,6 @@ void ACJPlayerController::Possess(APawn* pawn)
 	Super::Possess(pawn);
 
 	shortcutWidget = CreateWidget<UCJShortcut>(this, shortcutWidgetClass);
-	shortcutWidget->SetController(this);
 	shortcutWidget->AddToViewport();
 }
 
@@ -90,7 +89,6 @@ void ACJPlayerController::TurnOnCustomWidget()
 		customKeyWidget = CreateWidget<UCJCustomKeyWidget>(this, customKeyWidgetClass);
 		SetInputMode(FInputModeUIOnly::FInputModeUIOnly());
 		customKeyWidget->AddToViewport();
-		customKeyWidget->SetController(this);
 	}
 	else
 	{
@@ -101,9 +99,9 @@ void ACJPlayerController::TurnOnCustomWidget()
 void ACJPlayerController::TurnOnSkillWidget()
 {
 	CJLOG(Warning, TEXT("LOG"));
+	bShowMouseCursor = true;
 	skillListWidget = CreateWidget<UCJSkillList>(this, skillListWidgetClass);
 	SetInputMode(FInputModeUIOnly::FInputModeUIOnly());
-	skillListWidget->SetController(this);
 	skillListWidget->AddToViewport();
 
 }

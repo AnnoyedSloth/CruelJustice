@@ -14,26 +14,19 @@ void UCJSkillList::NativeConstruct()
 	skills.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_Slash"))));
 	skills.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_Fireball"))));
 
-}
 
-void UCJSkillList::SetController(ACJPlayerController* ownerController)
-{
-	if (ownerController)
-	{
-		playerController = ownerController;
-	}
+	bIsFocusable = true;
 }
-
 
 FReply UCJSkillList::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
 {
 	UUserWidget::NativeOnKeyDown(InGeometry, InKeyEvent);
-
 	const FKey key = InKeyEvent.GetKey();
 	if (key == EKeys::K)
 	{
-		playerController->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
 		RemoveFromParent();
+		CJLOG(Warning, TEXT("Pressed key is %d"), InKeyEvent.GetCharacter());
+		GetOwningPlayer()->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
 	}
 	return OnKeyDown(InGeometry, InKeyEvent).NativeReply;
 }

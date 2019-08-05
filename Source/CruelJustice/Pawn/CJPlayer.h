@@ -93,6 +93,7 @@ protected:
 
 	void ToggleCursor();
 	void TurnOnKeyUI();
+	void TurnOnSkillWidget();
 	
 	// For Properties
 public:
