@@ -1,0 +1,5 @@
+- Key Binding하는데 8개의 버튼이 있는데, 어떤 Key가 현재 Binding 되었는지 알 수 없음
+- Button의 멤버함수를 찾아보는데 HasKeyboardFocus라는 함수를 발견
+- Button을 클릭 시 KeyboardFocus가 해당 Button으로 지정됨을 확인함
+- Button을 누를 때 마다 현재 Button의 개수를 순회하며 현재 KeyboardFocus가 true인지 확인
+- 그리하여 어떤 Button이 현재 클릭되었는지 확인함
