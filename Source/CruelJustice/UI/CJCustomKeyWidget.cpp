@@ -1,9 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CJCustomKeyWidget.h"
+#include "Pawn/CJPlayer.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Controller/CJPlayerController.h"
+#include "Runtime/Engine/Classes/GameFramework/InputSettings.h"
 
 
 void UCJCustomKeyWidget::NativeConstruct()
@@ -14,34 +16,18 @@ void UCJCustomKeyWidget::NativeConstruct()
 
 	curTextBlock = nullptr;
 
-	//moveForward = Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveForward")));
-	//moveBack = Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveBack")));
-	//moveLeft = Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveLeft")));
-	//moveRight = Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveRight")));
-	//attack = Cast<UButton>(GetWidgetFromName(TEXT("Btn_Attack")));
-	//skill1 = Cast<UButton>(GetWidgetFromName(TEXT("Btn_Skill1")));
-	//skill2 = Cast<UButton>(GetWidgetFromName(TEXT("Btn_Skill2")));
-	//evade = Cast<UButton>(GetWidgetFromName(TEXT("Btn_Evade")));
-	//ok = Cast<UButton>(GetWidgetFromName(TEXT("Btn_OK")));
-	//buttons.Reserve(7);
 	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveForward"))));
 	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveBack"))));
 	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveLeft"))));
 	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_MoveRight"))));
-	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_Attack"))));
-	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_Skill1"))));
-	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_Skill2"))));
 	buttons.Add(Cast<UButton>(GetWidgetFromName(TEXT("Btn_Evade"))));
 	ok = Cast<UButton>(GetWidgetFromName(TEXT("Btn_OK")));
 
-	text_Forward = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Forward")));
-	text_Backward = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Backward")));
-	text_Left = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Left")));
-	text_Right = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Right")));
-	text_Attack = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Attack")));
-	text_Skill1 = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Skill1")));
-	text_Skill2 = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Skill2")));
-	text_Evade = Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Evade")));
+	textBlocks.Add(Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Forward"))));
+	textBlocks.Add(Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Backward"))));
+	textBlocks.Add(Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Left"))));
+	textBlocks.Add(Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Right"))));
+	textBlocks.Add(Cast<UTextBlock>(GetWidgetFromName(TEXT("BtnText_Evade"))));
 
 	for (UButton* button : buttons)
 	{
@@ -80,6 +66,71 @@ void UCJCustomKeyWidget::NativeTick(const FGeometry &myGeometry, float inDeltaTi
 
 void UCJCustomKeyWidget::Close()
 {
+	const UInputSettings* inputSettings = GetDefault<UInputSettings>();
+
+	UInputComponent* inputComponent = playerController->GetPawn()->InputComponent;
+
+	//inputComponent->ClearActionBindings();
+	TArray<FInputAxisKeyMapping> keyMappings;
+	inputSettings->GetAxisMappingByName("MoveForward", keyMappings);
+	inputSettings->GetAxisMappingByName("MoveRight", keyMappings);
+	for (FInputAxisKeyMapping mapping : keyMappings)
+	{
+		((UInputSettings*)inputSettings)->RemoveAxisMapping(mapping);
+	}
+
+	TArray<FInputActionKeyMapping> actionMappings;
+	inputSettings->GetActionMappingByName("Roll", actionMappings);
+	
+	
+	for (FInputActionKeyMapping action : actionMappings)
+	{
+		((UInputSettings*)inputSettings)->RemoveActionMapping(action);
+	}
+
+	for (int a = 0; a < buttons.Num(); ++a)
+	{
+		switch (a)
+		{
+		case 0:
+		{
+			const FInputAxisKeyMapping axisMapping(FName("MoveForward"), FKey(FName(*textBlocks[a]->GetText().ToString())), 1);
+			((UInputSettings*)inputSettings)->AddAxisMapping(axisMapping);
+		}
+			break;
+		case 1:
+		{
+			const FInputAxisKeyMapping axisMapping(FName("MoveForward"), FKey(FName(*textBlocks[a]->GetText().ToString())), -1);
+			((UInputSettings*)inputSettings)->AddAxisMapping(axisMapping);
+		}
+			break;
+		case 2:
+		{
+			const FInputAxisKeyMapping axisMapping(FName("MoveRight"), FKey(FName(*textBlocks[a]->GetText().ToString())), -1);
+			((UInputSettings*)inputSettings)->AddAxisMapping(axisMapping);
+		}
+		break;
+		case 3:
+		{
+			const FInputAxisKeyMapping axisMapping(FName("MoveRight"), FKey(FName(*textBlocks[a]->GetText().ToString())), 1);
+			((UInputSettings*)inputSettings)->AddAxisMapping(axisMapping);
+		}
+		break;
+		case 4:
+		{
+			const FInputActionKeyMapping actionMapping(
+				FName("Roll"), FKey(FName(*textBlocks[a]->GetText().ToString())),
+				false, false, false, false);
+			((UInputSettings*)inputSettings)->AddActionMapping(actionMapping);
+		}
+		break;
+		default:
+			break;
+		}
+	}
+
+
+
 	playerController->bShowMouseCursor = false;
 	playerController->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
 	RemoveFromParent();
@@ -91,7 +142,6 @@ void UCJCustomKeyWidget::ReceiveKey()
 	FGeometry geometry;
 	FKeyEvent key;
 	OnKeyDown(geometry, key);
-
 }
 
 void UCJCustomKeyWidget::ButtonClicked()
@@ -124,6 +174,7 @@ FReply UCJCustomKeyWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FK
 	{
 		curTextBlock->SetText(key.GetDisplayName());
 	}
+	curTextBlock = nullptr;
 
 	return OnKeyDown(InGeometry, InKeyEvent).NativeReply;
 }

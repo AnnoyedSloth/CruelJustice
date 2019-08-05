@@ -3,3 +3,6 @@
 - Button을 클릭 시 KeyboardFocus가 해당 Button으로 지정됨을 확인함
 - Button을 누를 때 마다 현재 Button의 개수를 순회하며 현재 KeyboardFocus가 true인지 확인
 - 그리하여 어떤 Button이 현재 클릭되었는지 확인함
+
+https://forums.unrealengine.com/development-discussion/c-gameplay-programming/15411-tutorial-how-to-dynamically-bind-input-using-c?34599-Tutorial-How-to-dynamically-bind-input-using-C=
+해당 링크를 통해 동적으로 Input key를 allocate하는 방법을 알 수 있다.

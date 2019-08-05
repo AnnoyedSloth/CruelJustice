@@ -190,6 +190,8 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 {
 	Super::SetupPlayerInputComponent(playerInputComponent);
 
+
+
 	playerInputComponent->BindAxis(TEXT("MoveForward"), this, &ACJPlayer::MoveForward);
 	playerInputComponent->BindAxis(TEXT("MoveRight"), this, &ACJPlayer::MoveRight);
 	playerInputComponent->BindAxis(TEXT("Turn"), this, &ACJPlayer::Turn);

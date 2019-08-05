@@ -43,8 +43,16 @@ void ACJPlayerController::Possess(APawn* pawn)
 
 void ACJPlayerController::MouseCursorToggle()
 {
-	SetInputMode(FInputModeGameAndUI::FInputModeGameAndUI());
-	bShowMouseCursor ? bShowMouseCursor = false : bShowMouseCursor = true;
+	if(bShowMouseCursor) 
+	{
+		bShowMouseCursor = false;
+		SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
+	}
+	else
+	{
+		bShowMouseCursor = true;
+		SetInputMode(FInputModeGameAndUI::FInputModeGameAndUI());
+	}
 }
 
 void ACJPlayerController::TurnOnCustomWidget()
@@ -60,7 +68,6 @@ void ACJPlayerController::TurnOnCustomWidget()
 	else
 	{
 		CJLOG(Warning, TEXT("CustomKeyWidgetClass not found"));
-	}
-	
+	}	
 }
 

@@ -21,7 +21,7 @@ UCLASS()
 class CRUELJUSTICE_API ACJPlayer : public ACJBaseCharacter
 {
 	GENERATED_BODY()
-	
+
 	// For Properties
 private:
 	// Components
