@@ -21,12 +21,6 @@ private:
 	TArray<class UButton*> buttons;
 	class UButton* ok;
 
-	class UTextBlock* text_Forward;
-	class UTextBlock* text_Backward;
-	class UTextBlock* text_Left;
-	class UTextBlock* text_Right;
-	class UTextBlock* text_Evade;
-
 	TArray<class UTextBlock*> textBlocks;
 
 	FString clickedName;

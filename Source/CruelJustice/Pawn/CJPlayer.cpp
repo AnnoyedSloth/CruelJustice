@@ -207,6 +207,7 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 
 	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
 	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
+	playerInputComponent->BindKey(EKeys::K, IE_Pressed, this->playerController, &ACJPlayerController::TurnOnSkillWidget);
 }
 
 void ACJPlayer::MoveForward(float value)
@@ -316,10 +317,10 @@ void ACJPlayer::AttackCheck()
 		debugLifeTime
 	);
 
-	for (FHitResult result : hitResults)
+	for (FHitResult hitResult : hitResults)
 	{
 		FDamageEvent damageEvent;
-		result.Actor->TakeDamage(playerState->attack, damageEvent, playerController, this);
+		hitResult.Actor->TakeDamage(playerState->attack, damageEvent, playerController, this);
 	}
 
 }

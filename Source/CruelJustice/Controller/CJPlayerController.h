@@ -20,6 +20,12 @@ class CRUELJUSTICE_API ACJPlayerController : public APlayerController
 private:
 	TSubclassOf<class UCJCustomKeyWidget> customKeyWidgetClass;
 	class UCJCustomKeyWidget* customKeyWidget;
+
+	TSubclassOf<class UCJShortcut> shortcutWidgetClass;
+	class UCJShortcut* shortcutWidget;
+
+	TSubclassOf<class UCJSkillList> skillListWidgetClass;
+	class UCJSkillList* skillListWidget;
 	
 protected:
 	virtual void BeginPlay() override;
@@ -31,7 +37,9 @@ public:
 	ACJPlayerController();
 	virtual void PostInitializeComponents() override;
 	virtual void Possess(APawn* pawn) override;
+	virtual void UnPossess() override;
 	void MouseCursorToggle();
 	void TurnOnCustomWidget();
+	void TurnOnSkillWidget();
 	
 };

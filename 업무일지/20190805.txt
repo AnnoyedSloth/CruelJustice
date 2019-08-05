@@ -4,5 +4,11 @@
 - Button을 누를 때 마다 현재 Button의 개수를 순회하며 현재 KeyboardFocus가 true인지 확인
 - 그리하여 어떤 Button이 현재 클릭되었는지 확인함
 
+- Axis, Action이 따로 Mapping됨
+- Key와 AxisName/ActionName과의 Mapping, AxisName/ActionName과의 Binding은 서로 다른 개념
+- Key의 Mapping을 바꾸는것은 Binding을 바꾸는것과는 관련이 없다
+
+- UserWidget에서 상속받은 클래스에서 Super class의 함수를 실행하려면 꼭 NativeConstruct에서 Super::NativeConstruct()를 실행해주어야 한다
+
 https://forums.unrealengine.com/development-discussion/c-gameplay-programming/15411-tutorial-how-to-dynamically-bind-input-using-c?34599-Tutorial-How-to-dynamically-bind-input-using-C=
 해당 링크를 통해 동적으로 Input key를 allocate하는 방법을 알 수 있다.
