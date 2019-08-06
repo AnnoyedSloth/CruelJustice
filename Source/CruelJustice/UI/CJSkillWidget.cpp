@@ -16,6 +16,7 @@ void UCJSkillWidget::NativeConstruct()
 
 	//skillButton = Cast<UButton>(GetWidgetFromName(TEXT("Btn_Skill")));
 	skillName = Cast<UTextBlock>(GetWidgetFromName(TEXT("Text_SkillName")));
+	skillName->SetText(FText());
 
 	//skill = NewObject<ACJSkill>(skillPtr);
 
@@ -64,8 +65,7 @@ void UCJSkillWidget::NativeOnDragDetected(const FGeometry& InGeometry,
 	const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
 	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
-
-	//OutOperation->Payload
+	
 	ACJPlayerController* controller = Cast<ACJPlayerController>(GetOwningPlayer());
 	//controller->skillWidget = CreateWidget<UCJSkillWidget>(controller, controller->skillWidgetClass);
 	//controller->skillWidget->AddToViewport();
