@@ -20,6 +20,7 @@ class CRUELJUSTICE_API ACJPlayerController : public APlayerController
 	friend class  UCJCustomKeyWidget;
 	friend class UCJShortcut;
 	friend class UCJSkillList;
+	friend class UCJSkillWidget;
 
 private:
 	TSubclassOf<class UCJCustomKeyWidget> customKeyWidgetClass;
@@ -30,6 +31,9 @@ private:
 
 	TSubclassOf<class UCJSkillList> skillListWidgetClass;
 	class UCJSkillList* skillListWidget;
+
+	TSubclassOf<class UCJSkillWidget> skillWidgetClass;
+	class UCJSkillWidget* skillWidget;
 	
 protected:
 	virtual void BeginPlay() override;

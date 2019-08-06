@@ -16,13 +16,21 @@ class CRUELJUSTICE_API UCJSkillList : public UUserWidget
 	GENERATED_BODY()
 	
 private:
-	TArray<class UButton*> skills;
-
+	TArray<class UCJSkillWidget*> skills;
+	class UButton* closeButton;
 
 public:
 	virtual void NativeConstruct() override;
 
 	virtual FReply NativeOnKeyDown(
 		const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
-	void SetController(ACJPlayerController* ownerController);
+
+	UFUNCTION()
+	void Close();
+
+	UFUNCTION()
+		void Skill1();
+
+	UFUNCTION()
+		void Skill2();
 };

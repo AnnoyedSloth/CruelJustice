@@ -5,6 +5,7 @@
 #include "UI/CJCustomKeyWidget.h"
 #include "UI/CJShortcut.h"
 #include "UI/CJSkillList.h"
+#include "UI/CJSkillWidget.h"
 #include "CJPlayerState.h"
 #include "ConstructorHelpers.h"
 
@@ -31,7 +32,12 @@ ACJPlayerController::ACJPlayerController()
 		skillListWidgetClass = UI_SKILLLIST.Class;
 	}
 
-
+	static ConstructorHelpers::FClassFinder<UCJSkillWidget>
+		WIDGET_SKILL(TEXT("/Game/UI/Skill.Skill_C"));
+	if (WIDGET_SKILL.Succeeded())
+	{
+		skillWidgetClass = WIDGET_SKILL.Class;
+	}
 
 }
 
@@ -63,7 +69,7 @@ void ACJPlayerController::Possess(APawn* pawn)
 void ACJPlayerController::UnPossess()
 {
 	Super::UnPossess();
-	shortcutWidget->RemoveFromParent();
+	if(shortcutWidget) shortcutWidget->RemoveFromParent();
 	CJLOG(Warning, TEXT("Unpossess called"));
 }
 

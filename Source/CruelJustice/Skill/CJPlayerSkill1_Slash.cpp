@@ -20,6 +20,8 @@ ACJPlayerSkill1_Slash::ACJPlayerSkill1_Slash()
 		PS_SKILL(TEXT("/Game/ParagonKwang/FX/Particles/Abilities/LightStrike/FX/P_Kwang_LightStrike_Burst.P_Kwang_LightStrike_Burst"));
 	CJCHECK(PS_SKILL.Succeeded());
 
+	skillName = FText::FromString("Slash");
+
 	skillParticle->SetTemplate(PS_SKILL.Object);
 	skillParticle->bAutoActivate = false;
 	skillParticle->SetRelativeLocation(GetActorLocation() + FVector::ForwardVector * 200);

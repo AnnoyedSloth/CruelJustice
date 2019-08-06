@@ -13,6 +13,8 @@ ACJPlayerSkill2_Fireball::ACJPlayerSkill2_Fireball()
 	CJCHECK(AM_SKILL2.Succeeded());
 	skillMontage = AM_SKILL2.Object;
 
+	skillName = FText::FromString("Fireball");
+
 	InitialLifeSpan = 3.0f;
 
 }

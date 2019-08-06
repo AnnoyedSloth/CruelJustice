@@ -23,6 +23,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = Status)
 	class ACJPlayer* skillInstigator;
+
+	UPROPERTY(VisibleAnywhere, Category = Status)
+		FText skillName;
 	
 	class UCJPlayerAnimInstance* animInstance;
 
@@ -45,4 +48,5 @@ public:
 	virtual void InitSkill(ACJPlayer* owner);
 	virtual void PlaySkill();
 	virtual void ApplyImpact();
+	FText GetSkillName() const { return skillName; }
 };
