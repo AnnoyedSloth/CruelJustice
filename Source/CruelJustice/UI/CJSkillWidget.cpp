@@ -42,19 +42,21 @@ void UCJSkillWidget::NativeTick(const FGeometry& geometry, float deltaTime)
 
 FReply UCJSkillWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+	FEventReply reply;
+	reply.NativeReply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 
 	//CJLOG(Warning, TEXT("Click detected"));
-	//UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
 	
-	UDragDropOperation* operation;
-	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+	//UDragDropOperation* operation;
+	if (InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
+
+		reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
 		//FReply::Handled().DetectDrag(this, EKeys::LeftMouseButton);
-		NativeOnDragDetected(InGeometry, InMouseEvent, operation);
+		//NativeOnDragDetected(InGeometry, InMouseEvent, operation);
 	}
 
-	return OnPreviewMouseButtonDown(InGeometry, InMouseEvent).NativeReply;
+	return reply.NativeReply;
 
 }
 
@@ -71,16 +73,17 @@ void UCJSkillWidget::NativeOnDragDetected(const FGeometry& InGeometry,
 	{
 		controller->skillWidget = CreateWidget<UCJSkillWidget>(GetOwningPlayer(), controller->skillWidgetClass);
 		//DuplicateObject(this, controller->skillWidget);
-		controller->skillWidget->AddToViewport();
+		//controller->skillWidget->AddToViewport();
+		UDragDropOperation* oper = NewObject<UDragDropOperation>();
+		OutOperation = oper;
+		OutOperation->DefaultDragVisual = controller->skillWidget;
 	
 	}
 	else
 	{
 		CJLOG(Warning, TEXT("Controller missing"));
 	}
-	OutOperation->DefaultDragVisual = controller->skillWidget;
 
 	CJLOG(Warning, TEXT("Drag detected"));
 
-	return OnDragDetected(InGeometry, InMouseEvent, OutOperation);
 }
