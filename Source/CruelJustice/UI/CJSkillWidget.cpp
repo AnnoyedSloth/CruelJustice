@@ -130,7 +130,7 @@ bool UCJSkillWidget::NativeOnDrop(const FGeometry& InGeometry,
 	this->skillName->SetText(operation->name);
 	this->SetupSkillInfo(operation->skill);
 
-	CJLOG(Warning, TEXT("%s"), *operation->name.ToString());
+	//CJLOG(Warning, TEXT("%s"), *operation->name.ToString());
 	//CJLOG(Warning, TEXT("%s"), *skillName->GetText().ToString());
 	//CJLOG(Warning, TEXT("%s"), *this->skillName->GetText().ToString());
 
@@ -142,12 +142,12 @@ void UCJSkillWidget::Play()
 	ACJPlayer* player = Cast<ACJPlayer>(GetOwningPlayerPawn());
 	if (!player)
 	{
-		CJLOG(Warning, TEXT("Player missing"));
+		//CJLOG(Warning, TEXT("Player missing"));
 		return;
 	}
 	if (!skillPtr)
 	{
-		CJLOG(Warning, TEXT("SkillPtr missing"));
+		//CJLOG(Warning, TEXT("SkillPtr missing"));
 		return;
 	}
 
