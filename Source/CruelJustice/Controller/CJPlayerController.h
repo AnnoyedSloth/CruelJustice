@@ -49,5 +49,7 @@ public:
 	void MouseCursorToggle();
 	void TurnOnCustomWidget();
 	void TurnOnSkillWidget();
+
+	UCJShortcut* GetShortcutWidget() { return shortcutWidget; }
 	
 };

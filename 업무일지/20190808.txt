@@ -1,0 +1,1 @@
+- UDiwgetBlueprintLibrary::DetectDragIfPressed를 이용해 NativeOnDragDetected를 사용 가능

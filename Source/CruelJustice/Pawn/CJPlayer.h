@@ -121,6 +121,7 @@ public:
 	void Attack();
 	void AttackEnd();
 
+	void SetIsAttacking(bool attacking) { isAttacking = attacking; }
 	bool GetIsAttacking() const { return isAttacking; }
 
 	void AttackCheck();
@@ -129,9 +130,11 @@ public:
 	UFUNCTION()
 		void Dodge();
 
-	void Skill1();
-
-	void Skill2();
+	void Key1();
+	void Key2();
+	void Key3();
+	void Key4();
+	void Key5();
 
 	// Levelup
 	UFUNCTION()

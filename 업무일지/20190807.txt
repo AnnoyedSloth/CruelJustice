@@ -1,0 +1,29 @@
+Fatal error!
+
+Unhandled Exception: EXCEPTION_ACCESS_VIOLATION reading address 0x00000000
+
+0x0000000033DBABAD UE4Editor-CruelJustice-6033.dll!UCJSkillWidget::SetupSkillInfo() [c:\users\soohwan\documents\crueljustice\source\crueljustice\ui\cjskillwidget.cpp:80]
+0x0000000033DBA1C0 UE4Editor-CruelJustice-6033.dll!UCJSkillWidget::NativeOnDragDetected() [c:\users\soohwan\documents\crueljustice\source\crueljustice\ui\cjskillwidget.cpp:102]
+0x000000002AD9186E UE4Editor-UMG.dll!SObjectWidget::OnDragDetected() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\umg\private\slate\sobjectwidget.cpp:314]
+0x000000002CFB50EE UE4Editor-Slate.dll!<lambda_3d2f0c0de9bfb1f26dd3fbfeef226ad5>::operator()() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\slate\private\framework\application\slateapplication.cpp:5584]
+0x000000002CF87B9D UE4Editor-Slate.dll!FEventRouter::Route<FReply,FEventRouter::FDirectPolicy,FPointerEvent,<lambda_3d2f0c0de9bfb1f26dd3fbfeef226ad5> >() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\slate\private\framework\application\slateapplication.cpp:266]
+0x000000002D01E128 UE4Editor-Slate.dll!FSlateApplication::RoutePointerMoveEvent() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\slate\private\framework\application\slateapplication.cpp:5582]
+0x000000002D008757 UE4Editor-Slate.dll!FSlateApplication::ProcessMouseMoveEvent() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\slate\private\framework\application\slateapplication.cpp:6142]
+0x000000002CFFB197 UE4Editor-Slate.dll!FSlateApplication::OnMouseMove() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\slate\private\framework\application\slateapplication.cpp:6076]
+0x000000003EEDE4EE UE4Editor-ApplicationCore.dll!FWindowsApplication::ProcessDeferredMessage() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\applicationcore\private\windows\windowsapplication.cpp:1764]
+0x000000003EED1B78 UE4Editor-ApplicationCore.dll!FWindowsApplication::DeferMessage() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\applicationcore\private\windows\windowsapplication.cpp:2172]
+0x000000003EEE052C UE4Editor-ApplicationCore.dll!FWindowsApplication::ProcessMessage() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\applicationcore\private\windows\windowsapplication.cpp:889]
+0x000000003EECD679 UE4Editor-ApplicationCore.dll!FWindowsApplication::AppWndProc() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\applicationcore\private\windows\windowsapplication.cpp:726]
+0x000000007EACB85D USER32.dll!UnknownFunction []
+0x000000007EACB1EF USER32.dll!UnknownFunction []
+0x000000003EEE1666 UE4Editor-ApplicationCore.dll!FWindowsPlatformApplicationMisc::PumpMessages() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\applicationcore\private\windows\windowsplatformapplicationmisc.cpp:129]
+0x00000000C7445475 UE4Editor.exe!FEngineLoop::Tick() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\launch\private\launchengineloop.cpp:3263]
+0x00000000C7456BD0 UE4Editor.exe!GuardedMain() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\launch\private\launch.cpp:166]
+0x00000000C7456C4A UE4Editor.exe!GuardedMainWrapper() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\launch\private\windows\launchwindows.cpp:144]
+0x00000000C7464177 UE4Editor.exe!WinMain() [d:\build\++ue4+release-4.19+compile\sync\engine\source\runtime\launch\private\windows\launchwindows.cpp:223]
+0x00000000C7465B87 UE4Editor.exe!__scrt_common_main_seh() [f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl:253]
+0x000000007F7F1FE4 KERNEL32.DLL!UnknownFunction []
+0x000000008104EFC1 ntdll.dll!UnknownFunction []
+0x000000008104EFC1 ntdll.dll!UnknownFunction []
+
+¤µ¤²

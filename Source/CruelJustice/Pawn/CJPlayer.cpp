@@ -8,6 +8,8 @@
 #include "Skill/CJPlayerSkill2_Fireball.h"
 #include "CJPlayerState.h"
 #include "CJGameInstance.h"
+#include "UI/CJShortcut.h"
+#include "UI/CJSkillWidget.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
 
@@ -202,8 +204,11 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ACJPlayer::AttackEnd);
 	playerInputComponent->BindAction(TEXT("Roll"), IE_Pressed, this, &ACJPlayer::Dodge);
 
-	playerInputComponent->BindAction(TEXT("Skill1_Slash"), IE_Pressed, this, &ACJPlayer::Skill1);
-	playerInputComponent->BindAction(TEXT("Skill2_Fireball"), IE_Pressed, this, &ACJPlayer::Skill2);
+	playerInputComponent->BindAction(TEXT("Key1"), IE_Pressed, this, &ACJPlayer::Key1);
+	playerInputComponent->BindAction(TEXT("Key2"), IE_Pressed, this, &ACJPlayer::Key2);
+	playerInputComponent->BindAction(TEXT("Key3"), IE_Pressed, this, &ACJPlayer::Key3);
+	playerInputComponent->BindAction(TEXT("Key4"), IE_Pressed, this, &ACJPlayer::Key4);
+	playerInputComponent->BindAction(TEXT("Key5"), IE_Pressed, this, &ACJPlayer::Key5);
 
 	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
 	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
@@ -325,24 +330,29 @@ void ACJPlayer::AttackCheck()
 
 }
 
-void ACJPlayer::Skill1()
+void ACJPlayer::Key1()
 {
-	if (isAttacking) return;
-	isAttacking = true;
-	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill1_Slash>(
-		this->GetActorLocation(), this->GetActorRotation());
-	curSkill->InitSkill(this);
-	curSkill->PlaySkill();
+	playerController->GetShortcutWidget()->UseShortcut(1);
 }
 
-void ACJPlayer::Skill2()
+void ACJPlayer::Key2()
 {
-	if (isAttacking) return;
-	isAttacking = true;
-	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill2_Fireball>(
-		this->GetActorLocation(), this->GetActorRotation());
-	curSkill->InitSkill(this);
-	curSkill->PlaySkill();
+	playerController->GetShortcutWidget()->UseShortcut(2);
+}
+
+void ACJPlayer::Key3()
+{
+	playerController->GetShortcutWidget()->UseShortcut(3);
+}
+
+void ACJPlayer::Key4()
+{
+	playerController->GetShortcutWidget()->UseShortcut(4);
+}
+
+void ACJPlayer::Key5()
+{
+	playerController->GetShortcutWidget()->UseShortcut(5);
 }
 
 void ACJPlayer::AddExp(int32 incomeExp)
