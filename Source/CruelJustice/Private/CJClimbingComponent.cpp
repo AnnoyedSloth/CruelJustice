@@ -171,7 +171,7 @@ bool UCJClimbingComponent::HipToLedge()
 {
 	return UKismetMathLibrary::InRange_FloatFloat(
 		player->GetMesh()->GetSocketLocation(pelvisSocket).Z - heightLocation.Z,
-		-50.0f,
+		-70.0f,
 		0,
 		true,
 		true

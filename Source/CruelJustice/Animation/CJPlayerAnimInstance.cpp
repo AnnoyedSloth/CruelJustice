@@ -130,5 +130,6 @@ void UCJPlayerAnimInstance::AnimNotify_Skill2()
 void UCJPlayerAnimInstance::AnimNotify_ClimbingEnd()
 {
 	auto character = Cast<ACJPlayer>(TryGetPawnOwner());
+	character->SetActorRotation(FRotator(0, character->GetActorRotation().Yaw, character->GetActorRotation().Roll));
 	character->UnGrab();
 }
