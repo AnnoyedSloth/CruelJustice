@@ -40,6 +40,9 @@ private:
 	UPROPERTY()
 		UParticleSystemComponent* lvUpParticle;
 
+	UPROPERTY(VisibleAnywhere, Category = Ledge, meta = (AllowPrivateAccess = true))
+		class UCJClimbingComponent* climbingComponent;
+
 	// Attack related
 	bool isAttacking;
 
@@ -135,6 +138,8 @@ public:
 	void Key3();
 	void Key4();
 	void Key5();
+
+	void Grab();
 
 	// Levelup
 	UFUNCTION()

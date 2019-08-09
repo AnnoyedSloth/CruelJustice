@@ -10,6 +10,7 @@
 #include "CJGameInstance.h"
 #include "UI/CJShortcut.h"
 #include "UI/CJSkillWidget.h"
+#include "CJClimbingComponent.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
 
@@ -42,44 +43,7 @@ ACJPlayer::ACJPlayer()
 		lvUpParticle->bAutoActivate = false;
 	}
 	
-	//static ConstructorHelpers::FClassFinder<ACJSkill>
-	//	SKILL1(TEXT("/Script/CruelJustice.CJPlayerSkill1_Slash"));
-	//if (SKILL1.Succeeded())
-	//{
-	//	CJLOG(Warning, TEXT("Skill1 found"));
-	//	skills.Add(Cast<ACJPlayerSkill1_Slash>(SKILL1.Class));
-	//}
-	//else
-	//{
-	//	CJLOG(Warning, TEXT("Skill1 not found"));
-	//}
-
-	//static ConstructorHelpers::FClassFinder<ACJSkill>
-	//	SKILL2(TEXT("/Script/CruelJustice.CJPlayerSkill2_Fireball"));
-	//if (SKILL2.Succeeded())
-	//{
-	//	CJLOG(Warning, TEXT("Skill2 found"));
-	//	ACJPlayerSkill2_Fireball* fireball = Cast<ACJPlayerSkill2_Fireball>(*SKILL2.Class);
-	//	if (fireball)
-	//	{
-	//		CJLOG(Warning, TEXT("Skill2 found and Casting succeeded"));
-	//	}
-	//	else
-	//	{
-	//		CJLOG(Warning, TEXT("Skill2 found and Casting failed"));
-	//	}
-	//	//skills.Add(Cast<ACJPlayerSkill2_Fireball>(SKILL2.Class));
-	//}
-	//else
-	//{
-	//	CJLOG(Warning, TEXT("Skill2 not found"));
-	//}
-
-
-
-
-	//skills.Add(Cast<ACJPlayerSkill1_Slash>(ACJPlayerSkill1_Slash::StaticClass()));
-	//skills.Add(Cast<ACJPlayerSkill2_Fireball>(ACJPlayerSkill2_Fireball::StaticClass()));
+	climbingComponent = CreateDefaultSubobject<UCJClimbingComponent>(TEXT("ClimbingComponeng"));
 
 
 	// Setup hierarchy structure
@@ -87,6 +51,7 @@ ACJPlayer::ACJPlayer()
 	camera->SetupAttachment(springArm);
 	mesh->SetupAttachment(RootComponent);
 	lvUpParticle->SetupAttachment(RootComponent);
+	climbingComponent->SetupAttachment(RootComponent);
 
 	// Initialize created component's specific options
 	springArm->TargetArmLength = 400.0f;
@@ -213,6 +178,7 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
 	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
 	playerInputComponent->BindKey(EKeys::K, IE_Pressed, this, &ACJPlayer::TurnOnSkillWidget);
+	playerInputComponent->BindKey(EKeys::F, IE_Pressed, this, &ACJPlayer::Grab);
 }
 
 void ACJPlayer::MoveForward(float value)
@@ -407,4 +373,9 @@ void ACJPlayer::TurnOnKeyUI()
 void ACJPlayer::TurnOnSkillWidget()
 {
 	if (playerController) playerController->TurnOnSkillWidget();
+}
+
+void ACJPlayer::Grab()
+{
+	//climbingComponent->GrabLedge();
 }
