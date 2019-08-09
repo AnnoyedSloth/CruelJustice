@@ -4,6 +4,7 @@
 #include "Pawn/CJPlayer.h"
 #include "Animation/CJPlayerAnimInstance.h"
 #include "DrawDebugHelpers.h"
+#include "ConstructorHelpers.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -14,6 +15,13 @@ UCJClimbingComponent::UCJClimbingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>
+		AM_CLIMB(TEXT("/Game/AM_Climb.AM_Climb"));
+	if (AM_CLIMB.Succeeded())
+	{
+		climbingMontage = AM_CLIMB.Object;
+	}
 
 	pelvisSocket = "PelvisSocket";
 	isHanging = false;
@@ -55,7 +63,7 @@ void UCJClimbingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	ForwardTracer();
-	HeightTracer();
+	//HeightTracer();
 	// ...
 }
 
@@ -138,10 +146,11 @@ void UCJClimbingComponent::HeightTracer()
 	if (HipToLedge())
 	{
 		//CJLOG(Warning, TEXT("Hip to ledge enabled"));
-		//if (isClimbingLedge)
-		//{
+		if (!isHanging)
+		{
 			GrabLedge();
-		//}
+			isClimbingLedge;
+		}
 	}
 
 	FColor color = result ? FColor::Green : FColor::Red;
@@ -177,6 +186,7 @@ void UCJClimbingComponent::GrabLedge()
 	animInstance->GrabWall(true);
 	player->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 	isHanging = true;
+	isClimbingLedge = false;
 
 	FVector targetLoc = FVector(wallNormal.X + wallLocation.X, wallNormal.Y + wallLocation.Y + 35.0f,
 		heightLocation.Z - 120.0f);
@@ -207,4 +217,19 @@ void UCJClimbingComponent::StopPlayerAction()
 {
 	CJLOG(Warning, TEXT("StopPlayerAction Activated"));
 	player->GetCharacterMovement()->StopMovementImmediately();
+}
+
+void UCJClimbingComponent::UnGrab()
+{
+	player->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	player->GetAnimInstance()->GrabWall(false);
+	isHanging = false;
+	isClimbingLedge = false;
+}
+
+void UCJClimbingComponent::ClimbLedge()
+{
+	player->GetAnimInstance()->PlayMontage(climbingMontage, 1.0f);
+	isClimbingLedge = false;
+	//isHanging = false;
 }

@@ -23,10 +23,11 @@ private:
 	bool isClimbingLedge;
 	bool isHanging;
 
+	UAnimMontage* climbingMontage;
+
 private:
 
 	void ForwardTracer();
-	void HeightTracer();
 
 	bool HipToLedge();
 
@@ -47,6 +48,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void GrabLedge();
+	void HeightTracer();
 
+
+	void GrabLedge();
+	void UnGrab();
+	void ClimbLedge();
+
+	bool GetIsHanging() { return isHanging; }
+	bool GetIsClimbing() { return isClimbingLedge; }
 };

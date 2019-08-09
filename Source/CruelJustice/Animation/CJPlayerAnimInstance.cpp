@@ -126,3 +126,9 @@ void UCJPlayerAnimInstance::AnimNotify_Skill2()
 {
 	skillDelegate2.Broadcast();
 }
+
+void UCJPlayerAnimInstance::AnimNotify_ClimbingEnd()
+{
+	auto character = Cast<ACJPlayer>(TryGetPawnOwner());
+	character->UnGrab();
+}

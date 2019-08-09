@@ -68,6 +68,9 @@ private:
 	UFUNCTION()
 		void AnimNotify_Skill2();
 
+	UFUNCTION()
+		void AnimNotify_ClimbingEnd();
+
 protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
 

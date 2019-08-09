@@ -164,7 +164,7 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAxis(TEXT("Turn"), this, &ACJPlayer::Turn);
 	playerInputComponent->BindAxis(TEXT("LookUp"), this, &ACJPlayer::LookUp);
 
-	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACJPlayer::Jump);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ACJPlayer::Attack);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ACJPlayer::AttackEnd);
 	playerInputComponent->BindAction(TEXT("Roll"), IE_Pressed, this, &ACJPlayer::Dodge);
@@ -178,16 +178,18 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
 	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
 	playerInputComponent->BindKey(EKeys::K, IE_Pressed, this, &ACJPlayer::TurnOnSkillWidget);
-	playerInputComponent->BindKey(EKeys::F, IE_Pressed, this, &ACJPlayer::Grab);
+	playerInputComponent->BindKey(EKeys::F, IE_Pressed, this, &ACJPlayer::UnGrab);
 }
 
 void ACJPlayer::MoveForward(float value)
 {
+	if (climbingComponent->GetIsHanging()) return;
 	if(!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), value);
 }
 
 void ACJPlayer::MoveRight(float value)
 {
+	if (climbingComponent->GetIsHanging()) return;
 	if (!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), value);
 }
 
@@ -199,6 +201,14 @@ void ACJPlayer::Turn(float value)
 void ACJPlayer::LookUp(float value)
 {
 	AddControllerPitchInput(value);
+}
+
+void ACJPlayer::Jump()
+{
+	if (climbingComponent->GetIsHanging()) climbingComponent->ClimbLedge();
+	else Super::Jump();
+
+	if (GetCharacterMovement()->IsFalling()) climbingComponent->HeightTracer();
 }
 
 void ACJPlayer::Attack()
@@ -375,7 +385,7 @@ void ACJPlayer::TurnOnSkillWidget()
 	if (playerController) playerController->TurnOnSkillWidget();
 }
 
-void ACJPlayer::Grab()
+void ACJPlayer::UnGrab()
 {
-	//climbingComponent->GrabLedge();
+	climbingComponent->UnGrab();
 }

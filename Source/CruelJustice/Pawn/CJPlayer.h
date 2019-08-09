@@ -97,6 +97,8 @@ protected:
 	void ToggleCursor();
 	void TurnOnKeyUI();
 	void TurnOnSkillWidget();
+
+	virtual void Jump() override;
 	
 	// For Properties
 public:
@@ -139,7 +141,7 @@ public:
 	void Key4();
 	void Key5();
 
-	void Grab();
+	void UnGrab();
 
 	// Levelup
 	UFUNCTION()
