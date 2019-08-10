@@ -26,7 +26,6 @@ ACJPlayerSkill1_Slash::ACJPlayerSkill1_Slash()
 	skillParticle->bAutoActivate = false;
 	skillParticle->SetRelativeLocation(GetActorLocation() + FVector::ForwardVector * 200);
 
-	InitialLifeSpan = 3.0f;
 
 	attackRange = 200.0f;
 	attackRadius = 200.0f;
@@ -41,6 +40,8 @@ ACJPlayerSkill1_Slash::ACJPlayerSkill1_Slash()
 
 void ACJPlayerSkill1_Slash::PlaySkill()
 {
+	SetLifeSpan(3.0f);
+	if (!animInstance) return;
 	CJLOG(Warning, TEXT("Skill1 Play Start"));
 	CJCHECK(animInstance);
 	animInstance->skillDelegate1.AddLambda([this]()-> void {
@@ -51,6 +52,8 @@ void ACJPlayerSkill1_Slash::PlaySkill()
 
 void ACJPlayerSkill1_Slash::ApplyImpact()
 {
+	if (!skillInstigator) return;
+
 	skillParticle->Activate(true);
 
 	TSubclassOf<UCJCameraShake> cameraShake = UCJCameraShake::StaticClass();

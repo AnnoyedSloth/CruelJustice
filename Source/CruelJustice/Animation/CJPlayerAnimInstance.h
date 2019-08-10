@@ -35,6 +35,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		float accel;
 
+
 	// 현재 공격연계기 진행중인지 확인
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
 		bool isAttacking;
@@ -67,8 +68,15 @@ private:
 	UFUNCTION()
 		void AnimNotify_Skill2();
 
+	UFUNCTION()
+		void AnimNotify_ClimbingEnd();
+
 protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ledge, meta = (AllowPrivateAccess = true))
+		bool canGrab;
 
 public:
 	UCJPlayerAnimInstance();
@@ -104,5 +112,8 @@ public:
 	FOnSkillDelegate1 skillDelegate1;
 	FOnSkillDelegate2 skillDelegate2;
 	FOnSkillDelegate3 skillDelegate3;
+
+	UFUNCTION()
+		void GrabWall(bool isGrab) { canGrab = isGrab; }
 	
 };

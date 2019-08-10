@@ -15,12 +15,12 @@ ACJPlayerSkill2_Fireball::ACJPlayerSkill2_Fireball()
 
 	skillName = FText::FromString("Fireball");
 
-	InitialLifeSpan = 3.0f;
-
 }
 
 void ACJPlayerSkill2_Fireball::PlaySkill()
 {
+	SetLifeSpan(3.0f);
+	if (!animInstance) return;
 	CJCHECK(animInstance);
 	animInstance->skillDelegate2.AddLambda([this]()-> void {
 		ApplyImpact();
@@ -30,6 +30,7 @@ void ACJPlayerSkill2_Fireball::PlaySkill()
 
 void ACJPlayerSkill2_Fireball::ApplyImpact()
 {
+	if (!animInstance) return;
 	FRotator spawnRotation = skillInstigator->GetActorRotation();
 	//spawnRotation.RotateVector(FVector(100.0f, 0.0f, 0.0f));
 	spawnRotation.Pitch = 50.0f;

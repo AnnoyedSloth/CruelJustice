@@ -13,6 +13,8 @@ UCLASS()
 class CRUELJUSTICE_API UCJSkillWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+	friend class UCJSkillList;
 	
 public:
 	//class UButton* skillButton;
@@ -36,5 +38,10 @@ public:
 		const FGeometry& InGeometry, const FPointerEvent& InMouseEvent,
 		UDragDropOperation*& OutOperation) override;
 
+	virtual bool NativeOnDrop(const FGeometry& InGeometry,
+		const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation);
+
+	void SetupSkillInfo(ACJSkill* otherSkill);
+	void Play();
 
 };

@@ -8,6 +8,9 @@
 #include "Skill/CJPlayerSkill2_Fireball.h"
 #include "CJPlayerState.h"
 #include "CJGameInstance.h"
+#include "UI/CJShortcut.h"
+#include "UI/CJSkillWidget.h"
+#include "CJClimbingComponent.h"
 #include "ConstructorHelpers.h"
 #include "DrawDebugHelpers.h"
 
@@ -40,44 +43,7 @@ ACJPlayer::ACJPlayer()
 		lvUpParticle->bAutoActivate = false;
 	}
 	
-	//static ConstructorHelpers::FClassFinder<ACJSkill>
-	//	SKILL1(TEXT("/Script/CruelJustice.CJPlayerSkill1_Slash"));
-	//if (SKILL1.Succeeded())
-	//{
-	//	CJLOG(Warning, TEXT("Skill1 found"));
-	//	skills.Add(Cast<ACJPlayerSkill1_Slash>(SKILL1.Class));
-	//}
-	//else
-	//{
-	//	CJLOG(Warning, TEXT("Skill1 not found"));
-	//}
-
-	//static ConstructorHelpers::FClassFinder<ACJSkill>
-	//	SKILL2(TEXT("/Script/CruelJustice.CJPlayerSkill2_Fireball"));
-	//if (SKILL2.Succeeded())
-	//{
-	//	CJLOG(Warning, TEXT("Skill2 found"));
-	//	ACJPlayerSkill2_Fireball* fireball = Cast<ACJPlayerSkill2_Fireball>(*SKILL2.Class);
-	//	if (fireball)
-	//	{
-	//		CJLOG(Warning, TEXT("Skill2 found and Casting succeeded"));
-	//	}
-	//	else
-	//	{
-	//		CJLOG(Warning, TEXT("Skill2 found and Casting failed"));
-	//	}
-	//	//skills.Add(Cast<ACJPlayerSkill2_Fireball>(SKILL2.Class));
-	//}
-	//else
-	//{
-	//	CJLOG(Warning, TEXT("Skill2 not found"));
-	//}
-
-
-
-
-	//skills.Add(Cast<ACJPlayerSkill1_Slash>(ACJPlayerSkill1_Slash::StaticClass()));
-	//skills.Add(Cast<ACJPlayerSkill2_Fireball>(ACJPlayerSkill2_Fireball::StaticClass()));
+	climbingComponent = CreateDefaultSubobject<UCJClimbingComponent>(TEXT("ClimbingComponeng"));
 
 
 	// Setup hierarchy structure
@@ -85,6 +51,7 @@ ACJPlayer::ACJPlayer()
 	camera->SetupAttachment(springArm);
 	mesh->SetupAttachment(RootComponent);
 	lvUpParticle->SetupAttachment(RootComponent);
+	climbingComponent->SetupAttachment(RootComponent);
 
 	// Initialize created component's specific options
 	springArm->TargetArmLength = 400.0f;
@@ -197,26 +164,32 @@ void ACJPlayer::SetupPlayerInputComponent(UInputComponent* playerInputComponent)
 	playerInputComponent->BindAxis(TEXT("Turn"), this, &ACJPlayer::Turn);
 	playerInputComponent->BindAxis(TEXT("LookUp"), this, &ACJPlayer::LookUp);
 
-	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACharacter::Jump);
+	playerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &ACJPlayer::Jump);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &ACJPlayer::Attack);
 	playerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &ACJPlayer::AttackEnd);
 	playerInputComponent->BindAction(TEXT("Roll"), IE_Pressed, this, &ACJPlayer::Dodge);
 
-	playerInputComponent->BindAction(TEXT("Skill1_Slash"), IE_Pressed, this, &ACJPlayer::Skill1);
-	playerInputComponent->BindAction(TEXT("Skill2_Fireball"), IE_Pressed, this, &ACJPlayer::Skill2);
+	playerInputComponent->BindAction(TEXT("Key1"), IE_Pressed, this, &ACJPlayer::Key1);
+	playerInputComponent->BindAction(TEXT("Key2"), IE_Pressed, this, &ACJPlayer::Key2);
+	playerInputComponent->BindAction(TEXT("Key3"), IE_Pressed, this, &ACJPlayer::Key3);
+	playerInputComponent->BindAction(TEXT("Key4"), IE_Pressed, this, &ACJPlayer::Key4);
+	playerInputComponent->BindAction(TEXT("Key5"), IE_Pressed, this, &ACJPlayer::Key5);
 
 	playerInputComponent->BindKey(EKeys::LeftAlt, IE_Pressed, this, &ACJPlayer::ToggleCursor);
 	playerInputComponent->BindKey(EKeys::P, IE_Pressed, this, &ACJPlayer::TurnOnKeyUI);
 	playerInputComponent->BindKey(EKeys::K, IE_Pressed, this, &ACJPlayer::TurnOnSkillWidget);
+	playerInputComponent->BindKey(EKeys::F, IE_Pressed, this, &ACJPlayer::UnGrab);
 }
 
 void ACJPlayer::MoveForward(float value)
 {
+	if (climbingComponent->GetIsHanging()) return;
 	if(!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::X), value);
 }
 
 void ACJPlayer::MoveRight(float value)
 {
+	if (climbingComponent->GetIsHanging()) return;
 	if (!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), value);
 }
 
@@ -228,6 +201,14 @@ void ACJPlayer::Turn(float value)
 void ACJPlayer::LookUp(float value)
 {
 	AddControllerPitchInput(value);
+}
+
+void ACJPlayer::Jump()
+{
+	if (climbingComponent->GetIsHanging()) climbingComponent->ClimbLedge();
+	else Super::Jump();
+
+	if (GetCharacterMovement()->IsFalling()) climbingComponent->HeightTracer();
 }
 
 void ACJPlayer::Attack()
@@ -325,24 +306,29 @@ void ACJPlayer::AttackCheck()
 
 }
 
-void ACJPlayer::Skill1()
+void ACJPlayer::Key1()
 {
-	if (isAttacking) return;
-	isAttacking = true;
-	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill1_Slash>(
-		this->GetActorLocation(), this->GetActorRotation());
-	curSkill->InitSkill(this);
-	curSkill->PlaySkill();
+	playerController->GetShortcutWidget()->UseShortcut(1);
 }
 
-void ACJPlayer::Skill2()
+void ACJPlayer::Key2()
 {
-	if (isAttacking) return;
-	isAttacking = true;
-	curSkill = GetWorld()->SpawnActor<ACJPlayerSkill2_Fireball>(
-		this->GetActorLocation(), this->GetActorRotation());
-	curSkill->InitSkill(this);
-	curSkill->PlaySkill();
+	playerController->GetShortcutWidget()->UseShortcut(2);
+}
+
+void ACJPlayer::Key3()
+{
+	playerController->GetShortcutWidget()->UseShortcut(3);
+}
+
+void ACJPlayer::Key4()
+{
+	playerController->GetShortcutWidget()->UseShortcut(4);
+}
+
+void ACJPlayer::Key5()
+{
+	playerController->GetShortcutWidget()->UseShortcut(5);
 }
 
 void ACJPlayer::AddExp(int32 incomeExp)
@@ -397,4 +383,9 @@ void ACJPlayer::TurnOnKeyUI()
 void ACJPlayer::TurnOnSkillWidget()
 {
 	if (playerController) playerController->TurnOnSkillWidget();
+}
+
+void ACJPlayer::UnGrab()
+{
+	climbingComponent->UnGrab();
 }

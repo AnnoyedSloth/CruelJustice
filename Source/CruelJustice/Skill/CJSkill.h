@@ -21,13 +21,10 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, Category = Status)
-	class ACJPlayer* skillInstigator;
 
 	UPROPERTY(VisibleAnywhere, Category = Status)
 		FText skillName;
 	
-	class UCJPlayerAnimInstance* animInstance;
 
 	UAnimMontage* skillMontage;
 
@@ -42,11 +39,16 @@ protected:
 
 
 public:	
+
+	UPROPERTY(VisibleAnywhere, Category = Status)
+		class ACJPlayer* skillInstigator;
+
+	class UCJPlayerAnimInstance* animInstance;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void InitSkill(ACJPlayer* owner);
 	virtual void PlaySkill();
 	virtual void ApplyImpact();
-	FText GetSkillName() const { return skillName; }
+	virtual FText GetSkillName() const { return skillName; }
 };

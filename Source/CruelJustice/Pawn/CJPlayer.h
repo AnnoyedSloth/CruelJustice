@@ -40,6 +40,9 @@ private:
 	UPROPERTY()
 		UParticleSystemComponent* lvUpParticle;
 
+	UPROPERTY(VisibleAnywhere, Category = Ledge, meta = (AllowPrivateAccess = true))
+		class UCJClimbingComponent* climbingComponent;
+
 	// Attack related
 	bool isAttacking;
 
@@ -94,6 +97,8 @@ protected:
 	void ToggleCursor();
 	void TurnOnKeyUI();
 	void TurnOnSkillWidget();
+
+	virtual void Jump() override;
 	
 	// For Properties
 public:
@@ -121,6 +126,7 @@ public:
 	void Attack();
 	void AttackEnd();
 
+	void SetIsAttacking(bool attacking) { isAttacking = attacking; }
 	bool GetIsAttacking() const { return isAttacking; }
 
 	void AttackCheck();
@@ -129,9 +135,13 @@ public:
 	UFUNCTION()
 		void Dodge();
 
-	void Skill1();
+	void Key1();
+	void Key2();
+	void Key3();
+	void Key4();
+	void Key5();
 
-	void Skill2();
+	void UnGrab();
 
 	// Levelup
 	UFUNCTION()

@@ -16,10 +16,12 @@ class CRUELJUSTICE_API UCJShortcut : public UUserWidget
 
 private:
 	class ACJPlayerController* playerController;
+
+	TArray<class UCJSkillWidget*> shortcuts;
 	
 public:
 	virtual void NativeConstruct() override;
-
+	void UseShortcut(int32 shortcutNum);
 	
 	
 };

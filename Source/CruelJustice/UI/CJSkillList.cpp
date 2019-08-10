@@ -5,6 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Controller/CJPlayerController.h"
 #include "UI/CJSkillWidget.h"
+#include "Skill/CJSkill.h"
 #include "ConstructorHelpers.h"
 
 void UCJSkillList::NativeConstruct()
@@ -42,6 +43,14 @@ FReply UCJSkillList::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEven
 
 void UCJSkillList::Close()
 {
+	for (UCJSkillWidget* skill : skills)
+	{
+		if (skill->skill)
+		{
+			skill->skill->Destroy();
+		}
+	}
+
 	GetOwningPlayer()->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
 	GetOwningPlayer()->bShowMouseCursor = false;
 	RemoveFromParent();

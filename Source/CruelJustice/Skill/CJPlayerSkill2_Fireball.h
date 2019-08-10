@@ -21,6 +21,6 @@ public:
 
 	virtual void PlaySkill() override;
 	virtual void ApplyImpact() override;
-	
+
 	
 };
