@@ -23,6 +23,7 @@ private:
 	bool isClimbingLedge;
 	bool isHanging;
 
+	UPROPERTY(VisibleAnywhere, Category = AnimMontage, meta = (AllowPrivateAccess = true))
 	UAnimMontage* climbingMontage;
 
 private:

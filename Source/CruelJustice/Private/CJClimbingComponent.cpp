@@ -145,11 +145,12 @@ void UCJClimbingComponent::HeightTracer()
 
 	if (HipToLedge())
 	{
-		//CJLOG(Warning, TEXT("Hip to ledge enabled"));
+		CJLOG(Warning, TEXT("Hip to ledge enabled"));
 		if (!isHanging)
 		{
+			CJLOG(Warning, TEXT("Grab ledge activated"));
 			GrabLedge();
-			isClimbingLedge;
+			isClimbingLedge = true;
 		}
 	}
 
@@ -169,6 +170,7 @@ void UCJClimbingComponent::HeightTracer()
 
 bool UCJClimbingComponent::HipToLedge()
 {
+	CJLOG(Warning, TEXT("%f"), player->GetMesh()->GetSocketLocation(pelvisSocket).Z - heightLocation.Z);
 	return UKismetMathLibrary::InRange_FloatFloat(
 		player->GetMesh()->GetSocketLocation(pelvisSocket).Z - heightLocation.Z,
 		-70.0f,

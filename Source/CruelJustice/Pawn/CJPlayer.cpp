@@ -127,11 +127,12 @@ void ACJPlayer::BeginPlay()
 
 	playerController = Cast<ACJPlayerController>(GetController());
 	playerState = Cast<ACJPlayerState>(PlayerState);
-	CJCHECK(playerState);
+	if (!playerState) CJLOG(Warning, TEXT("Player state missing"));
 
 	// Setup Initial level when start game
 	auto gameInstance = Cast<UCJGameInstance>(GetGameInstance());
-	CJCHECK(gameInstance);
+	if (!gameInstance) CJLOG(Warning, TEXT("GameInstance missing"));
+	
 
 	playerState->maxHP = gameInstance->GetPlayerStatData(level)->maxHP;
 	playerState->maxMP = gameInstance->GetPlayerStatData(level)->maxMP;
