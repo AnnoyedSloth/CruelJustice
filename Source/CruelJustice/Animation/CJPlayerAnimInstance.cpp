@@ -44,6 +44,15 @@ void UCJPlayerAnimInstance::NativeUpdateAnimation(float deltaTime)
 			isInAir = character->GetMovementComponent()->IsFalling();
 			accel = character->GetCharacterMovement()->GetCurrentAcceleration().Size();
 			isAttacking = character->GetIsAttacking();
+
+			if (character->GetInputAxisValue("MoveRight") < 0) ledgeMovingLeft = true;
+			else if (character->GetInputAxisValue("MoveRight") > 0) ledgeMovingRight = true;
+			else
+			{
+				ledgeMovingLeft = false;
+				ledgeMovingRight = false;
+			}
+
 		}
 	}
 }

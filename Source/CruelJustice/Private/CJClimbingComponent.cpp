@@ -23,10 +23,13 @@ UCJClimbingComponent::UCJClimbingComponent()
 		climbingMontage = AM_CLIMB.Object;
 	}
 
+
 	pelvisSocket = "PelvisSocket";
 	isHanging = false;
 	isClimbingLedge = false;
-	// ...
+
+	canMoveLeft = false;
+	canMoveRight = false;
 }
 
 void UCJClimbingComponent::InitializeComponent()
@@ -53,9 +56,10 @@ void UCJClimbingComponent::BeginPlay()
 		CJLOG(Warning, TEXT("AnimInstance is missing"));
 		return;
 	}
+
+
 	
 }
-
 
 // Called every frame
 void UCJClimbingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -63,8 +67,17 @@ void UCJClimbingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	ForwardTracer();
-	//HeightTracer();
-	// ...
+
+	if (isHanging)
+	{
+		CheckHorizontalMove();
+		CheckHorizontalJump();
+	}
+	else
+	{
+		canMoveLeft = false;
+		canMoveRight = false;
+	}
 }
 
 
@@ -234,4 +247,146 @@ void UCJClimbingComponent::ClimbLedge()
 	player->GetAnimInstance()->PlayMontage(climbingMontage, 1.0f);
 	isClimbingLedge = false;
 	//isHanging = false;
+}
+
+void UCJClimbingComponent::MoveInLedge()
+{
+	if (canMoveLeft && player->GetInputAxisValue("MoveRight") < 0)
+	{
+		FVector newLocation = player->GetActorLocation() - 
+			player->GetActorRightVector() * GetWorld()->DeltaTimeSeconds * 50.0f;
+
+		player->SetActorLocation(newLocation);
+	}
+
+	if (canMoveRight && player->GetInputAxisValue("MoveRight") > 0)
+	{
+		FVector newLocation = player->GetActorLocation() + 
+			player->GetActorRightVector() * GetWorld()->DeltaTimeSeconds * 50.0f;
+
+		player->SetActorLocation(newLocation);
+	}
+}
+
+void UCJClimbingComponent::CheckHorizontalMove()
+{
+	const FRotator newRotation = player->GetActorRotation();
+
+	leftMoveCheck = player->GetActorLocation() +
+		newRotation.RotateVector(FVector(40, -60, 40));
+	rightMoveCheck = player->GetActorLocation() +
+		newRotation.RotateVector(FVector(40, 60, 40));
+
+	FHitResult leftHitResult;
+	FCollisionQueryParams params;
+
+	canMoveLeft = GetWorld()->SweepSingleByChannel(
+		leftHitResult,
+		leftMoveCheck,
+		leftMoveCheck,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel4,
+		FCollisionShape::MakeSphere(20.0f),
+		params
+	);
+
+	FColor color = canMoveLeft ? FColor::Green : FColor::Red;
+
+#if ENABLE_DRAW_DEBUG
+	DrawDebugCapsule(GetWorld(),
+		leftMoveCheck,
+		10.0f,
+		20.0f,
+		FRotationMatrix::MakeFromZ(leftMoveCheck).ToQuat(),
+		color,
+		false
+	);
+#endif
+
+	FHitResult rightHitResult;
+
+	canMoveRight = GetWorld()->SweepSingleByChannel(
+		rightHitResult,
+		rightMoveCheck,
+		rightMoveCheck,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel4,
+		FCollisionShape::MakeSphere(20.0f),
+		params
+	);
+
+	FColor color2 = canMoveRight ? FColor::Green : FColor::Red;
+
+#if ENABLE_DRAW_DEBUG
+	DrawDebugCapsule(GetWorld(),
+		rightMoveCheck,
+		10.0f,
+		20.0f,
+		FRotationMatrix::MakeFromZ(rightMoveCheck).ToQuat(),
+		color2,
+		false
+	);
+#endif
+}
+
+void UCJClimbingComponent::CheckHorizontalJump()
+{
+	const FRotator newRotation = player->GetActorRotation();
+
+	leftJumpCheck = player->GetActorLocation() +
+		newRotation.RotateVector(FVector(50, -150, 40));
+	rightJumpCheck = player->GetActorLocation() +
+		newRotation.RotateVector(FVector(50, 150, 40));
+
+	FHitResult leftHitResult;
+	FCollisionQueryParams params;
+
+	canJumpLeft = GetWorld()->SweepSingleByChannel(
+		leftHitResult,
+		leftJumpCheck,
+		leftJumpCheck,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel4,
+		FCollisionShape::MakeSphere(20.0f),
+		params
+	);
+
+
+	FColor color = canJumpLeft ? FColor::Green : FColor::Red;
+
+#if ENABLE_DRAW_DEBUG
+	DrawDebugCapsule(GetWorld(),
+		leftJumpCheck,
+		10.0f,
+		20.0f,
+		FRotationMatrix::MakeFromZ(leftJumpCheck).ToQuat(),
+		color,
+		false
+	);
+#endif
+
+	FHitResult rightHitResult;
+
+	canJumpRight = GetWorld()->SweepSingleByChannel(
+		rightHitResult,
+		rightJumpCheck,
+		rightJumpCheck,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel4,
+		FCollisionShape::MakeSphere(20.0f),
+		params
+	);
+
+	FColor color2 = canJumpRight ? FColor::Green : FColor::Red;
+
+#if ENABLE_DRAW_DEBUG
+	DrawDebugCapsule(GetWorld(),
+		rightJumpCheck,
+		10.0f,
+		20.0f,
+		FRotationMatrix::MakeFromZ(rightJumpCheck).ToQuat(),
+		color2,
+		false
+	);
+#endif
 }

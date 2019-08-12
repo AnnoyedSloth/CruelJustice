@@ -190,7 +190,11 @@ void ACJPlayer::MoveForward(float value)
 
 void ACJPlayer::MoveRight(float value)
 {
-	if (climbingComponent->GetIsHanging()) return;
+	if (climbingComponent->GetIsHanging())
+	{
+		climbingComponent->MoveInLedge();
+		return;
+	}
 	if (!isAttacking) AddMovementInput(FRotationMatrix(GetControlRotation()).GetUnitAxis(EAxis::Y), value);
 }
 

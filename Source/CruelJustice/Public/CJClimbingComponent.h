@@ -26,11 +26,32 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = AnimMontage, meta = (AllowPrivateAccess = true))
 	UAnimMontage* climbingMontage;
 
+	FVector leftMoveCheck;
+	FVector rightMoveCheck;
+
+	FVector leftJumpCheck;
+	FVector rightJumpCheck;
+
+	UPROPERTY(VisibleAnywhere, Category = Ledge)
+	bool canMoveLeft;
+
+	UPROPERTY(VisibleAnywhere, Category = Ledge)
+	bool canMoveRight;
+
+	UPROPERTY(VisibleAnywhere, Category = Ledge)
+	bool canJumpLeft;
+	
+	UPROPERTY(VisibleAnywhere, Category = Ledge)
+	bool canJumpRight;
+
 private:
 
 	void ForwardTracer();
 
 	bool HipToLedge();
+
+	void CheckHorizontalMove();
+	void CheckHorizontalJump();
 
 	UFUNCTION()
 	void StopPlayerAction();
@@ -51,11 +72,13 @@ public:
 
 	void HeightTracer();
 
-
 	void GrabLedge();
 	void UnGrab();
 	void ClimbLedge();
+	void MoveInLedge();
 
 	bool GetIsHanging() { return isHanging; }
 	bool GetIsClimbing() { return isClimbingLedge; }
+	bool GetCanMoveLeft() { return canMoveLeft; }
+	bool GetCanMoveRight() { return canMoveRight; }
 };

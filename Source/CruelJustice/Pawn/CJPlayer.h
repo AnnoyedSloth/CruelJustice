@@ -76,6 +76,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = true))
 	ACJSkill* curSkill;
 
+
 	// For Methods
 private:
 

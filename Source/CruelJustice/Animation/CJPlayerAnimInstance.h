@@ -35,6 +35,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Pawn, meta = (AllowPrivateAccess = true))
 		float accel;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ledge, meta = (AllowPrivateAccess = true))
+		bool ledgeMovingLeft;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ledge, meta = (AllowPrivateAccess = true))
+		bool ledgeMovingRight;
+
 
 	// 현재 공격연계기 진행중인지 확인
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, meta = (AllowPrivateAccess = true))
