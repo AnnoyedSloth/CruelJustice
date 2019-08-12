@@ -20,11 +20,18 @@ private:
 	FVector wallNormal;
 	FName pelvisSocket;
 
+	UPROPERTY(VisibleAnywhere, Category = Ledge)
 	bool isClimbingLedge;
+	UPROPERTY(VisibleAnywhere, Category = Ledge)
 	bool isHanging;
 
 	UPROPERTY(VisibleAnywhere, Category = AnimMontage, meta = (AllowPrivateAccess = true))
 	UAnimMontage* climbingMontage;
+
+	UPROPERTY(VisibleAnywhere, Category = AnimMontage, meta = (AllowPrivateAccess = true))
+		UAnimMontage* jumpLeftMontage;
+	UPROPERTY(VisibleAnywhere, Category = AnimMontage, meta = (AllowPrivateAccess = true))
+		UAnimMontage* jumpRightMontage;
 
 	FVector leftMoveCheck;
 	FVector rightMoveCheck;
@@ -81,4 +88,9 @@ public:
 	bool GetIsClimbing() { return isClimbingLedge; }
 	bool GetCanMoveLeft() { return canMoveLeft; }
 	bool GetCanMoveRight() { return canMoveRight; }
+	bool GetCanJumpLeft() { return canJumpLeft; }
+	bool GetCanJumpRight() { return canJumpRight; }
+
+	void JumpEnd();
+	void JumpLedge();
 };

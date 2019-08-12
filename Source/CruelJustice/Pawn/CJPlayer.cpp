@@ -210,7 +210,14 @@ void ACJPlayer::LookUp(float value)
 
 void ACJPlayer::Jump()
 {
-	if (climbingComponent->GetIsHanging()) climbingComponent->ClimbLedge();
+	if (climbingComponent->GetIsHanging())
+	{
+		if (climbingComponent->GetCanJumpLeft() || climbingComponent->GetCanJumpRight())
+		{
+			climbingComponent->JumpLedge();
+		}
+		else climbingComponent->ClimbLedge();
+	}
 	else Super::Jump();
 
 	if (GetCharacterMovement()->IsFalling()) climbingComponent->HeightTracer();
@@ -388,6 +395,11 @@ void ACJPlayer::TurnOnKeyUI()
 void ACJPlayer::TurnOnSkillWidget()
 {
 	if (playerController) playerController->TurnOnSkillWidget();
+}
+
+void ACJPlayer::JumpEnd()
+{
+	climbingComponent->JumpEnd();
 }
 
 void ACJPlayer::UnGrab()

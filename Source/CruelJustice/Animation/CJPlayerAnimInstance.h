@@ -76,12 +76,18 @@ private:
 	UFUNCTION()
 		void AnimNotify_ClimbingEnd();
 
+	UFUNCTION()
+		void AnimNotify_JumpEnd();
+
 protected:
 	virtual void NativeUpdateAnimation(float deltaTime) override;
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ledge, meta = (AllowPrivateAccess = true))
 		bool canGrab;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ledge)
+		bool isClimbing;
 
 public:
 	UCJPlayerAnimInstance();

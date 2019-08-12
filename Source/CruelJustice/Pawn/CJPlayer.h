@@ -142,6 +142,7 @@ public:
 	void Key4();
 	void Key5();
 
+	void JumpEnd();
 	void UnGrab();
 
 	// Levelup

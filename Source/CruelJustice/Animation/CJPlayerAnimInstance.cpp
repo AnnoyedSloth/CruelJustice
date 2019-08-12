@@ -142,3 +142,11 @@ void UCJPlayerAnimInstance::AnimNotify_ClimbingEnd()
 	character->SetActorRotation(FRotator(0, character->GetActorRotation().Yaw, character->GetActorRotation().Roll));
 	character->UnGrab();
 }
+
+void UCJPlayerAnimInstance::AnimNotify_JumpEnd()
+{
+
+	//CJLOG(Warning, TEXT("JumpEndCalled"));
+	auto character = Cast<ACJPlayer>(TryGetPawnOwner());
+	character->JumpEnd();
+}
