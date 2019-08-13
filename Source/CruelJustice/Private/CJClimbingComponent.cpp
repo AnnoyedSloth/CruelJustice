@@ -81,6 +81,7 @@ void UCJClimbingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	ForwardTracer();
+	//HeightTracer();
 
 	if (isHanging)
 	{
@@ -124,7 +125,7 @@ void UCJClimbingComponent::ForwardTracer()
 	if (result)
 	{
 		wallLocation = hitResult.Location;
-		wallNormal = hitResult.Normal;
+		wallNormal = hitResult.Normal*35.0f;
 	}
 
 	FColor color = result ? FColor::Green : FColor::Red;
@@ -172,16 +173,16 @@ void UCJClimbingComponent::HeightTracer()
 		//player->GetMesh()->GetSocketLocation(pelvisSocket).Z - heightLocation.Z);
 	}
 
-	if (HipToLedge())
-	{
-		CJLOG(Warning, TEXT("Hip to ledge enabled"));
-		if (!isHanging)
-		{
-			CJLOG(Warning, TEXT("Grab ledge activated"));
-			GrabLedge();
-			//isClimbingLedge = true;
-		}
-	}
+	//if (HipToLedge())
+	//{
+	//	CJLOG(Warning, TEXT("Hip to ledge enabled"));
+	//	if (!isHanging)
+	//	{
+	//		CJLOG(Warning, TEXT("Grab ledge activated"));
+	//		GrabLedge();
+	//		//isClimbingLedge = true;
+	//	}
+	//}
 
 	FColor color = result ? FColor::Green : FColor::Red;
 
@@ -219,8 +220,10 @@ void UCJClimbingComponent::GrabLedge()
 	isHanging = true;
 	isClimbingLedge = false;
 
-	FVector targetLoc = FVector(wallNormal.X + wallLocation.X, wallNormal.Y + wallLocation.Y + 35.0f,
+	FVector targetLoc = FVector(wallNormal.X + wallLocation.X, wallNormal.Y + wallLocation.Y,
 		heightLocation.Z - 120.0f);
+	//FVector targetLoc = FVector(wallNormal.X + (wallLocation.X+35), wallNormal.Y + (wallLocation.Y+35),
+		//heightLocation.Z - 120.0f);
 
 	FRotator sourceRot = UKismetMathLibrary::MakeRotFromX(wallNormal);
 	FRotator targetRot = FRotator(sourceRot.Pitch, sourceRot.Yaw - 180.0f, sourceRot.Roll);
@@ -270,16 +273,28 @@ void UCJClimbingComponent::MoveInLedge()
 {
 	if (canMoveLeft && player->GetInputAxisValue("MoveRight") < 0)
 	{
-		FVector newLocation = player->GetActorLocation() - 
-			player->GetActorRightVector() * GetWorld()->DeltaTimeSeconds * 50.0f;
+		HeightTracer();
+
+		FVector actorRightVector = -player->GetActorRightVector();
+		actorRightVector.Z = heightLocation.Z - player->GetActorLocation().Z - 120.0f;
+
+		FVector newLocation = player->GetActorLocation() + 
+			actorRightVector * GetWorld()->DeltaTimeSeconds * 50.0f;
 
 		player->SetActorLocation(newLocation);
 	}
 
 	if (canMoveRight && player->GetInputAxisValue("MoveRight") > 0)
 	{
-		FVector newLocation = player->GetActorLocation() + 
-			player->GetActorRightVector() * GetWorld()->DeltaTimeSeconds * 50.0f;
+		HeightTracer();
+
+		FVector actorRightVector = player->GetActorRightVector();
+		actorRightVector.Z = heightLocation.Z - player->GetActorLocation().Z - 120.0f;
+		//FVector newLocation = player->GetActorLocation() + 
+			//player->GetActorRightVector() * GetWorld()->DeltaTimeSeconds * 50.0f;
+
+		FVector newLocation = player->GetActorLocation() +
+			actorRightVector * GetWorld()->DeltaTimeSeconds * 50.0f;
 
 		player->SetActorLocation(newLocation);
 	}
@@ -419,12 +434,27 @@ void UCJClimbingComponent::CheckHorizontalJump()
 	}
 }
 
+void UCJClimbingComponent::GrabWall()
+{
+	HeightTracer();
+	if (HipToLedge())
+	{
+		CJLOG(Warning, TEXT("Hip to ledge enabled"));
+		if (!isHanging)
+		{
+			CJLOG(Warning, TEXT("Grab ledge activated"));
+			GrabLedge();
+			//isClimbingLedge = true;
+		}
+	}
+}
+
 void UCJClimbingComponent::JumpEnd()
 {
 	canJumpLeft = false;
 	canJumpRight = false;
 	//isHanging = true;
-	HeightTracer();
+	GrabWall();
 	//animInstance->GrabWall(true);
 }
 

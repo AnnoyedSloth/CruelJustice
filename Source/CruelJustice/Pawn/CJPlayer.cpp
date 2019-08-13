@@ -220,7 +220,8 @@ void ACJPlayer::Jump()
 	}
 	else Super::Jump();
 
-	if (GetCharacterMovement()->IsFalling()) climbingComponent->HeightTracer();
+	//if (GetCharacterMovement()->IsFalling()) climbingComponent->HeightTracer();
+	if (GetCharacterMovement()->IsFalling()) climbingComponent->GrabWall();
 }
 
 void ACJPlayer::Attack()

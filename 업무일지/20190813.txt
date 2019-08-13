@@ -1,0 +1,21 @@
+발표 내용 요약
+
+Custom Key System - 3 pages
+Skill shortcut system - 3 pages
+
+Polygon reducing technique
+UE LOD - 4pages
+- Static LOD
+- Dynamic LOD
+- Proxy LOD(Officially applied since UE4 4.20 for Mobile platform optimization)
+
+Frustum culling - 3pages
+- Visibility
+- Occlusion
+
+Climbing System
+- Grab - 2pages
+- Moving on ledge - 2pages
+- Jump on ledge - 1page
+- 한계 및 개선가능성(IK 등) - 1page
+- FK와 IK에 대한 설명 - 1~2pages
