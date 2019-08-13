@@ -192,13 +192,12 @@ FReply UCJCustomKeyWidget::NativeOnPreviewMouseButtonDown(const FGeometry& InGeo
 	FReply reply = Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
 
 	const FKey key = InMouseEvent.GetEffectingButton();
-	
 
-		if (curTextBlock)
-		{
-			curTextBlock->SetText(key.GetDisplayName());
-		}
-		curTextBlock = nullptr;
+	if (curTextBlock)
+	{
+		curTextBlock->SetText(key.GetDisplayName());
+	}
+	curTextBlock = nullptr;
 	
 	
 	return reply;
