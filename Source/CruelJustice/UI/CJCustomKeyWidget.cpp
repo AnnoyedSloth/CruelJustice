@@ -119,20 +119,18 @@ void UCJCustomKeyWidget::Close()
 		}
 	}
 
-
-
 	GetOwningPlayer()->bShowMouseCursor = false;
 	GetOwningPlayer()->SetInputMode(FInputModeGameOnly::FInputModeGameOnly());
 	RemoveFromParent();
 	//RemoveFromViewport();
 }
 
-void UCJCustomKeyWidget::ReceiveKey()
-{
-	FGeometry geometry;
-	FKeyEvent key;
-	OnKeyDown(geometry, key);
-}
+//void UCJCustomKeyWidget::ReceiveKey()
+//{
+//	FGeometry geometry;
+//	FKeyEvent key;
+//	OnKeyDown(geometry, key);
+//}
 
 void UCJCustomKeyWidget::ButtonClicked()
 {
@@ -160,6 +158,8 @@ FReply UCJCustomKeyWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FK
 
 	const FKey key = InKeyEvent.GetKey();
 
+	CJLOG(Warning, TEXT("%s"), *InKeyEvent.GetKey().GetFName().ToString());
+
 	if (curTextBlock)
 	{
 		curTextBlock->SetText(key.GetDisplayName());
@@ -167,4 +167,39 @@ FReply UCJCustomKeyWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FK
 	curTextBlock = nullptr;
 
 	return OnKeyDown(InGeometry, InKeyEvent).NativeReply;
+}
+
+FReply UCJCustomKeyWidget::NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	FReply reply = Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
+
+	const FKey key = InKeyEvent.GetKey();
+
+	if (key == EKeys::SpaceBar || key == EKeys::Up || key==EKeys::Down || key==EKeys::Left || key==EKeys::Right)
+	{
+		if (curTextBlock)
+		{
+			curTextBlock->SetText(key.GetDisplayName());
+		}
+		curTextBlock = nullptr;
+	}
+
+	return reply;
+}
+
+FReply UCJCustomKeyWidget::NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	FReply reply = Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
+
+	const FKey key = InMouseEvent.GetEffectingButton();
+	
+
+		if (curTextBlock)
+		{
+			curTextBlock->SetText(key.GetDisplayName());
+		}
+		curTextBlock = nullptr;
+	
+	
+	return reply;
 }

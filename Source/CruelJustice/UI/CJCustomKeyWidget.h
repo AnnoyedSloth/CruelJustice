@@ -36,6 +36,10 @@ protected:
 	virtual FReply NativeOnKeyDown(
 		const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
+	virtual FReply NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
+
+	virtual FReply NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
 	
 public:	
 	UFUNCTION()
@@ -44,6 +48,6 @@ public:
 	UFUNCTION()
 		void ButtonClicked();
 
-	void ReceiveKey();
+	//void ReceiveKey();
 
 };
