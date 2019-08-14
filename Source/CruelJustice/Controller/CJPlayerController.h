@@ -34,9 +34,16 @@ private:
 
 	TSubclassOf<class UCJSkillWidget> skillWidgetClass;
 	class UCJSkillWidget* skillWidget;
+
+	TSubclassOf<class UCJKeyPressCheck> keyPressCheckClass;
+	class UCJKeyPressCheck* keyPressCheck;
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float deltaTime) override;
+
+	bool InputKey(FKey Key, EInputEvent EventType, float AmountDepressed, bool bGamepad) override;
+
 	
 public:
 	ACJPlayerState* playerState;

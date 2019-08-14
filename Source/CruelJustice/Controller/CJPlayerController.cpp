@@ -6,6 +6,7 @@
 #include "UI/CJShortcut.h"
 #include "UI/CJSkillList.h"
 #include "UI/CJSkillWidget.h"
+#include "UI/CJKeyPressCheck.h"
 #include "CJPlayerState.h"
 #include "ConstructorHelpers.h"
 
@@ -39,6 +40,13 @@ ACJPlayerController::ACJPlayerController()
 		skillWidgetClass = WIDGET_SKILL.Class;
 	}
 
+	static ConstructorHelpers::FClassFinder<UCJKeyPressCheck>
+		WIDGET_INPUT(TEXT("/Game/UI/InputCheck.InputCheck_C"));
+	if (WIDGET_INPUT.Succeeded())
+	{
+		keyPressCheckClass = WIDGET_INPUT.Class;
+	}
+
 }
 
 void ACJPlayerController::PostInitializeComponents()
@@ -58,12 +66,36 @@ void ACJPlayerController::BeginPlay()
 
 }
 
+void ACJPlayerController::Tick(float deltaTime)
+{
+	Super::Tick(deltaTime);
+
+	//if (keyPressCheck && WasInputKeyJustPressed(EKeys::AnyKey))
+	//{
+	//	keyPressCheck->SetPressedKey();
+	//}
+}
+
+bool ACJPlayerController::InputKey(FKey Key, EInputEvent EventType, float AmountDepressed, bool bGamepad)
+{
+	bool isKeyDown = Super::InputKey(Key, EventType, AmountDepressed, bGamepad);
+	if (keyPressCheck)
+	{
+		keyPressCheck->SetPressedKey(Key.GetDisplayName());
+	}
+	return isKeyDown;
+}
+
+
 void ACJPlayerController::Possess(APawn* pawn)
 {
 	Super::Possess(pawn);
 
 	shortcutWidget = CreateWidget<UCJShortcut>(this, shortcutWidgetClass);
 	shortcutWidget->AddToViewport();
+
+	keyPressCheck = CreateWidget<UCJKeyPressCheck>(this, keyPressCheckClass);
+	keyPressCheck->AddToViewport();
 }
 
 void ACJPlayerController::UnPossess()

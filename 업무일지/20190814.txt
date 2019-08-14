@@ -1,0 +1,8 @@
+LOD0과 OtherLOD의 수치에 따른 Level간 비율 산술적 계산
+
+LOD0 1.75/OtherLOD 2.0
+LODArr0 1	LODArr1 0.756	LODArr2 0.535	
+LODArr3 0.378	LODArr4 0.267	LODArr5 0.189
+
+LOD0 5.0/OtherLOD 1.0
+LODArr0 1	LODArr1 0.447	
