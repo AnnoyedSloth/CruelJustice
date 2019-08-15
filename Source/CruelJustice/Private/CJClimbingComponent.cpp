@@ -81,7 +81,7 @@ void UCJClimbingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	ForwardTracer();
-	//HeightTracer();
+	HeightTracer();
 
 	if (isHanging)
 	{
@@ -222,9 +222,6 @@ void UCJClimbingComponent::GrabLedge()
 
 	FVector targetLoc = FVector(wallNormal.X + wallLocation.X, wallNormal.Y + wallLocation.Y,
 		heightLocation.Z - 120.0f);
-	//FVector targetLoc = FVector(wallNormal.X + (wallLocation.X+35), wallNormal.Y + (wallLocation.Y+35),
-		//heightLocation.Z - 120.0f);
-
 	FRotator sourceRot = UKismetMathLibrary::MakeRotFromX(wallNormal);
 	FRotator targetRot = FRotator(sourceRot.Pitch, sourceRot.Yaw - 180.0f, sourceRot.Roll);
 
